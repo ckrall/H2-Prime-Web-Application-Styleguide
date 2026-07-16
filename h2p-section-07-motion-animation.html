@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Section 7 — Motion &amp; Animation — H2 Prime Design System</title>
+  <link rel="stylesheet" href="h2p-shared.css">
+<style>
+.demo { background: var(--s); border: 1px solid var(--b1); border-radius: 10px; padding: 20px; margin: 1rem 0; }
+.demo-row { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; margin-bottom: 10px; }
+.demo-row:last-child { margin-bottom: 0; }
+.demo-label { font-size: 10px; font-weight: 500; letter-spacing: .08em; text-transform: uppercase; color: var(--t3); margin-bottom: 10px; }
+
+pre.code { background: var(--code); border: 1px solid var(--b1); border-radius: 8px; padding: 14px 16px; overflow-x: auto; margin: .75rem 0; }
+pre.code code { background: none; border: none; padding: 0; font-size: 12px; color: var(--t2); line-height: 1.6; }
+
+.gap-tag { font-family: var(--fm); font-size: 9px; font-weight: 700; letter-spacing: .05em; padding: 1px 6px; border-radius: 3px; background: #3B2600; color: #FCD34D; border: 1px solid #6B4500; margin-left: 6px; vertical-align: 2px; }
+
+/* ── Duration/easing playground ── */
+.mo-swatch { width: 64px; height: 64px; border-radius: 10px; background: var(--a); flex-shrink: 0; transition-property: transform; transition-timing-function: cubic-bezier(.4,0,.2,1); }
+.mo-track { background: var(--r); border: 1px solid var(--b1); border-radius: 10px; padding: 20px; overflow: hidden; }
+.mo-row { display: flex; align-items: center; gap: 16px; margin-bottom: 14px; }
+.mo-row:last-child { margin-bottom: 0; }
+.mo-track-lane { flex: 1; height: 64px; position: relative; }
+.mo-meta { width: 190px; flex-shrink: 0; font-family: var(--fm); font-size: 11px; color: var(--t2); line-height: 1.5; }
+.mo-meta strong { color: var(--t1); }
+.mo-replay { font-size: 11px; font-weight: 600; color: var(--a); background: var(--al); border: 1px solid var(--ab); border-radius: 5px; padding: 5px 10px; cursor: pointer; flex-shrink: 0; }
+
+/* ── Button press demo ── */
+.btn { font-family: var(--fu); font-size: 14px; font-weight: 500; padding: 9px 18px; border-radius: 6px; border: 1px solid transparent; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; }
+.btn-primary { background: #272A2F; color: #fff; transition: background-color var(--demo-dur,100ms) cubic-bezier(.4,0,.2,1), transform var(--demo-dur,100ms) cubic-bezier(.4,0,.2,1); }
+.btn-primary:hover { background: #15171B; }
+.btn-primary:active { background: #07080B; transform: translateY(1px) scale(.98); }
+.btn-primary:focus-visible { outline: 2px solid var(--a); outline-offset: 2px; }
+
+/* ── Card hover-lift ── */
+.mo-card { background: var(--r); border: 1px solid var(--b1); border-radius: 8px; padding: 16px 18px; max-width: 240px; cursor: pointer; transition: transform 200ms cubic-bezier(0,0,.2,1), box-shadow 200ms cubic-bezier(0,0,.2,1); }
+.mo-card:hover { transform: translateY(-3px); box-shadow: 0 10px 15px rgba(0,0,0,.35), 0 4px 6px rgba(0,0,0,.25); }
+.mo-card:focus-visible { outline: 2px solid var(--a); outline-offset: 2px; }
+.mo-card h3 { font-size: 14px; font-weight: 600; color: var(--t1); margin-bottom: 4px; }
+.mo-card p { font-size: 12px; color: var(--t2); margin: 0; }
+
+/* ── Banner enter/exit ── */
+.mo-banner-demo { position: relative; min-height: 64px; }
+.mo-banner { background: #0E1A2E; border: 1px solid #2A3A60; border-radius: 8px; padding: 12px 14px; font-size: 13px; color: #93C5FD; opacity: 0; transform: translateY(-6px); transition: opacity 200ms cubic-bezier(0,0,.2,1), transform 200ms cubic-bezier(0,0,.2,1); }
+.mo-banner.in { opacity: 1; transform: translateY(0); }
+@media (prefers-reduced-motion: reduce) { .mo-banner { transition-duration: 1ms; transform: none; } }
+
+/* ── Toggle demo ── */
+.mo-toggle { position: relative; width: 40px; height: 22px; background: var(--b2); border-radius: 9999px; border: none; cursor: pointer; flex-shrink: 0; transition: background-color 150ms cubic-bezier(.4,0,.2,1); }
+.mo-toggle[aria-checked="true"] { background: var(--a); }
+.mo-toggle::after { content: ""; position: absolute; top: 2px; left: 2px; width: 18px; height: 18px; background: #fff; border-radius: 50%; transition: transform 150ms cubic-bezier(.4,0,.2,1); }
+.mo-toggle[aria-checked="true"]::after { transform: translateX(18px); }
+.mo-toggle:focus-visible { outline: 2px solid var(--a); outline-offset: 2px; }
+</style>
+</head>
+<body>
+
+<a class="skip-link" href="#main-content">Skip to content</a>
+
+<nav class="guide-nav" aria-label="Style guide navigation">
+  <div class="guide-nav-left">
+    <a href="h2p-cover.html" class="guide-nav-home">
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+        <path d="M1 7L7 1l6 6M2.5 5.5V13h3v-3h3v3h3V5.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      H2 Prime Design System
+    </a>
+    <div class="guide-nav-divider" aria-hidden="true"></div>
+    <span class="guide-nav-section">7 — Motion &amp; Animation</span>
+  </div>
+  <div class="guide-nav-right">
+    <a href="h2p-section-06-interaction-state-design.html" class="guide-nav-btn">← 6 — Interaction &amp; State Design</a>
+    <a href="h2p-section-08-design-tokens.html" class="guide-nav-btn primary">8 — Design Tokens →</a>
+  </div>
+</nav>
+
+<div class="page-wrap">
+<main id="main-content">
+
+  <div class="doc-header">
+    <div class="doc-kicker">H2 Prime Web Application Design System &amp; Guidelines</div>
+    <h1 class="doc-title">Section 07 — <strong>Motion &amp; Animation</strong></h1>
+    <p class="doc-lead">Timing and easing tokens already existed in <code>tokens.css</code> §2.19 before this page — a full <code>--duration-*</code> and <code>--ease-*</code> scale with a working <code>prefers-reduced-motion</code> override. What didn't exist was a policy for <em>when</em> to reach for which value, or a single reference for what H2 Prime's motion is supposed to communicate. That's what this section is. See principle 08 on the cover page.</p>
+    <div class="doc-meta">
+      <div class="doc-meta-item"><strong>Token source</strong>tokens.css §2.19 — Motion</div>
+      <div class="doc-meta-item"><strong>Default animated properties</strong>transform, opacity, background-color, border-color only</div>
+      <div class="doc-meta-item"><strong>Reduced motion</strong>Durations collapse via a CSS media query — see §7C</div>
+      <div class="doc-meta-item"><strong>Last updated</strong>2026-07-16</div>
+    </div>
+
+    <div class="callout brand">
+      <div class="callout-label">Why motion gets its own section</div>
+      H2 Prime's audience skews older, works outdoors on a phone as often as at a desk, and is often mid-task under real time pressure — filing paperwork, not browsing. Motion here exists to answer "did that work" and "where did my thing go," not to feel modern. A transition that's decorative rather than informative is the wrong transition, full stop — see the anti-patterns in §7G.
+    </div>
+  </div>
+
+  <nav class="toc" aria-label="Section contents">
+    <div class="toc-label">In this section</div>
+    <div class="toc-cols">
+      <ul class="toc-list">
+        <li><span class="toc-num">7A</span><a href="#7a">Motion principles</a></li>
+        <li><span class="toc-num">7B</span><a href="#7b">Duration &amp; easing tokens</a></li>
+        <li><span class="toc-num">7C</span><a href="#7c">Reduced motion policy</a></li>
+      </ul>
+      <ul class="toc-list">
+        <li><span class="toc-num">7D</span><a href="#7d">State-change motion</a></li>
+        <li><span class="toc-num">7E</span><a href="#7e">Enter / exit patterns</a></li>
+        <li><span class="toc-num">7F</span><a href="#7f">Phase &amp; progress motion</a></li>
+      </ul>
+      <ul class="toc-list">
+        <li><span class="toc-num">7G</span><a href="#7g">Anti-patterns</a></li>
+        <li><span class="toc-num">7H</span><a href="#7h">Gaps &amp; open decisions</a></li>
+      </ul>
+    </div>
+  </nav>
+
+<!-- ════ 7A ════ -->
+  <div class="section" id="7a">
+    <div class="section-header">
+      <span class="section-id">7A</span>
+      <h2 class="section-title">Motion principles</h2>
+    </div>
+    <hr class="section-hr">
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Principle</th><th>In practice</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Motion signals, it doesn't decorate</strong></td><td>Every transition on this page maps to a specific state change (§7D) or a specific enter/exit event (§7E). If a motion doesn't map to either, it doesn't ship.</td></tr>
+          <tr><td><strong>Fast by default</strong></td><td>Most interactions use <code>--duration-fast</code> (100ms) or <code>--duration-base</code> (200ms). Nothing routine should feel like it's making the user wait on the interface.</td></tr>
+          <tr><td><strong>Only <code>transform</code> and <code>opacity</code> animate by default</strong></td><td>Both are compositor-only properties — no layout recalculation, no jank on a mid-range outdoor phone on a spotty connection. <code>background-color</code> and <code>border-color</code> are the two accepted exceptions, used for hover/focus color shifts.</td></tr>
+          <tr><td><strong>Reduced motion is a floor, not an afterthought</strong></td><td>Every duration token already collapses under <code>prefers-reduced-motion: reduce</code> (§7C) — new motion work should use the tokens specifically so this keeps working for free.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+<!-- ════ 7B ════ -->
+  <div class="section" id="7b">
+    <div class="section-header">
+      <span class="section-id">7B</span>
+      <h2 class="section-title">Duration &amp; easing tokens</h2>
+    </div>
+    <hr class="section-hr">
+    <p>Five durations and four easing curves, all already defined in <code>tokens.css</code> §2.19. Click replay on any row to see it fire again.</p>
+
+    <div class="mo-track">
+      <div class="mo-row">
+        <div class="mo-meta"><strong>instant</strong><br>0ms · no easing<br>Value-only state flips (checked/unchecked) with nothing to tween</div>
+        <div class="mo-track-lane"><div class="mo-swatch" id="mo-sw-instant" style="transition-duration:0ms"></div></div>
+        <button class="mo-replay" data-target="mo-sw-instant" data-dist="140" type="button">Replay</button>
+      </div>
+      <div class="mo-row">
+        <div class="mo-meta"><strong>fast</strong><br>100ms · <code>ease-default</code><br>Hover, focus ring, button press — anything under a pointer right now</div>
+        <div class="mo-track-lane"><div class="mo-swatch" id="mo-sw-fast" style="transition-duration:100ms"></div></div>
+        <button class="mo-replay" data-target="mo-sw-fast" data-dist="140" type="button">Replay</button>
+      </div>
+      <div class="mo-row">
+        <div class="mo-meta"><strong>base</strong><br>200ms · <code>ease-out</code><br>Card lift, banner enter, dropdown open — the system default</div>
+        <div class="mo-track-lane"><div class="mo-swatch" id="mo-sw-base" style="transition-duration:200ms"></div></div>
+        <button class="mo-replay" data-target="mo-sw-base" data-dist="140" type="button">Replay</button>
+      </div>
+      <div class="mo-row">
+        <div class="mo-meta"><strong>slow</strong><br>300ms · <code>ease-default</code><br>Modal open/close, larger surfaces moving into view</div>
+        <div class="mo-track-lane"><div class="mo-swatch" id="mo-sw-slow" style="transition-duration:300ms"></div></div>
+        <button class="mo-replay" data-target="mo-sw-slow" data-dist="140" type="button">Replay</button>
+      </div>
+      <div class="mo-row">
+        <div class="mo-meta"><strong>slower</strong><br>500ms · <code>ease-default</code><br>Reserved — no current use case, see §7H</div>
+        <div class="mo-track-lane"><div class="mo-swatch" id="mo-sw-slower" style="transition-duration:500ms"></div></div>
+        <button class="mo-replay" data-target="mo-sw-slower" data-dist="140" type="button">Replay</button>
+      </div>
+    </div>
+
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Token</th><th>Value</th><th>Curve shape</th><th>Use for</th></tr></thead>
+        <tbody>
+          <tr><td><code>--ease-default</code></td><td class="contrast-cell"><code>cubic-bezier(0.4, 0, 0.2, 1)</code></td><td>Ease in and out — the general-purpose default</td><td>Most transitions that don't fit the categories below</td></tr>
+          <tr><td><code>--ease-in</code></td><td class="contrast-cell"><code>cubic-bezier(0.4, 0, 1, 1)</code></td><td>Starts slow, accelerates</td><td>Elements leaving the screen (exit)</td></tr>
+          <tr><td><code>--ease-out</code></td><td class="contrast-cell"><code>cubic-bezier(0, 0, 0.2, 1)</code></td><td>Starts fast, decelerates</td><td>Elements entering the screen (enter) — feels responsive, not sluggish</td></tr>
+          <tr><td><code>--ease-spring</code></td><td class="contrast-cell"><code>cubic-bezier(0.34, 1.56, 0.64, 1)</code></td><td>Overshoots slightly, settles</td><td>Rare, high-emphasis confirmations only — see §7H, no current use case</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <pre class="code"><code>.card {
+  transition: transform var(--duration-base) var(--ease-out),
+              box-shadow var(--duration-base) var(--ease-out);
+}
+.card:hover { transform: translateY(-3px); box-shadow: var(--shadow-lg); }</code></pre>
+  </div>
+
+<!-- ════ 7C ════ -->
+  <div class="section" id="7c">
+    <div class="section-header">
+      <span class="section-id">7C</span>
+      <h2 class="section-title">Reduced motion policy</h2>
+    </div>
+    <hr class="section-hr">
+    <p><code>tokens.css</code> already wraps every duration token in a <code>prefers-reduced-motion: reduce</code> override that zeroes <code>--duration-fast</code>, <code>--duration-base</code>, <code>--duration-slow</code>, and <code>--duration-slower</code>. Anything that animates purely through a token-driven CSS <code>transition</code> — which is everything in §7B and §7D — gets this for free.</p>
+
+    <pre class="code"><code>@media (prefers-reduced-motion: reduce) {
+  --duration-fast:   0ms;
+  --duration-base:   0ms;
+  --duration-slow:   0ms;
+  --duration-slower: 0ms;
+}</code></pre>
+
+    <div class="callout warn">
+      <div class="callout-label">The token override doesn't reach everything<span class="gap-tag">GAP</span></div>
+      Two motion types in this section bypass the duration tokens entirely and need their own explicit <code>prefers-reduced-motion</code> handling, written per-component rather than inherited automatically: CSS <code>@keyframes</code> animations (the spinner and skeleton loader in §6H — both already carry a manual override in their own CSS, but that pattern needs to be documented as the rule, not a one-off), and any future JavaScript-driven animation (a custom drag interaction, a canvas-based chart transition) that doesn't read CSS custom properties at all. Until a written rule exists, treat "does this respect reduced motion" as a required manual check for anything outside a plain CSS <code>transition</code>.
+    </div>
+
+    <div class="ap-grid">
+      <div class="ap-box ap-dont">
+        <div class="ap-label">Don't just disable motion — some still needs to complete</div>
+        <p>A loading spinner that stops entirely under reduced motion leaves no indication anything is happening. The spinner in §6H slows to 1.4s instead of stopping, so state is still communicated without the vestibular trigger of fast continuous rotation.</p>
+      </div>
+      <div class="ap-box ap-do">
+        <div class="ap-label">Do cut duration and distance, not meaning</div>
+        <p>A card that lifts 3px on hover in 200ms can drop straight to its end state in 0ms under reduced motion — the state change (hovered) is still communicated, just without the tween.</p>
+      </div>
+    </div>
+  </div>
+
+<!-- ════ 7D ════ -->
+  <div class="section" id="7d">
+    <div class="section-header">
+      <span class="section-id">7D</span>
+      <h2 class="section-title">State-change motion</h2>
+    </div>
+    <hr class="section-hr">
+    <p>The transitions that back the state matrices in Section 6 — hover, focus, press, toggle. All use <code>--duration-fast</code> since these fire directly under a pointer or keypress and need to feel immediate.</p>
+
+    <div class="demo">
+      <div class="demo-label">Live — button press (100ms, ease-default)</div>
+      <div class="demo-row">
+        <button class="btn btn-primary">Hover, then click and hold</button>
+      </div>
+    </div>
+
+    <div class="demo">
+      <div class="demo-label">Live — card hover-lift (200ms, ease-out)</div>
+      <div class="demo-row">
+        <article class="mo-card" tabindex="0">
+          <h3>Rivera Farms</h3>
+          <p>14 workers · Negotiation phase</p>
+        </article>
+      </div>
+    </div>
+
+    <div class="demo">
+      <div class="demo-label">Live — toggle switch (150ms, ease-default)</div>
+      <div class="demo-row">
+        <button class="mo-toggle" role="switch" aria-checked="false" aria-label="Email notifications" id="mo-toggle-demo" type="button"></button>
+        <label for="mo-toggle-demo" style="font-size:13px;color:var(--t2)">Email notifications</label>
+      </div>
+    </div>
+
+    <pre class="code"><code>&lt;button role="switch" aria-checked="false" aria-label="Email notifications"&gt;&lt;/button&gt;
+
+.toggle { transition: background-color var(--duration-fast) var(--ease-default); }
+.toggle::after { transition: transform var(--duration-fast) var(--ease-default); }</code></pre>
+  </div>
+
+<!-- ════ 7E ════ -->
+  <div class="section" id="7e">
+    <div class="section-header">
+      <span class="section-id">7E</span>
+      <h2 class="section-title">Enter / exit patterns<span class="gap-tag">GAP</span></h2>
+    </div>
+    <hr class="section-hr">
+    <p>Feedback banners, toasts, dropdowns, and modals all have elevation tokens (<code>--elevation-*</code>, Section 4) but no defined enter/exit motion before this page. The banner demo below is a proposed pattern — fade plus a small upward slide, 200ms, <code>ease-out</code> on enter — not yet applied to the live banner markup in §5G.</p>
+
+    <div class="demo">
+      <div class="demo-label">Live — click to trigger enter</div>
+      <button class="mo-replay" id="mo-banner-trigger" type="button" style="margin-bottom:12px">Show banner</button>
+      <div class="mo-banner-demo">
+        <div class="mo-banner" id="mo-banner-el" role="status">Contract approved — both parties have signed.</div>
+      </div>
+    </div>
+
+    <pre class="code"><code>.banner {
+  opacity: 0;
+  transform: translateY(-6px);
+  transition: opacity var(--duration-base) var(--ease-out),
+              transform var(--duration-base) var(--ease-out);
+}
+.banner.in { opacity: 1; transform: translateY(0); }</code></pre>
+
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Surface</th><th>Enter</th><th>Exit</th><th>Status</th></tr></thead>
+        <tbody>
+          <tr><td>Feedback banner</td><td>Fade + slide down, 200ms <code>ease-out</code></td><td>Fade only, 100ms <code>ease-in</code></td><td>Proposed — demoed above, not wired into §5G markup</td></tr>
+          <tr><td>Toast</td><td>Slide in from edge + fade, 200ms <code>ease-out</code></td><td>Slide out + fade, 150ms <code>ease-in</code></td><td>Proposed only — no toast component exists in Section 5 yet</td></tr>
+          <tr><td>Dropdown / menu</td><td>Fade + scale from 0.96, 100ms <code>ease-out</code></td><td>Fade only, 100ms <code>ease-in</code></td><td>Proposed only — no dropdown component exists in Section 5 yet</td></tr>
+          <tr><td>Modal / dialog</td><td>Scrim fades in; dialog fades + scales from 0.98, 300ms <code>ease-out</code></td><td>Both fade out, 200ms <code>ease-in</code></td><td>Proposed only — no modal component exists in Section 5 yet</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout warn">
+      <div class="callout-label">This table is a proposal, not a shipped pattern</div>
+      Three of the four surfaces above (toast, dropdown, modal) don't exist as components anywhere in the system yet — Section 5 stops at buttons, forms, badges, cards, tables, and banners. The timings here are reasonable defaults drawn from the existing duration scale, offered so motion isn't invented from scratch when those components get built, but they should be revisited against a real toast/dropdown/modal spec rather than treated as settled. See §7H.
+    </div>
+  </div>
+
+<!-- ════ 7F ════ -->
+  <div class="section" id="7f">
+    <div class="section-header">
+      <span class="section-id">7F</span>
+      <h2 class="section-title">Phase &amp; progress motion<span class="gap-tag">GAP</span></h2>
+    </div>
+    <hr class="section-hr">
+    <p>The Contract Phase System (Section 10) is parked pending revalidation against the Brown/Neutral revision, so nothing here can define how a phase transition <em>animates</em> — a progress-bar fill, a step-indicator advance — without guessing at a visual system that isn't settled yet. This is intentionally left open rather than speculatively designed against a palette likely to change.</p>
+
+    <div class="callout note">
+      <div class="callout-label">Placeholder decision, once Section 10 lands</div>
+      Whatever the phase indicator ends up looking like, its transition between phases should very likely use <code>--duration-slow</code> (300ms) and <code>--ease-default</code> — phase changes are infrequent, meaningful events, not routine hover feedback, and deserve to read as more deliberate than a button press. That's a placeholder, not a decision — revisit once Section 10 actually has a visual design to attach it to.
+    </div>
+  </div>
+
+<!-- ════ 7G ════ -->
+  <div class="section" id="7g">
+    <div class="section-header">
+      <span class="section-id">7G</span>
+      <h2 class="section-title">Anti-patterns</h2>
+    </div>
+    <hr class="section-hr">
+
+    <div class="ap-grid">
+      <div class="ap-box ap-dont">
+        <div class="ap-label">Don't animate <code>width</code>, <code>height</code>, <code>top</code>, or <code>left</code></div>
+        <p>These trigger layout recalculation on every frame. On a mid-range phone in direct sunlight with a weak connection — the exact H2 Prime mobile use case — that shows up as visible stutter. Use <code>transform: translate()</code> or <code>transform: scale()</code> instead; both are compositor-only.</p>
+      </div>
+      <div class="ap-box ap-do">
+        <div class="ap-label">Do animate <code>transform</code> and <code>opacity</code></div>
+        <p>Every demo on this page sticks to these two (plus color, for hover/focus feedback) specifically so it stays smooth on the hardware the audience is actually using.</p>
+      </div>
+    </div>
+
+    <div class="ap-grid">
+      <div class="ap-box ap-dont">
+        <div class="ap-label">Don't autoplay carousels or looping animation</div>
+        <p>Continuous motion competes for attention on a screen someone is glancing at outdoors between other tasks, drains battery, and — if it can't be paused — fails WCAG 2.2.2 (Pause, Stop, Hide) outright.</p>
+      </div>
+      <div class="ap-box ap-do">
+        <div class="ap-label">Do keep motion event-driven</div>
+        <p>Every pattern in §7D–§7E fires because the user did something (hovered, clicked, triggered a state change) or the system has something to report (a banner appearing). Nothing on this page animates on a timer.</p>
+      </div>
+    </div>
+
+    <div class="ap-grid">
+      <div class="ap-box ap-dont">
+        <div class="ap-label">Don't communicate a state change through motion alone</div>
+        <p>A card that only signals "selected" by animating into a slightly different position, with no color or icon change, is invisible to anyone who missed the transition — including a screen reader user, for whom the animation never existed.</p>
+      </div>
+      <div class="ap-box ap-do">
+        <div class="ap-label">Do pair motion with a persistent state change</div>
+        <p>The card hover-lift in §7D moves <em>and</em> adds a shadow that stays for as long as the hover holds — the shadow, not the movement, is what actually communicates the state once the animation settles.</p>
+      </div>
+    </div>
+  </div>
+
+<!-- ════ 7H ════ -->
+  <div class="section" id="7h">
+    <div class="section-header">
+      <span class="section-id">7H</span>
+      <h2 class="section-title">Gaps &amp; open decisions</h2>
+    </div>
+    <hr class="section-hr">
+
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Gap / decision</th><th>Where flagged</th><th>Blocking?</th></tr></thead>
+        <tbody>
+          <tr><td>Keyframe and future JS-driven animation don't inherit the token-based reduced-motion override automatically — needs a written per-component rule</td><td>§7C</td><td>Yes, before more <code>@keyframes</code> patterns ship</td></tr>
+          <tr><td>Toast, dropdown, and modal enter/exit timings are proposed defaults, not validated against real components (none exist yet)</td><td>§7E</td><td>Yes, once those components are built in Section 5</td></tr>
+          <tr><td>Phase transition motion can't be defined until Section 10 (Contract Phase System) is revalidated against Brown/Neutral</td><td>§7F</td><td>Yes — blocked on Section 10</td></tr>
+          <tr><td><code>--duration-slower</code> (500ms) and <code>--ease-spring</code> have no current use case — reserved but unassigned</td><td>§7B</td><td>No</td></tr>
+          <tr><td>No stated policy on GIF/video/Lottie-style asset animation (e.g. an onboarding illustration) — this section only covers CSS-driven UI motion</td><td>General</td><td>No — worth scoping if such assets get proposed</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</main>
+  <footer class="page-footer">
+    <div>Section 7 — Motion &amp; Animation &nbsp;·&nbsp; H2 Prime Web Application Design System &nbsp;·&nbsp; v1.0 (start version) <br><a href="h2p-section-06-interaction-state-design.html">← Section 6 — Interaction &amp; State Design</a> &nbsp;·&nbsp; <a href="h2p-section-08-design-tokens.html">Section 8 — Design Tokens →</a> &nbsp;·&nbsp; <a href="h2p-cover.html">Cover</a><br><span style="color:var(--t3)">Enter/exit patterns for toast, dropdown, and modal (§7E) and phase-transition motion (§7F) are proposed, not settled — see §7H.</span></div>
+    <div style="text-align:right">Last updated: 2026-07-16<br>Semantic HTML5 · WCAG 2.2 AA</div>
+  </footer>
+
+<script>
+(function () {
+  var DIST = { instant: 0, fast: 1, base: 1, slow: 1, slower: 1 };
+  document.querySelectorAll('.mo-replay[data-target]').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var el = document.getElementById(btn.dataset.target);
+      if (!el) return;
+      var dist = parseInt(btn.dataset.dist, 10) || 140;
+      el.style.transform = 'translateX(0)';
+      requestAnimationFrame(function () {
+        el.style.transform = 'translateX(' + dist + 'px)';
+        setTimeout(function () { el.style.transform = 'translateX(0)'; }, 900);
+      });
+    });
+  });
+
+  var bannerBtn = document.getElementById('mo-banner-trigger');
+  var bannerEl = document.getElementById('mo-banner-el');
+  if (bannerBtn && bannerEl) {
+    bannerBtn.addEventListener('click', function () {
+      bannerEl.classList.remove('in');
+      void bannerEl.offsetWidth;
+      bannerEl.classList.add('in');
+    });
+  }
+
+  var toggle = document.getElementById('mo-toggle-demo');
+  if (toggle) {
+    toggle.addEventListener('click', function () {
+      var on = toggle.getAttribute('aria-checked') === 'true';
+      toggle.setAttribute('aria-checked', String(!on));
+    });
+  }
+})();
+</script>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Section 5 — Component Patterns — H2 Prime Design System</title>
+  <link rel="stylesheet" href="h2p-shared.css">
+<style>
+.demo { background: var(--s); border: 1px solid var(--b1); border-radius: 10px; padding: 20px; margin: 1rem 0; }
+.demo-row { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; margin-bottom: 10px; }
+.demo-row:last-child { margin-bottom: 0; }
+.demo-label { font-size: 10px; font-weight: 500; letter-spacing: .08em; text-transform: uppercase; color: var(--t3); margin-bottom: 10px; }
+
+pre.code { background: var(--code); border: 1px solid var(--b1); border-radius: 8px; padding: 14px 16px; overflow-x: auto; margin: .75rem 0; }
+pre.code code { background: none; border: none; padding: 0; font-size: 12px; color: var(--t2); line-height: 1.6; }
+
+.btn { font-family: var(--fu); font-size: 14px; font-weight: 500; padding: 9px 18px; border-radius: 6px; border: 1px solid transparent; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; }
+.btn-primary { background: #272A2F; color: #fff; }
+.btn-primary:hover { background: #15171B; }
+.btn-secondary { background: transparent; border-color: #4A4A56; color: var(--t1); }
+.btn-ghost { background: transparent; color: var(--t2); }
+.btn-danger { background: #C83520; color: #fff; }
+.btn-icon { padding: 9px; border-radius: 6px; background: transparent; border: 1px solid #4A4A56; color: var(--t2); cursor: pointer; }
+.btn[disabled] { opacity: .45; cursor: not-allowed; }
+
+.field { display: flex; flex-direction: column; gap: 6px; margin-bottom: 14px; }
+.field:last-child { margin-bottom: 0; }
+.field label { font-size: 13px; font-weight: 500; color: var(--t1); }
+.field .hint { font-size: 12px; color: var(--t3); }
+.field .err { font-size: 12px; color: #FCA5A5; }
+.field input[type="text"], .field input[type="email"], .field select {
+  background: #18181B; border: 1px solid #3A3A44; border-radius: 6px;
+  padding: 9px 12px; font-size: 14px; color: var(--t1); font-family: var(--fu);
+}
+.field input:focus, .field select:focus { outline: 2px solid var(--a); outline-offset: 1px; border-color: var(--a); }
+.field input.err-state { border-color: #C83520; }
+.field-check { display: flex; align-items: center; gap: 8px; }
+.field-check label { font-size: 13px; font-weight: 400; color: var(--t2); }
+
+fieldset.h2p-fieldset { border: 1px solid var(--b1); border-radius: 10px; padding: 16px 18px; margin: 0 0 1rem; }
+fieldset.h2p-fieldset legend { font-size: 12px; font-weight: 600; letter-spacing: .04em; color: var(--t1); padding: 0 6px; }
+
+.pill { display: inline-flex; align-items: center; gap: 5px; font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: 9999px; }
+.pill-danger  { background: #FFF0ED22; color: #FCA5A5; border: 1px solid #4A1A1A; }
+.pill-warning { background: #FFFBEB22; color: #FCD34D; border: 1px solid #6B4500; }
+.pill-success { background: #F0FDF422; color: #6EE7B7; border: 1px solid #1A4A2E; }
+.pill-info    { background: #EFF6FF22; color: #93C5FD; border: 1px solid #2A3A60; }
+.pill-help    { background: #F5F3FF22; color: #C4B5FD; border: 1px solid #2E2060; }
+.pill-neutral { background: #EBEDF022; color: #D6D9DE; border: 1px solid #3A3A44; }
+
+.card-demo { background: var(--r); border: 1px solid var(--b1); border-radius: 8px; padding: 16px 18px; max-width: 320px; }
+.card-demo h3 { font-size: 15px; font-weight: 600; color: var(--t1); margin-bottom: 4px; }
+.card-demo p { font-size: 12.5px; margin-bottom: 10px; }
+
+.banner { border-radius: 8px; padding: 12px 14px; display: flex; gap: 10px; align-items: flex-start; border: 1px solid; margin-bottom: 10px; }
+.banner:last-child { margin-bottom: 0; }
+.banner-icon { flex-shrink: 0; margin-top: 1px; }
+.banner-title { font-size: 13px; font-weight: 600; margin-bottom: 2px; }
+.banner-body { font-size: 12.5px; }
+.banner-danger  { background: #1E0A0A; border-color: #4A1A1A; }
+.banner-danger .banner-title { color: #FCA5A5; }
+.banner-warning { background: #1E1200; border-color: #6B4500; }
+.banner-warning .banner-title { color: #FCD34D; }
+.banner-success { background: #0A1E14; border-color: #1A4A2E; }
+.banner-success .banner-title { color: #6EE7B7; }
+.banner-info    { background: #0E1A2E; border-color: #2A3A60; }
+.banner-info .banner-title { color: #93C5FD; }
+.banner-help    { background: #150E2E; border-color: #2E2060; }
+.banner-help .banner-title { color: #C4B5FD; }
+.banner-body { color: var(--t2); }
+
+.tbl-demo table { width: 100%; }
+.tbl-demo th[scope="col"] { text-align: left; }
+.icon { width: 16px; height: 16px; display: inline-block; vertical-align: -3px; }
+</style>
+</head>
+<body>
+
+<a class="skip-link" href="#main-content">Skip to content</a>
+
+<nav class="guide-nav" aria-label="Style guide navigation">
+  <div class="guide-nav-left">
+    <a href="h2p-cover.html" class="guide-nav-home">
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+        <path d="M1 7L7 1l6 6M2.5 5.5V13h3v-3h3v3h3V5.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      H2 Prime Design System
+    </a>
+    <div class="guide-nav-divider" aria-hidden="true"></div>
+    <span class="guide-nav-section">5 — Component Patterns</span>
+  </div>
+  <div class="guide-nav-right">
+    <a href="h2p-section-04-spacing-layout-elevation.html" class="guide-nav-btn">← 4 — Spacing, Layout &amp; Elevation</a>
+    <a href="h2p-section-06-interaction-state-design.html" class="guide-nav-btn primary">6 — Interaction &amp; State Design →</a>
+  </div>
+</nav>
+
+<div class="page-wrap">
+<main id="main-content">
+
+  <div class="doc-header">
+    <div class="doc-kicker">H2 Prime Web Application Design System &amp; Guidelines</div>
+    <h1 class="doc-title">Section 05 — <strong>Component Patterns</strong></h1>
+    <p class="doc-lead">Reference markup and token usage for the components that appear across every H2 Prime screen. Every example uses real semantic HTML5 — no <code>&lt;div&gt;</code> or <code>&lt;span&gt;</code> standing in for an element with a native equivalent — and every color reference is a token from Sections 2 and 4, never a hardcoded hex value. Section 10 (Contract Phase System) and the per-dashboard theme treatments (Client / Filer / Admin, Section 11) are intentionally not covered here — both are parked pending a dedicated review pass.</p>
+    <div class="doc-meta">
+      <div class="doc-meta-item"><strong>Primary action color</strong>Neutral ramp (§2D-2)</div>
+      <div class="doc-meta-item"><strong>Identity color</strong>Brown — headers, badges, illustration only</div>
+      <div class="doc-meta-item"><strong>Compliance</strong>WCAG 2.2 AA minimum, AAA where feasible</div>
+      <div class="doc-meta-item"><strong>Base font size</strong>18px (1.125rem)</div>
+      <div class="doc-meta-item"><strong>Last updated</strong>2026-07-13</div>
+    </div>
+
+    <div class="callout note">
+      <div class="callout-label">Expansion planned</div>
+      This section covers the base markup for each component but not the full hover/focus/active/disabled/selected state matrix, form validation states beyond the one <code>.err-state</code> class, or framework-native (Svelte / shadcn-svelte) versions of these patterns. Full state coverage now lives in <a href="h2p-section-06-interaction-state-design.html">Section 6 — Interaction &amp; State Design</a>; framework versions live in Section 9 (Framework Implementation). Accessibility guidance stays here rather than in a separate standards section — each pattern gets its a11y notes explained inline, at the point of use, as the section grows.
+    </div>
+  </div>
+
+  <nav class="toc" aria-label="Section contents">
+    <div class="toc-label">In this section</div>
+    <div class="toc-cols">
+      <ul class="toc-list">
+        <li><span class="toc-num">5A</span><a href="#5a">Buttons</a></li>
+        <li><span class="toc-num">5B</span><a href="#5b">Form fields</a></li>
+        <li><span class="toc-num">5C</span><a href="#5c">Grouped form fields</a></li>
+      </ul>
+      <ul class="toc-list">
+        <li><span class="toc-num">5D</span><a href="#5d">Badges &amp; status pills</a></li>
+        <li><span class="toc-num">5E</span><a href="#5e">Cards</a></li>
+        <li><span class="toc-num">5F</span><a href="#5f">Data tables</a></li>
+      </ul>
+      <ul class="toc-list">
+        <li><span class="toc-num">5G</span><a href="#5g">Feedback banners</a></li>
+        <li><span class="toc-num">5H</span><a href="#5h">Icon-only controls</a></li>
+        <li><span class="toc-num">5I</span><a href="#5i">Anti-patterns</a></li>
+      </ul>
+    </div>
+  </nav>
+
+<!-- ════ 5A ════ -->
+  <div class="section" id="5a">
+    <div class="section-header">
+      <span class="section-id">5A</span>
+      <h2 class="section-title">Buttons</h2>
+    </div>
+    <hr class="section-hr">
+    <p>Primary uses the Neutral ramp, not Brand Yellow or Brown — see §2D-2 for why. At most one primary button per view; everything else is secondary or ghost.</p>
+
+    <div class="demo">
+      <div class="demo-label">Live — dark shell</div>
+      <div class="demo-row">
+        <button class="btn btn-primary">Submit contract</button>
+        <button class="btn btn-secondary">Save draft</button>
+        <button class="btn btn-ghost">Cancel</button>
+        <button class="btn btn-danger">Terminate contract</button>
+        <button class="btn btn-primary" disabled aria-disabled="true">Submitting…</button>
+      </div>
+    </div>
+
+    <pre class="code"><code>&lt;button type="submit" class="btn-primary"&gt;Submit contract&lt;/button&gt;
+&lt;button type="button" class="btn-secondary"&gt;Save draft&lt;/button&gt;
+&lt;button type="button" class="btn-ghost"&gt;Cancel&lt;/button&gt;
+&lt;button type="button" class="btn-danger"&gt;Terminate contract&lt;/button&gt;</code></pre>
+
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Variant</th><th>Background</th><th>Text</th><th>Use</th></tr></thead>
+        <tbody>
+          <tr><td>Primary</td><td class="contrast-cell"><code>--interactive-primary-bg</code> (neutral-800 LM / neutral-100 DM)</td><td class="contrast-cell">#FFFFFF LM / neutral-950 DM</td><td>One per view — the single most important action</td></tr>
+          <tr><td>Secondary</td><td class="contrast-cell">transparent, neutral-300 border</td><td class="contrast-cell"><code>--text-primary</code></td><td>Any other meaningful action alongside primary</td></tr>
+          <tr><td>Ghost</td><td class="contrast-cell">transparent</td><td class="contrast-cell"><code>--text-secondary</code></td><td>Low-emphasis actions — Cancel, Skip</td></tr>
+          <tr><td>Danger</td><td class="contrast-cell"><code>--ramp-danger-500</code></td><td class="contrast-cell">#FFFFFF</td><td>Destructive/irreversible actions only — always paired with a confirm step</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="callout brand">
+      <div class="callout-label">Where Brown and Yellow do show up</div>
+      Not on the button itself. Use Brown in the header band above a button group or in an icon accent next to the primary action; use Yellow for a focus ring or an active-tab indicator. This is how brand identity stays visible on a screen whose CTA is Neutral.
+    </div>
+  </div>
+
+<!-- ════ 5B ════ -->
+  <div class="section" id="5b">
+    <div class="section-header">
+      <span class="section-id">5B</span>
+      <h2 class="section-title">Form fields</h2>
+    </div>
+    <hr class="section-hr">
+    <p>Every input has a linked <code>&lt;label&gt;</code> — never a placeholder standing in for a label. Error and hint text are linked via <code>aria-describedby</code>, and invalid fields carry <code>aria-invalid="true"</code>.</p>
+
+    <div class="demo">
+      <div class="demo-label">Live — dark shell</div>
+      <div class="field">
+        <label for="demo-name">Farm or business name</label>
+        <input type="text" id="demo-name" name="business_name" autocomplete="organization">
+        <span class="hint" id="demo-name-hint">As it appears on your H-2A application</span>
+      </div>
+      <div class="field">
+        <label for="demo-email">Contact email</label>
+        <input type="email" id="demo-email" name="email" class="err-state" aria-invalid="true" aria-describedby="demo-email-err">
+        <span class="err" id="demo-email-err" role="alert">Enter a valid email address</span>
+      </div>
+      <div class="field">
+        <label for="demo-phase">Contract phase</label>
+        <select id="demo-phase" name="phase">
+          <option>Initiation</option>
+          <option>Negotiation</option>
+          <option selected>Execution</option>
+          <option>Review</option>
+          <option>Closed</option>
+        </select>
+      </div>
+      <div class="field field-check">
+        <input type="checkbox" id="demo-consent" name="consent">
+        <label for="demo-consent">I confirm the details above are accurate</label>
+      </div>
+    </div>
+
+    <pre class="code"><code>&lt;div class="field"&gt;
+  &lt;label for="business-name"&gt;Farm or business name&lt;/label&gt;
+  &lt;input type="text" id="business-name" name="business_name"
+         autocomplete="organization" aria-describedby="business-name-hint"&gt;
+  &lt;span class="hint" id="business-name-hint"&gt;As it appears on your H-2A application&lt;/span&gt;
+&lt;/div&gt;
+
+&lt;div class="field"&gt;
+  &lt;label for="contact-email"&gt;Contact email&lt;/label&gt;
+  &lt;input type="email" id="contact-email" name="email"
+         aria-invalid="true" aria-describedby="contact-email-err"&gt;
+  &lt;span class="err" id="contact-email-err" role="alert"&gt;Enter a valid email address&lt;/span&gt;
+&lt;/div&gt;</code></pre>
+
+    <div class="ap-grid">
+      <div class="ap-box ap-dont">
+        <div class="ap-label">Don't use placeholder as label</div>
+        <p>Placeholder text disappears the moment someone starts typing — a real problem mid-form on a small phone screen in bright sunlight, which is a common H2 Prime use case.</p>
+      </div>
+      <div class="ap-box ap-do">
+        <div class="ap-label">Do keep the label always visible</div>
+        <p>A visible <code>&lt;label&gt;</code> above the field costs a little vertical space and buys back a lot of certainty for a non-technical, often distracted user.</p>
+      </div>
+    </div>
+  </div>
+
+<!-- ════ 5C ════ -->
+  <div class="section" id="5c">
+    <div class="section-header">
+      <span class="section-id">5C</span>
+      <h2 class="section-title">Grouped form fields</h2>
+    </div>
+    <hr class="section-hr">
+    <p>Any set of related inputs — especially radio/checkbox groups — uses <code>&lt;fieldset&gt;</code> and <code>&lt;legend&gt;</code> so assistive technology announces the group's purpose before its options.</p>
+
+    <div class="demo">
+      <div class="demo-label">Live — dark shell</div>
+      <fieldset class="h2p-fieldset">
+        <legend>Notification preferences</legend>
+        <div class="field field-check">
+          <input type="checkbox" id="notif-email" name="notif" checked>
+          <label for="notif-email">Email me when a contract changes phase</label>
+        </div>
+        <div class="field field-check">
+          <input type="checkbox" id="notif-sms" name="notif">
+          <label for="notif-sms">Text me for urgent deadlines only</label>
+        </div>
+      </fieldset>
+    </div>
+
+    <pre class="code"><code>&lt;fieldset&gt;
+  &lt;legend&gt;Notification preferences&lt;/legend&gt;
+  &lt;div class="field field-check"&gt;
+    &lt;input type="checkbox" id="notif-email" name="notif" checked&gt;
+    &lt;label for="notif-email"&gt;Email me when a contract changes phase&lt;/label&gt;
+  &lt;/div&gt;
+  &lt;div class="field field-check"&gt;
+    &lt;input type="checkbox" id="notif-sms" name="notif"&gt;
+    &lt;label for="notif-sms"&gt;Text me for urgent deadlines only&lt;/label&gt;
+  &lt;/div&gt;
+&lt;/fieldset&gt;</code></pre>
+  </div>
+
+<!-- ════ 5D ════ -->
+  <div class="section" id="5d">
+    <div class="section-header">
+      <span class="section-id">5D</span>
+      <h2 class="section-title">Badges &amp; status pills</h2>
+    </div>
+    <hr class="section-hr">
+    <p>Status pills always pair color with a text label — never color alone (WCAG 1.4.1). Rendered as <code>&lt;span&gt;</code> since a pill is inline decoration around text, not a distinct semantic element — but the text itself always says the actual state in words.</p>
+
+    <div class="demo">
+      <div class="demo-label">Live — dark shell</div>
+      <div class="demo-row">
+        <span class="pill pill-danger">Expired</span>
+        <span class="pill pill-warning">Pending review</span>
+        <span class="pill pill-success">Approved</span>
+        <span class="pill pill-info">In progress</span>
+        <span class="pill pill-help">Needs assistance</span>
+        <span class="pill pill-neutral">Draft</span>
+      </div>
+    </div>
+
+    <pre class="code"><code>&lt;span class="pill pill-warning"&gt;
+  &lt;svg class="icon" aria-hidden="true"&gt;…&lt;/svg&gt;
+  Pending review
+&lt;/span&gt;</code></pre>
+  </div>
+
+<!-- ════ 5E ════ -->
+  <div class="section" id="5e">
+    <div class="section-header">
+      <span class="section-id">5E</span>
+      <h2 class="section-title">Cards</h2>
+    </div>
+    <hr class="section-hr">
+    <p>A card is an <code>&lt;article&gt;</code> when it represents one self-contained, independently distributable item (a single contract summary that could stand alone in a feed) and a <code>&lt;section&gt;</code> with a heading when it's one region of a larger composed page.</p>
+
+    <div class="demo">
+      <div class="demo-label">Live — dark shell</div>
+      <article class="card-demo">
+        <h3>Rivera Farms — H-2A 2026</h3>
+        <p style="color:var(--t2)">14 workers · Negotiation phase · Updated 2 days ago</p>
+        <span class="pill pill-info">In progress</span>
+      </article>
+    </div>
+
+    <pre class="code"><code>&lt;article class="contract-card"&gt;
+  &lt;h3&gt;Rivera Farms — H-2A 2026&lt;/h3&gt;
+  &lt;p&gt;14 workers · Negotiation phase · Updated 2 days ago&lt;/p&gt;
+  &lt;span class="pill pill-info"&gt;In progress&lt;/span&gt;
+&lt;/article&gt;</code></pre>
+
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Token</th><th>Value</th></tr></thead>
+        <tbody>
+          <tr><td><code>background</code></td><td class="contrast-cell"><code>--surface-raised</code></td></tr>
+          <tr><td><code>border-radius</code></td><td class="contrast-cell"><code>--radius-card</code> (8px)</td></tr>
+          <tr><td><code>box-shadow</code></td><td class="contrast-cell"><code>--elevation-card</code></td></tr>
+          <tr><td><code>padding</code></td><td class="contrast-cell"><code>--space-4</code> to <code>--space-5</code> (see §4B)</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+<!-- ════ 5F ════ -->
+  <div class="section" id="5f">
+    <div class="section-header">
+      <span class="section-id">5F</span>
+      <h2 class="section-title">Data tables</h2>
+    </div>
+    <hr class="section-hr">
+    <p>Every data table gets a <code>&lt;caption&gt;</code> (visually hidden if the surrounding heading already states the purpose) and <code>scope</code> on header cells, so a screen reader can announce which column a cell belongs to when navigating cell-by-cell.</p>
+
+    <div class="demo tbl-demo">
+      <div class="demo-label">Live — dark shell</div>
+      <div class="tbl-wrap">
+        <table>
+          <caption class="sr-only">Active contracts and their current phase</caption>
+          <thead>
+            <tr>
+              <th scope="col">Contract</th>
+              <th scope="col">Workers</th>
+              <th scope="col">Phase</th>
+              <th scope="col">Updated</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row">Rivera Farms</th>
+              <td>14</td>
+              <td><span class="pill pill-info">Negotiation</span></td>
+              <td>2 days ago</td>
+            </tr>
+            <tr>
+              <th scope="row">Coastal Growers</th>
+              <td>22</td>
+              <td><span class="pill pill-warning">Pending review</span></td>
+              <td>5 hours ago</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <pre class="code"><code>&lt;table&gt;
+  &lt;caption class="sr-only"&gt;Active contracts and their current phase&lt;/caption&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th scope="col"&gt;Contract&lt;/th&gt;
+      &lt;th scope="col"&gt;Workers&lt;/th&gt;
+      &lt;th scope="col"&gt;Phase&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;th scope="row"&gt;Rivera Farms&lt;/th&gt;
+      &lt;td&gt;14&lt;/td&gt;
+      &lt;td&gt;Negotiation&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;</code></pre>
+  </div>
+
+<!-- ════ 5G ════ -->
+  <div class="section" id="5g">
+    <div class="section-header">
+      <span class="section-id">5G</span>
+      <h2 class="section-title">Feedback banners</h2>
+    </div>
+    <hr class="section-hr">
+    <p>Danger and Warning banners carry <code>role="alert"</code> so assistive technology announces them immediately on appearance. Success, Info, and Help banners use <code>role="status"</code> — important, but not urgent enough to interrupt.</p>
+
+    <div class="demo">
+      <div class="demo-label">Live — dark shell</div>
+      <div class="banner banner-danger" role="alert">
+        <div class="banner-icon" aria-hidden="true">⛔</div>
+        <div><div class="banner-title">Contract expired</div><div class="banner-body">This contract's end date has passed. Renew or close it out.</div></div>
+      </div>
+      <div class="banner banner-warning" role="alert">
+        <div class="banner-icon" aria-hidden="true">⚠️</div>
+        <div><div class="banner-title">Deadline in 3 days</div><div class="banner-body">Review is due before the negotiation window closes.</div></div>
+      </div>
+      <div class="banner banner-success" role="status">
+        <div class="banner-icon" aria-hidden="true">✅</div>
+        <div><div class="banner-title">Contract approved</div><div class="banner-body">Both parties have signed. Moving to Review.</div></div>
+      </div>
+    </div>
+
+    <pre class="code"><code>&lt;div class="banner banner-warning" role="alert"&gt;
+  &lt;svg class="banner-icon" aria-hidden="true"&gt;…&lt;/svg&gt;
+  &lt;div&gt;
+    &lt;p class="banner-title"&gt;Deadline in 3 days&lt;/p&gt;
+    &lt;p class="banner-body"&gt;Review is due before the negotiation window closes.&lt;/p&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+  </div>
+
+<!-- ════ 5H ════ -->
+  <div class="section" id="5h">
+    <div class="section-header">
+      <span class="section-id">5H</span>
+      <h2 class="section-title">Icon-only controls</h2>
+    </div>
+    <hr class="section-hr">
+    <p>Any control whose only visible content is an icon must carry <code>aria-label</code> describing the action — the icon's shape alone conveys nothing to a screen reader.</p>
+
+    <div class="demo">
+      <div class="demo-label">Live — dark shell</div>
+      <div class="demo-row">
+        <button class="btn-icon" aria-label="Delete contract">🗑</button>
+        <button class="btn-icon" aria-label="Download contract as PDF">⬇</button>
+        <button class="btn-icon" aria-label="Edit contract details">✎</button>
+      </div>
+    </div>
+
+    <pre class="code"><code>&lt;button type="button" aria-label="Delete contract"&gt;
+  &lt;svg class="icon" aria-hidden="true"&gt;…&lt;/svg&gt;
+&lt;/button&gt;</code></pre>
+
+    <div class="callout warn">
+      <div class="callout-label">Never rely on a tooltip alone</div>
+      A hover tooltip is not a substitute for <code>aria-label</code> — it's invisible to screen readers and unreachable on touch devices, both of which matter for H2 Prime's mixed desktop/mobile, indoor/outdoor audience.
+    </div>
+  </div>
+
+<!-- ════ 5I ════ -->
+  <div class="section" id="5i">
+    <div class="section-header">
+      <span class="section-id">5I</span>
+      <h2 class="section-title">Anti-patterns</h2>
+    </div>
+    <hr class="section-hr">
+
+    <div class="ap-grid">
+      <div class="ap-box ap-dont">
+        <div class="ap-label">Don't reach for Brown or Yellow on a button</div>
+        <p>Both are identity colors as of 2026-07-13. A Brown or Yellow button fill contradicts the primary-action decision in §2D-2 — flag it for a token swap to <code>--interactive-primary-bg</code>, don't hand-style around it.</p>
+      </div>
+      <div class="ap-box ap-do">
+        <div class="ap-label">Do reach for Neutral, every time, for CTAs</div>
+        <p>If a screen feels like it's "missing the brand," fix it with a Brown header band or a Yellow accent detail nearby — not by recoloring the button.</p>
+      </div>
+    </div>
+    <div class="ap-grid">
+      <div class="ap-box ap-dont">
+        <div class="ap-label">Don't build a clickable <code>&lt;div&gt;</code></div>
+        <p>A <code>&lt;div onclick&gt;</code> gets no keyboard focus, no <code>Enter</code>/<code>Space</code> activation, and no role announcement for free — all of which a real <code>&lt;button&gt;</code> or <code>&lt;a&gt;</code> gives you automatically.</p>
+      </div>
+      <div class="ap-box ap-do">
+        <div class="ap-label">Do use the native element for the job</div>
+        <p><code>&lt;button&gt;</code> for actions that happen on the current page, <code>&lt;a href&gt;</code> for navigation to a new location — including in-app route changes.</p>
+      </div>
+    </div>
+  </div>
+
+</main>
+  <footer class="page-footer">
+    <div>Section 5 — Component Patterns &nbsp;·&nbsp; H2 Prime Web Application Design System &nbsp;·&nbsp; v1.0 (start version) <br><a href="h2p-section-04-spacing-layout-elevation.html">← Section 4 — Spacing, Layout &amp; Elevation</a> &nbsp;·&nbsp; <a href="h2p-section-06-interaction-state-design.html">Section 6 — Interaction &amp; State Design →</a> &nbsp;·&nbsp; <a href="h2p-cover.html">Cover</a><br><span style="color:var(--t3)">Section 10 — Contract Phase System and Section 11 — Client/Filer/Admin dashboard themes are parked — see §2E and tokens.css.</span></div>
+    <div style="text-align:right">Last updated: 2026-07-13<br>Semantic HTML5 · WCAG 2.2 AA</div>
+  </footer>
+
+</div>
+</body>
+</html>

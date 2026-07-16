@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Section 9 — Framework Implementation — H2 Prime Design System</title>
+  <link rel="stylesheet" href="h2p-shared.css">
+<style>
+.contrast-cell { font-family: var(--fm); font-size: 11px; color: var(--t2); }
+
+pre.code { background: var(--code); border: 1px solid var(--b1); border-radius: 8px; padding: 14px 16px; overflow-x: auto; margin: .75rem 0; }
+pre.code code { background: none; border: none; padding: 0; font-size: 12px; color: var(--t2); line-height: 1.6; }
+
+/* ── Stack diagram ── */
+.stack-flow { display: flex; flex-direction: column; gap: 6px; margin: 1rem 0 1.25rem; max-width: 420px; }
+.stack-item { background: var(--s); border: 1px solid var(--b1); border-radius: 8px; padding: 10px 14px; display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.stack-item .sn { font-family: var(--fm); font-size: 12px; font-weight: 600; color: var(--t1); }
+.stack-item .sd { font-size: 11px; color: var(--t3); }
+.stack-down { display: flex; justify-content: center; color: var(--t3); font-size: 13px; }
+
+/* ── Bridge table row emphasis ── */
+.bridge-arrow { color: var(--t3); font-family: var(--fm); font-size: 11px; }
+
+/* ── Downloads panel ── */
+.dl-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; margin: 1rem 0 1.5rem; }
+.dl-card { background: var(--s); border: 1px solid var(--b1); border-radius: 10px; padding: 16px 18px; display: flex; flex-direction: column; gap: 8px; }
+.dl-name { font-family: var(--fm); font-weight: 600; font-size: 13px; color: var(--t1); }
+.dl-desc { font-size: 12px; color: var(--t2); line-height: 1.6; flex-grow: 1; }
+.dl-desc code { font-family: var(--fm); font-size: 11px; }
+.dl-btn { align-self: flex-start; display: inline-flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 600; padding: 6px 14px; border-radius: 6px; background: var(--a); color: var(--aon); text-decoration: none; }
+.dl-btn:hover { background: var(--ah); opacity: 1; }
+
+.svelte-anatomy { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 1rem 0; }
+@media (max-width: 640px) { .svelte-anatomy { grid-template-columns: 1fr; } }
+.sv-card { background: var(--r); border: 1px solid var(--b1); border-radius: 8px; padding: 14px 16px; }
+.sv-card h3 { font-size: 13px; font-weight: 600; color: var(--t1); margin-bottom: 6px; }
+.sv-card p { font-size: 12px; margin-bottom: 0; }
+
+/* Preview button demo, mirrors §5 tokens */
+.demo { background: var(--s); border: 1px solid var(--b1); border-radius: 10px; padding: 18px; margin: 1rem 0; }
+.demo-label { font-size: 10px; font-weight: 500; letter-spacing: .08em; text-transform: uppercase; color: var(--t3); margin-bottom: 10px; }
+.demo-row { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; }
+.btn { font-family: var(--fu); font-size: 14px; font-weight: 500; padding: 9px 18px; border-radius: 6px; border: 1px solid transparent; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; }
+.btn-primary { background: #272A2F; color: #fff; }
+.btn-secondary { background: transparent; border-color: #4A4A56; color: var(--t1); }
+</style>
+</head>
+<body>
+
+<a class="skip-link" href="#main-content">Skip to content</a>
+
+<nav class="guide-nav" aria-label="Style guide navigation">
+  <div class="guide-nav-left">
+    <a href="h2p-cover.html" class="guide-nav-home">
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+        <path d="M1 7L7 1l6 6M2.5 5.5V13h3v-3h3v3h3V5.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      H2 Prime Design System
+    </a>
+    <div class="guide-nav-divider" aria-hidden="true"></div>
+    <span class="guide-nav-section">9 — Framework Implementation</span>
+  </div>
+  <div class="guide-nav-right">
+    <a href="h2p-section-08-design-tokens.html" class="guide-nav-btn">← 8 — Design Tokens</a>
+    <a href="h2p-cover.html" class="guide-nav-btn primary">Cover →</a>
+  </div>
+</nav>
+
+<div class="page-wrap">
+<main id="main-content">
+
+  <div class="doc-header">
+    <div class="doc-kicker">H2 Prime Web Application Design System &amp; Guidelines</div>
+    <h1 class="doc-title">Section 09 — <strong>Framework Implementation</strong></h1>
+    <p class="doc-lead">How the token architecture from Section 8 actually lands in the real stack: Tailwind CSS v4's <code>@theme</code> block, the CSS-variable contract shared by shadcn/ui and its Svelte port shadcn-svelte, and the Svelte component patterns that keep semantic HTML and token usage intact once markup is wrapped in a <code>.svelte</code> file.</p>
+    <div class="doc-meta">
+      <div class="doc-meta-item"><strong>CSS framework</strong>Tailwind CSS v4</div>
+      <div class="doc-meta-item"><strong>Component library</strong>shadcn-svelte</div>
+      <div class="doc-meta-item"><strong>UI framework</strong>Svelte</div>
+      <div class="doc-meta-item"><strong>Backend</strong>Ruby on Rails</div>
+      <div class="doc-meta-item"><strong>Bridge files</strong>main.css §@theme · tokens.css §6</div>
+      <div class="doc-meta-item"><strong>Last updated</strong>2026-07-16</div>
+    </div>
+  </div>
+
+  <nav class="toc" aria-label="Section contents">
+    <div class="toc-label">In this section</div>
+    <div class="toc-cols">
+      <ul class="toc-list">
+        <li><span class="toc-num">9A</span><a href="#9a">Tailwind CSS v4</a></li>
+        <li><span class="toc-num">9B</span><a href="#9b">shadcn/ui — the variable contract</a></li>
+      </ul>
+      <ul class="toc-list">
+        <li><span class="toc-num">9C</span><a href="#9c">shadcn-svelte — the Svelte port</a></li>
+        <li><span class="toc-num">9D</span><a href="#9d">Svelte component patterns</a></li>
+      </ul>
+      <ul class="toc-list">
+        <li><span class="toc-num">9E</span><a href="#9e">Anti-patterns</a></li>
+      </ul>
+    </div>
+  </nav>
+
+<!-- ════ 9A ════ -->
+  <div class="section" id="9a">
+    <div class="section-header">
+      <span class="section-id">9A</span>
+      <h2 class="section-title">Tailwind CSS v4</h2>
+    </div>
+    <hr class="section-hr">
+    <p><code>main.css</code> is the Tailwind v4 entry point. It imports Tailwind itself, imports <code>components.css</code>, and then declares an <code>@theme</code> block that re-exposes every Tier 2/3 token from <code>tokens.css</code> as a Tailwind design token — which is what turns <code>--color-surface-page</code> into the real utility class <code>bg-surface-page</code>.</p>
+
+    <div class="sub-header"><span class="sub-tag">9A-1</span><span class="sub-title">Download the source files</span></div>
+    <p>The three files below are the actual runtime source — not excerpts. Pull them directly into a project rather than hand-copying from this page.</p>
+    <div class="dl-grid">
+      <div class="dl-card">
+        <div class="dl-name">tokens.css</div>
+        <div class="dl-desc">Authoritative token source. All three tiers — primitives, semantics, dark mode, dashboard themes, phase context, and the shadcn/Radix bridge (§9B). Framework-agnostic.</div>
+        <a class="dl-btn" href="tokens.css" download>
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M6 1v7m0 0L3 5.5M6 8l3-2.5M2 10h8" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Download tokens.css
+        </a>
+      </div>
+      <div class="dl-card">
+        <div class="dl-name">main.css</div>
+        <div class="dl-desc">Tailwind v4 entry point. Imports Tailwind and <code>components.css</code>, then maps every token into the <code>@theme</code> block covered below.</div>
+        <a class="dl-btn" href="main.css" download>
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M6 1v7m0 0L3 5.5M6 8l3-2.5M2 10h8" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Download main.css
+        </a>
+      </div>
+      <div class="dl-card">
+        <div class="dl-name">components.css</div>
+        <div class="dl-desc">Tier 3 base layer. Applies semantic type roles to real HTML elements inside a Tailwind <code>@layer base</code> block — see Section 8 §8E.</div>
+        <a class="dl-btn" href="components.css" download>
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M6 1v7m0 0L3 5.5M6 8l3-2.5M2 10h8" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Download components.css
+        </a>
+      </div>
+    </div>
+    <div class="callout note">
+      <div class="callout-label">Load order still applies</div>
+      Downloading these individually doesn't change how they're wired together — <code>tokens.css</code> loads first, <code>main.css</code> imports Tailwind plus <code>components.css</code> second, per §8E. Drop all three into the same directory as your project's global stylesheet import.
+    </div>
+
+    <div class="stack-flow">
+      <div class="stack-item"><span class="sn">tokens.css</span><span class="sd">CSS custom properties</span></div>
+      <div class="stack-down" aria-hidden="true">↓ loaded first</div>
+      <div class="stack-item"><span class="sn">main.css</span><span class="sd">@import "tailwindcss" + @theme block</span></div>
+      <div class="stack-down" aria-hidden="true">↓ imports</div>
+      <div class="stack-item"><span class="sn">components.css</span><span class="sd">@layer base — semantic HTML defaults</span></div>
+    </div>
+
+    <pre class="code"><code>@import "tailwindcss";
+@import "./components.css";
+
+@theme {
+  --color-surface-page:   var(--surface-page);
+  --color-text-primary:   var(--text-primary);
+  --color-interactive-primary: var(--interactive-primary-bg);
+  --radius-card:          var(--radius-card);
+  --shadow-modal:         var(--elevation-modal);
+  /* …one @theme entry per Tier 2/3 token */
+}</code></pre>
+
+    <p>Each Tailwind prefix maps to a fixed utility family, so a single <code>@theme</code> entry generates several related classes at once:</p>
+
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>@theme prefix</th><th>Generates</th></tr></thead>
+        <tbody>
+          <tr><td><code>--color-*</code></td><td class="contrast-cell">bg-* · text-* · border-* · ring-* · fill-* · stroke-*</td></tr>
+          <tr><td><code>--spacing-*</code></td><td class="contrast-cell">p-* · m-* · gap-* · w-* · h-* · inset-*</td></tr>
+          <tr><td><code>--font-*</code> / <code>--text-*</code></td><td class="contrast-cell">font-* (family) · text-* (size)</td></tr>
+          <tr><td><code>--font-weight-*</code></td><td class="contrast-cell">font-* (weight)</td></tr>
+          <tr><td><code>--radius-*</code></td><td class="contrast-cell">rounded-*</td></tr>
+          <tr><td><code>--shadow-*</code></td><td class="contrast-cell">shadow-*</td></tr>
+          <tr><td><code>--z-index-*</code></td><td class="contrast-cell">z-*</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="demo">
+      <div class="demo-label">Resulting usage in markup</div>
+      <div class="demo-row">
+        <button class="btn btn-primary" type="button">bg-interactive-primary</button>
+        <button class="btn btn-secondary" type="button">border-interactive-secondary-border</button>
+      </div>
+    </div>
+
+    <div class="callout note">
+      <div class="callout-label">Theme switching resolves through the variable chain, not new classes</div>
+      Applying <code>[data-theme="filer"]</code> or <code>[data-theme="admin"]</code> to a layout root doesn't require different Tailwind classes per dashboard. <code>bg-interactive-primary</code> always compiles to the same utility; what changes is which value <code>--interactive-primary-bg</code> resolves to underneath, per the dashboard theme layer in <code>tokens.css</code> §4.
+    </div>
+  </div>
+
+<!-- ════ 9B ════ -->
+  <div class="section" id="9b">
+    <div class="section-header">
+      <span class="section-id">9B</span>
+      <h2 class="section-title">shadcn/ui — the variable contract</h2>
+    </div>
+    <hr class="section-hr">
+    <p>shadcn/ui isn't an installed component library in the traditional npm-dependency sense — it's a collection of accessible, Radix-based component source files that get copied directly into a project and then owned and edited locally. Its components are styled entirely through a fixed, well-known set of CSS variable names (<code>--background</code>, <code>--primary</code>, <code>--destructive</code>, <code>--ring</code>, and so on), which means any design system can make shadcn's components match its brand purely by defining those variables — no fork of the component source required.</p>
+    <p><code>tokens.css</code> §6 is exactly that: a one-time bridge mapping every variable shadcn's components expect onto the H2 Prime semantic token that already carries the right meaning.</p>
+
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>shadcn variable</th><th></th><th>H2 Prime token</th></tr></thead>
+        <tbody>
+          <tr><td><code>--background</code></td><td class="bridge-arrow">→</td><td><code>--surface-page</code></td></tr>
+          <tr><td><code>--foreground</code></td><td class="bridge-arrow">→</td><td><code>--text-primary</code></td></tr>
+          <tr><td><code>--card</code></td><td class="bridge-arrow">→</td><td><code>--surface-raised</code></td></tr>
+          <tr><td><code>--primary</code> / <code>--primary-foreground</code></td><td class="bridge-arrow">→</td><td><code>--theme-accent-500</code> / <code>--theme-accent-on</code></td></tr>
+          <tr><td><code>--muted</code> / <code>--muted-foreground</code></td><td class="bridge-arrow">→</td><td><code>--surface-subtle</code> / <code>--text-tertiary</code></td></tr>
+          <tr><td><code>--destructive</code></td><td class="bridge-arrow">→</td><td><code>--ramp-danger-500</code></td></tr>
+          <tr><td><code>--border</code> / <code>--input</code> / <code>--ring</code></td><td class="bridge-arrow">→</td><td><code>--border-default</code> / <code>--input-border</code> / <code>--border-focus</code></td></tr>
+          <tr><td><code>--radius</code></td><td class="bridge-arrow">→</td><td><code>--radius-md</code> (6px — shadcn's own internal radius calc)</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout brand">
+      <div class="callout-label">Why this lives in tokens.css, not a shadcn config file</div>
+      Because the bridge is plain CSS custom properties on <code>:root</code>, it needs zero shadcn-specific tooling and survives a shadcn component being re-generated, upgraded, or swapped for its Svelte port — see §9C. It's also why light/dark mode and dashboard theming apply to shadcn components automatically: they inherit through the same <code>[data-mode]</code> / <code>[data-theme]</code> cascade as everything else, since <code>--primary</code> is just an alias for a token that already responds to both.
+    </div>
+  </div>
+
+<!-- ════ 9C ════ -->
+  <div class="section" id="9c">
+    <div class="section-header">
+      <span class="section-id">9C</span>
+      <h2 class="section-title">shadcn-svelte — the Svelte port</h2>
+    </div>
+    <hr class="section-hr">
+    <p>shadcn-svelte is a community-maintained port of shadcn/ui built for Svelte instead of React, following the same philosophy: components are added to the codebase as owned source files via a CLI, not pulled in as an opaque dependency, and they deliberately preserve the identical CSS variable names shadcn/ui uses. That naming parity is the whole reason a stack change from React to Svelte doesn't cost a second token bridge — <code>tokens.css</code> §6 was written once, against the variable <em>contract</em>, and shadcn-svelte honors the same contract.</p>
+
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Aspect</th><th>Behavior in this stack</th></tr></thead>
+        <tbody>
+          <tr><td>Installation</td><td>CLI-based, copies component source into the project (typically under a components directory) rather than an npm black box</td></tr>
+          <tr><td>Styling contract</td><td>Same CSS variable names as shadcn/ui — no separate H2 Prime token bridge needed for the Svelte port</td></tr>
+          <tr><td>Underlying primitives</td><td>Accessible, unstyled interaction primitives (dialog, popover, combobox, etc.) — accessibility behavior ships with the component, not re-implemented per use</td></tr>
+          <tr><td>Ownership model</td><td>Copied source is local and editable — a component can be adjusted for H2 Prime needs (e.g. the 18px base size, Barlow/Inter family switch) directly, same as any other project file</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout warn">
+      <div class="callout-label">Ownership means the audit responsibility transfers, too</div>
+      Because component source is copied in rather than pulled from a versioned dependency, it does not automatically pick up upstream fixes. Any shadcn-svelte component in this project should be checked against §8G and §9E's anti-patterns after generation — most defaults already resolve to token-backed CSS variables, but a generated component occasionally ships an inline Tailwind color utility that should be swapped for the token equivalent before it ships.
+    </div>
+  </div>
+
+<!-- ════ 9D ════ -->
+  <div class="section" id="9d">
+    <div class="section-header">
+      <span class="section-id">9D</span>
+      <h2 class="section-title">Svelte component patterns</h2>
+    </div>
+    <hr class="section-hr">
+    <p>Wrapping the semantic HTML patterns from Section 5 in a <code>.svelte</code> file shouldn't change what the rendered markup looks like — the same real elements, the same linked labels, the same ARIA only where necessary. What Svelte adds is props for variants and state, driving which token-backed Tailwind classes apply.</p>
+
+    <pre class="code"><code>&lt;script lang="ts"&gt;
+  let {
+    variant = "primary",
+    disabled = false,
+    label,
+    ...rest
+  }: {
+    variant?: "primary" | "secondary" | "ghost" | "danger";
+    disabled?: boolean;
+    label: string;
+  } = $props();
+
+  const variantClass = {
+    primary:   "bg-interactive-primary text-interactive-primary-text hover:bg-interactive-primary-hover",
+    secondary: "bg-interactive-secondary border border-interactive-secondary-border text-interactive-secondary-text",
+    ghost:     "text-interactive-ghost-text hover:bg-interactive-ghost-hover",
+    danger:    "bg-feedback-danger-solid text-feedback-danger-on-solid",
+  }[variant];
+&lt;/script&gt;
+
+&lt;button
+  type="button"
+  class="rounded-btn px-4 py-2 {variantClass}"
+  disabled={disabled}
+  aria-label={rest["aria-label"] ?? undefined}
+  {...rest}
+&gt;
+  {label}
+&lt;/button&gt;</code></pre>
+
+    <div class="svelte-anatomy">
+      <div class="sv-card">
+        <h3>Tokens stay global, styles can stay scoped</h3>
+        <p>Svelte's per-component <code>&lt;style&gt;</code> block is scoped to that component by default, but CSS custom properties defined on <code>:root</code> in <code>tokens.css</code> are unaffected by that scoping — <code>var(--surface-raised)</code> resolves identically whether it's read from a Tailwind class or a scoped <code>&lt;style&gt;</code> rule.</p>
+      </div>
+      <div class="sv-card">
+        <h3>Forward ARIA props, don't reinvent them</h3>
+        <p>An icon-only button component should accept and pass through <code>aria-label</code> rather than hardcoding one, so every call site supplies its own accurate label — the same requirement as the plain-HTML pattern in §5H, just expressed as a Svelte prop instead of inline markup.</p>
+      </div>
+      <div class="sv-card">
+        <h3>Semantic elements, not div soup, inside components</h3>
+        <p>A Svelte component for a form field still renders a real <code>&lt;label&gt;</code> linked via <code>for</code>/<code>id</code>, not a styled <code>&lt;div&gt;</code> standing in for one. Componentizing markup is not license to drop the semantics that made it accessible in the first place.</p>
+      </div>
+      <div class="sv-card">
+        <h3>Reactive state maps to existing state tokens</h3>
+        <p>A <code>disabled</code> or <code>error</code> prop should switch to the already-defined <code>--interactive-disabled-*</code> / <code>--input-border-error</code> tokens from Section 8, not a new inline color computed in the component.</p>
+      </div>
+    </div>
+  </div>
+
+<!-- ════ 9E ════ -->
+  <div class="section" id="9e">
+    <div class="section-header">
+      <span class="section-id">9E</span>
+      <h2 class="section-title">Anti-patterns</h2>
+    </div>
+    <hr class="section-hr">
+
+    <div class="ap-grid">
+      <div class="ap-box ap-dont">
+        <div class="ap-label">Don't hand-write a component shadcn-svelte already provides</div>
+        <p>A custom combobox or dialog reimplemented from scratch re-opens every keyboard-navigation and focus-trap edge case shadcn-svelte's Radix-derived primitives already handle. Generate the shadcn-svelte component and restyle it with tokens instead.</p>
+      </div>
+      <div class="ap-box ap-do">
+        <div class="ap-label">Do restyle through tokens.css §6, not per-component overrides</div>
+        <p>If a generated shadcn-svelte component looks wrong, the fix is almost always a missing or incorrect mapping in the bridge — not a one-off override added inside that component's copied source.</p>
+      </div>
+    </div>
+    <div class="ap-grid">
+      <div class="ap-box ap-dont">
+        <div class="ap-label">Don't leave an arbitrary Tailwind value in shipped markup</div>
+        <p><code>bg-[#984616]</code> or <code>text-[15px]</code> bypasses the entire token chain — it won't shift with dashboard theming, mode, or a future ADR-driven change the way <code>bg-surface-brand</code> or a semantic type role would.</p>
+      </div>
+      <div class="ap-box ap-do">
+        <div class="ap-label">Do treat a missing token as a Section 8 gap, not a local exception</div>
+        <p>If no existing token fits, that's a signal to add one to <code>tokens.css</code> (and its <code>@theme</code> entry in <code>main.css</code>) following §8C's naming pattern — consistent with how every other gap in this system has been closed so far.</p>
+      </div>
+    </div>
+  </div>
+
+</main>
+  <footer class="page-footer">
+    <div>Section 9 — Framework Implementation &nbsp;·&nbsp; H2 Prime Web Application Design System &nbsp;·&nbsp; v1.0 (start version) <br><a href="h2p-section-08-design-tokens.html">← Section 8 — Design Tokens</a> &nbsp;·&nbsp; <a href="h2p-cover.html">Cover</a><br><span style="color:var(--t3)">Sections 10–13 (Contract Phase System, Dashboard Themes, Writing &amp; UX Copy, Figma Variable Reference) remain planned.</span></div>
+    <div style="text-align:right">Last updated: 2026-07-16<br>Tailwind v4 · shadcn-svelte · Svelte</div>
+  </footer>
+
+</div>
+</body>
+</html>

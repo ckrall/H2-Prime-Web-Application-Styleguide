@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Section 2C — Ramp Table — H2 Prime Design System</title>
+  <link rel="stylesheet" href="h2p-shared.css">
+<style>
+.contrast-cell { font-family: var(--fm); font-size: 11px; color: var(--t2); }
+
+/* ── Compact swatch cell for the plain table view ── */
+.rt-sw { display: inline-block; width: 26px; height: 18px; border-radius: 4px; border: 1px solid var(--b2); vertical-align: middle; }
+.rt-tbl td, .rt-tbl th { font-family: var(--fm); }
+.rt-tbl tbody tr.is-anchor { outline: 2px solid var(--a); outline-offset: -2px; }
+.rt-tbl tbody tr.is-anchor th::after { content: " ●"; color: var(--a); }
+
+.rg-desc code { font-family: var(--fm); }
+</style>
+</head>
+<body>
+
+<a class="skip-link" href="#main-content">Skip to content</a>
+
+<nav class="guide-nav" aria-label="Style guide navigation">
+  <div class="guide-nav-left">
+    <a href="h2p-cover.html" class="guide-nav-home">
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+        <path d="M1 7L7 1l6 6M2.5 5.5V13h3v-3h3v3h3V5.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      H2 Prime Design System
+    </a>
+    <div class="guide-nav-divider" aria-hidden="true"></div>
+    <span class="guide-nav-section">2C — Ramp Table</span>
+  </div>
+  <div class="guide-nav-right">
+    <a href="h2p-section-02b-ramp-reference.html" class="guide-nav-btn">← 2B — Ramp Reference</a>
+    <a href="h2p-section-03-typography.html" class="guide-nav-btn primary">3 — Typography →</a>
+  </div>
+</nav>
+
+<div class="page-wrap">
+<main id="main-content">
+
+  <div class="doc-header">
+    <div class="doc-kicker">H2 Prime Web Application Design System &amp; Guidelines</div>
+    <h1 class="doc-title">Section 02C — <strong>Ramp Table</strong></h1>
+    <p class="doc-lead">A plain hex-and-OKLCH data table for every ramp in the system — a secondary view alongside <a href="h2p-section-02b-ramp-reference.html">Section 2B</a>'s strip-and-contrast-ratio reference. 2B is the detailed reference for choosing a stop against a real surface; this page is the fast lookup when what's needed is just "what's the value at step 600." Same 9 ramps, same 12 stops, no token assignments or contrast math repeated here — see 2B for those.</p>
+    <div class="doc-meta">
+      <div class="doc-meta-item"><strong>Ramps</strong>9 total</div>
+      <div class="doc-meta-item"><strong>Stops</strong>12 per ramp (25–950)</div>
+      <div class="doc-meta-item"><strong>Color space</strong>OKLCH perceptual</div>
+      <div class="doc-meta-item"><strong>Anchor notation</strong>● marker on anchor row</div>
+      <div class="doc-meta-item"><strong>Companion</strong>Section 2B — Ramp Reference</div>
+      <div class="doc-meta-item"><strong>Last updated</strong>2026-07-13</div>
+    </div>
+  </div>
+
+  <nav class="toc" aria-label="Section contents">
+    <div class="toc-label">In this section</div>
+    <div class="toc-cols">
+      <ul class="toc-list">
+        <li><span class="toc-num">2C-1</span><a href="#2c-brand">Brand ramps</a></li>
+        <li><span class="toc-num">2C-2</span><a href="#2c-neutral">Neutral ramp</a></li>
+      </ul>
+      <ul class="toc-list">
+        <li><span class="toc-num">2C-3</span><a href="#2c-utility">Utility ramps</a></li>
+        <li><span class="toc-num">2C-4</span><a href="#2c-dashboard">Dashboard accent ramps</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <div class="callout note">
+    <div class="callout-label">Reading this table</div>
+    Each row is one of the 12 fixed stops (<code>25 · 50 · 100 · 200 · 300 · 400 · 500 · 600 · 700 · 800 · 900 · 950</code>). The anchor stop — the exact hex a ramp was built around — is outlined and marked with <strong>●</strong>. OKLCH values are shown as <code>L% C H°</code>. For token assignments (which stop backs which semantic role) and contrast ratios against the light-mode page surface, see <a href="h2p-section-02b-ramp-reference.html">Section 2B</a>.
+  </div>
+
+<!-- ════ 2C-1 BRAND ════ -->
+  <div class="section" id="2c-brand">
+    <div class="section-header">
+      <span class="section-id">2C-1</span>
+      <h2 class="section-title">Brand ramps</h2>
+    </div>
+    <hr class="section-hr">
+    <p>Yellow is the primary brand color and Client dashboard accent — interactive surfaces only, never a feedback fill. Brown is the secondary brand/identity color for headers, illustration, and brand marks.</p>
+
+    <div class="ramp-group">
+      <div class="rg-hdr">
+        <span class="rg-name">Yellow — Primary Brand</span>
+        <span class="rg-meta">Anchor step 500 · #FFC20E · H≈85°</span>
+      </div>
+      <div class="tbl-wrap rt-tbl" style="border:none; border-radius:0; margin:0;">
+        <table>
+          <caption class="sr-only">12-step values for the Brand Yellow ramp, anchor #FFC20E at step 500</caption>
+          <thead><tr><th scope="col">Step</th><th scope="col">Swatch</th><th scope="col">Hex</th><th scope="col">OKLCH (L C H)</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">25</th><td><span class="rt-sw" style="background:#FFFBEB"></span></td><td>#FFFBEB</td><td>97% 0.04 85°</td></tr>
+            <tr><th scope="row">50</th><td><span class="rt-sw" style="background:#FFF3C4"></span></td><td>#FFF3C4</td><td>95% 0.07 85°</td></tr>
+            <tr><th scope="row">100</th><td><span class="rt-sw" style="background:#FFEA96"></span></td><td>#FFEA96</td><td>92% 0.12 85°</td></tr>
+            <tr><th scope="row">200</th><td><span class="rt-sw" style="background:#FFE063"></span></td><td>#FFE063</td><td>88% 0.16 85°</td></tr>
+            <tr><th scope="row">300</th><td><span class="rt-sw" style="background:#FFD32E"></span></td><td>#FFD32E</td><td>83% 0.18 85°</td></tr>
+            <tr><th scope="row">400</th><td><span class="rt-sw" style="background:#FFC90E"></span></td><td>#FFC90E</td><td>79% 0.18 85°</td></tr>
+            <tr class="is-anchor"><th scope="row">500</th><td><span class="rt-sw" style="background:#FFC20E"></span></td><td>#FFC20E</td><td>78% 0.18 85°</td></tr>
+            <tr><th scope="row">600</th><td><span class="rt-sw" style="background:#D9A000"></span></td><td>#D9A000</td><td>66% 0.17 85°</td></tr>
+            <tr><th scope="row">700</th><td><span class="rt-sw" style="background:#A87B00"></span></td><td>#A87B00</td><td>52% 0.14 85°</td></tr>
+            <tr><th scope="row">800</th><td><span class="rt-sw" style="background:#7A5900"></span></td><td>#7A5900</td><td>38% 0.11 85°</td></tr>
+            <tr><th scope="row">900</th><td><span class="rt-sw" style="background:#593F00"></span></td><td>#593F00</td><td>27% 0.08 85°</td></tr>
+            <tr><th scope="row">950</th><td><span class="rt-sw" style="background:#3D2A00"></span></td><td>#3D2A00</td><td>18% 0.05 85°</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="ramp-group">
+      <div class="rg-hdr">
+        <span class="rg-name">Brown — Secondary Brand / Identity</span>
+        <span class="rg-meta">Anchor step 500 · #984616 · H≈47°</span>
+      </div>
+      <div class="tbl-wrap rt-tbl" style="border:none; border-radius:0; margin:0;">
+        <table>
+          <caption class="sr-only">12-step values for the Brand Brown ramp, anchor #984616 at step 500</caption>
+          <thead><tr><th scope="col">Step</th><th scope="col">Swatch</th><th scope="col">Hex</th><th scope="col">OKLCH (L C H)</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">25</th><td><span class="rt-sw" style="background:#FFF8F3"></span></td><td>#FFF8F3</td><td>98% 0.010 58°</td></tr>
+            <tr><th scope="row">50</th><td><span class="rt-sw" style="background:#FFEFE7"></span></td><td>#FFEFE7</td><td>96% 0.020 49°</td></tr>
+            <tr><th scope="row">100</th><td><span class="rt-sw" style="background:#FEE1D3"></span></td><td>#FEE1D3</td><td>93% 0.037 47°</td></tr>
+            <tr><th scope="row">200</th><td><span class="rt-sw" style="background:#F5C7B2"></span></td><td>#F5C7B2</td><td>86% 0.060 46°</td></tr>
+            <tr><th scope="row">300</th><td><span class="rt-sw" style="background:#E7AB8E"></span></td><td>#E7AB8E</td><td>79% 0.081 47°</td></tr>
+            <tr><th scope="row">400</th><td><span class="rt-sw" style="background:#D68B66"></span></td><td>#D68B66</td><td>71% 0.105 47°</td></tr>
+            <tr class="is-anchor"><th scope="row">500</th><td><span class="rt-sw" style="background:#984616"></span></td><td>#984616</td><td>49% 0.124 47°</td></tr>
+            <tr><th scope="row">600</th><td><span class="rt-sw" style="background:#782900"></span></td><td>#782900</td><td>40% 0.119 42°</td></tr>
+            <tr><th scope="row">700</th><td><span class="rt-sw" style="background:#5A1100"></span></td><td>#5A1100</td><td>31% 0.108 35°</td></tr>
+            <tr><th scope="row">800</th><td><span class="rt-sw" style="background:#3F0000"></span></td><td>#3F0000</td><td>23% 0.095 29°</td></tr>
+            <tr><th scope="row">900</th><td><span class="rt-sw" style="background:#280000"></span></td><td>#280000</td><td>17% 0.071 29°</td></tr>
+            <tr><th scope="row">950</th><td><span class="rt-sw" style="background:#230000"></span></td><td>#230000</td><td>16% 0.066 29°</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+<!-- ════ 2C-2 NEUTRAL ════ -->
+  <div class="section" id="2c-neutral">
+    <div class="section-header">
+      <span class="section-id">2C-2</span>
+      <h2 class="section-title">Neutral ramp</h2>
+    </div>
+    <hr class="section-hr">
+    <p>Cool neutral (H≈258°) used for text, surfaces, chrome, and — per the 2026-07-13 primary-action decision — <code>--interactive-primary-*</code>. System-locked, not a brand/identity ramp.</p>
+
+    <div class="ramp-group">
+      <div class="rg-hdr">
+        <span class="rg-name">Neutral (cool)</span>
+        <span class="rg-meta">Anchor step 800 · #272A2F · H≈258–269°</span>
+      </div>
+      <div class="tbl-wrap rt-tbl" style="border:none; border-radius:0; margin:0;">
+        <table>
+          <caption class="sr-only">12-step values for the Neutral ramp, anchor #272A2F at step 800</caption>
+          <thead><tr><th scope="col">Step</th><th scope="col">Swatch</th><th scope="col">Hex</th><th scope="col">OKLCH (L C H)</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">25</th><td><span class="rt-sw" style="background:#FBFCFD"></span></td><td>#FBFCFD</td><td>97% 0.005 258°</td></tr>
+            <tr><th scope="row">50</th><td><span class="rt-sw" style="background:#F5F7F9"></span></td><td>#F5F7F9</td><td>94% 0.007 258°</td></tr>
+            <tr><th scope="row">100</th><td><span class="rt-sw" style="background:#EBEDF0"></span></td><td>#EBEDF0</td><td>87% 0.009 258°</td></tr>
+            <tr><th scope="row">200</th><td><span class="rt-sw" style="background:#D6D9DE"></span></td><td>#D6D9DE</td><td>76% 0.011 258°</td></tr>
+            <tr><th scope="row">300</th><td><span class="rt-sw" style="background:#BABEC4"></span></td><td>#BABEC4</td><td>66% 0.011 258°</td></tr>
+            <tr><th scope="row">400</th><td><span class="rt-sw" style="background:#959AA1"></span></td><td>#959AA1</td><td>55% 0.011 259°</td></tr>
+            <tr><th scope="row">500</th><td><span class="rt-sw" style="background:#6D7279"></span></td><td>#6D7279</td><td>45% 0.012 257°</td></tr>
+            <tr><th scope="row">600</th><td><span class="rt-sw" style="background:#52575E"></span></td><td>#52575E</td><td>36% 0.013 257°</td></tr>
+            <tr><th scope="row">700</th><td><span class="rt-sw" style="background:#3B3F45"></span></td><td>#3B3F45</td><td>29% 0.012 258°</td></tr>
+            <tr class="is-anchor"><th scope="row">800</th><td><span class="rt-sw" style="background:#272A2F"></span></td><td>#272A2F</td><td>23% 0.010 261°</td></tr>
+            <tr><th scope="row">900</th><td><span class="rt-sw" style="background:#15171B"></span></td><td>#15171B</td><td>17% 0.009 264°</td></tr>
+            <tr><th scope="row">950</th><td><span class="rt-sw" style="background:#07080B"></span></td><td>#07080B</td><td>13% 0.007 269°</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+<!-- ════ 2C-3 UTILITY ════ -->
+  <div class="section" id="2c-utility">
+    <div class="section-header">
+      <span class="section-id">2C-3</span>
+      <h2 class="section-title">Utility ramps</h2>
+    </div>
+    <hr class="section-hr">
+    <p>Danger, Warning, Success, Info, and Help — semantic feedback states only, never decorative.</p>
+
+    <div class="ramp-group">
+      <div class="rg-hdr">
+        <span class="rg-name">Danger — Error &amp; Destructive States</span>
+        <span class="rg-meta">Anchor step 500 · #C83520 · H≈15°</span>
+      </div>
+      <div class="tbl-wrap rt-tbl" style="border:none; border-radius:0; margin:0;">
+        <table>
+          <caption class="sr-only">12-step values for the Danger ramp, anchor #C83520 at step 500</caption>
+          <thead><tr><th scope="col">Step</th><th scope="col">Swatch</th><th scope="col">Hex</th><th scope="col">OKLCH (L C H)</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">25</th><td><span class="rt-sw" style="background:#FFF0ED"></span></td><td>#FFF0ED</td><td>96% 0.02 15°</td></tr>
+            <tr><th scope="row">50</th><td><span class="rt-sw" style="background:#FFE0D9"></span></td><td>#FFE0D9</td><td>91% 0.05 15°</td></tr>
+            <tr><th scope="row">100</th><td><span class="rt-sw" style="background:#FFC5B8"></span></td><td>#FFC5B8</td><td>84% 0.09 15°</td></tr>
+            <tr><th scope="row">200</th><td><span class="rt-sw" style="background:#FF9E8A"></span></td><td>#FF9E8A</td><td>74% 0.13 15°</td></tr>
+            <tr><th scope="row">300</th><td><span class="rt-sw" style="background:#F47560"></span></td><td>#F47560</td><td>62% 0.14 15°</td></tr>
+            <tr><th scope="row">400</th><td><span class="rt-sw" style="background:#E04E36"></span></td><td>#E04E36</td><td>50% 0.16 15°</td></tr>
+            <tr class="is-anchor"><th scope="row">500</th><td><span class="rt-sw" style="background:#C83520"></span></td><td>#C83520</td><td>39% 0.17 15°</td></tr>
+            <tr><th scope="row">600</th><td><span class="rt-sw" style="background:#A62010"></span></td><td>#A62010</td><td>31% 0.14 15°</td></tr>
+            <tr><th scope="row">700</th><td><span class="rt-sw" style="background:#841400"></span></td><td>#841400</td><td>24% 0.11 15°</td></tr>
+            <tr><th scope="row">800</th><td><span class="rt-sw" style="background:#5E0E00"></span></td><td>#5E0E00</td><td>17% 0.08 15°</td></tr>
+            <tr><th scope="row">900</th><td><span class="rt-sw" style="background:#3E0800"></span></td><td>#3E0800</td><td>11% 0.05 15°</td></tr>
+            <tr><th scope="row">950</th><td><span class="rt-sw" style="background:#260400"></span></td><td>#260400</td><td>7% 0.03 15°</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="ramp-group">
+      <div class="rg-hdr">
+        <span class="rg-name">Warning — Caution &amp; Attention States</span>
+        <span class="rg-meta">Anchor step 500 · #D97706 · H≈55° (drifts to 38° below anchor)</span>
+      </div>
+      <div class="tbl-wrap rt-tbl" style="border:none; border-radius:0; margin:0;">
+        <table>
+          <caption class="sr-only">12-step values for the Warning ramp, anchor #D97706 at step 500</caption>
+          <thead><tr><th scope="col">Step</th><th scope="col">Swatch</th><th scope="col">Hex</th><th scope="col">OKLCH (L C H)</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">25</th><td><span class="rt-sw" style="background:#FFFBEB"></span></td><td>#FFFBEB</td><td>97% 0.04 55°</td></tr>
+            <tr><th scope="row">50</th><td><span class="rt-sw" style="background:#FEF3C7"></span></td><td>#FEF3C7</td><td>95% 0.08 55°</td></tr>
+            <tr><th scope="row">100</th><td><span class="rt-sw" style="background:#FDE68A"></span></td><td>#FDE68A</td><td>91% 0.14 55°</td></tr>
+            <tr><th scope="row">200</th><td><span class="rt-sw" style="background:#FCD34D"></span></td><td>#FCD34D</td><td>85% 0.17 55°</td></tr>
+            <tr><th scope="row">300</th><td><span class="rt-sw" style="background:#FBBF24"></span></td><td>#FBBF24</td><td>79% 0.17 55°</td></tr>
+            <tr><th scope="row">400</th><td><span class="rt-sw" style="background:#F59E0B"></span></td><td>#F59E0B</td><td>69% 0.17 55°</td></tr>
+            <tr class="is-anchor"><th scope="row">500</th><td><span class="rt-sw" style="background:#D97706"></span></td><td>#D97706</td><td>56% 0.16 55°</td></tr>
+            <tr><th scope="row">600</th><td><span class="rt-sw" style="background:#B45309"></span></td><td>#B45309</td><td>45% 0.13 38°</td></tr>
+            <tr><th scope="row">700</th><td><span class="rt-sw" style="background:#92400E"></span></td><td>#92400E</td><td>34% 0.10 38°</td></tr>
+            <tr><th scope="row">800</th><td><span class="rt-sw" style="background:#6B2F09"></span></td><td>#6B2F09</td><td>24% 0.07 38°</td></tr>
+            <tr><th scope="row">900</th><td><span class="rt-sw" style="background:#451E04"></span></td><td>#451E04</td><td>16% 0.04 38°</td></tr>
+            <tr><th scope="row">950</th><td><span class="rt-sw" style="background:#2C1002"></span></td><td>#2C1002</td><td>10% 0.02 38°</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="rg-note">Documented as a uniform step-500 anchor across all dashboards as of 2026-07-13 — see <code>tokens.css</code> §2.7 and Section 2E. Hue drifts from 55° to 38° below the anchor; this ramp does not hold a constant hue across all 12 stops the way most others do.</div>
+    </div>
+
+    <div class="ramp-group">
+      <div class="rg-hdr">
+        <span class="rg-name">Success — Positive &amp; Confirmation States</span>
+        <span class="rg-meta">Anchor step 500 · #16A34A · H≈142°</span>
+      </div>
+      <div class="tbl-wrap rt-tbl" style="border:none; border-radius:0; margin:0;">
+        <table>
+          <caption class="sr-only">12-step values for the Success ramp, anchor #16A34A at step 500</caption>
+          <thead><tr><th scope="col">Step</th><th scope="col">Swatch</th><th scope="col">Hex</th><th scope="col">OKLCH (L C H)</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">25</th><td><span class="rt-sw" style="background:#F0FDF4"></span></td><td>#F0FDF4</td><td>98% 0.02 142°</td></tr>
+            <tr><th scope="row">50</th><td><span class="rt-sw" style="background:#DCFCE7"></span></td><td>#DCFCE7</td><td>95% 0.06 142°</td></tr>
+            <tr><th scope="row">100</th><td><span class="rt-sw" style="background:#BBF7D0"></span></td><td>#BBF7D0</td><td>90% 0.11 142°</td></tr>
+            <tr><th scope="row">200</th><td><span class="rt-sw" style="background:#86EFAC"></span></td><td>#86EFAC</td><td>84% 0.14 142°</td></tr>
+            <tr><th scope="row">300</th><td><span class="rt-sw" style="background:#4ADE80"></span></td><td>#4ADE80</td><td>77% 0.17 142°</td></tr>
+            <tr><th scope="row">400</th><td><span class="rt-sw" style="background:#22C55E"></span></td><td>#22C55E</td><td>69% 0.18 142°</td></tr>
+            <tr class="is-anchor"><th scope="row">500</th><td><span class="rt-sw" style="background:#16A34A"></span></td><td>#16A34A</td><td>57% 0.17 142°</td></tr>
+            <tr><th scope="row">600</th><td><span class="rt-sw" style="background:#15803D"></span></td><td>#15803D</td><td>46% 0.14 142°</td></tr>
+            <tr><th scope="row">700</th><td><span class="rt-sw" style="background:#166534"></span></td><td>#166534</td><td>36% 0.11 142°</td></tr>
+            <tr><th scope="row">800</th><td><span class="rt-sw" style="background:#14532D"></span></td><td>#14532D</td><td>29% 0.08 142°</td></tr>
+            <tr><th scope="row">900</th><td><span class="rt-sw" style="background:#052E16"></span></td><td>#052E16</td><td>17% 0.05 142°</td></tr>
+            <tr><th scope="row">950</th><td><span class="rt-sw" style="background:#021D0D"></span></td><td>#021D0D</td><td>11% 0.03 142°</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="ramp-group">
+      <div class="rg-hdr">
+        <span class="rg-name">Info — Informational &amp; Neutral-Positive States</span>
+        <span class="rg-meta">Anchor step 500 · #2563EB · H≈220°</span>
+      </div>
+      <div class="tbl-wrap rt-tbl" style="border:none; border-radius:0; margin:0;">
+        <table>
+          <caption class="sr-only">12-step values for the Info ramp, anchor #2563EB at step 500</caption>
+          <thead><tr><th scope="col">Step</th><th scope="col">Swatch</th><th scope="col">Hex</th><th scope="col">OKLCH (L C H)</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">25</th><td><span class="rt-sw" style="background:#EFF6FF"></span></td><td>#EFF6FF</td><td>97% 0.02 220°</td></tr>
+            <tr><th scope="row">50</th><td><span class="rt-sw" style="background:#DBEAFE"></span></td><td>#DBEAFE</td><td>93% 0.05 220°</td></tr>
+            <tr><th scope="row">100</th><td><span class="rt-sw" style="background:#BFDBFE"></span></td><td>#BFDBFE</td><td>87% 0.09 220°</td></tr>
+            <tr><th scope="row">200</th><td><span class="rt-sw" style="background:#93C5FD"></span></td><td>#93C5FD</td><td>79% 0.13 220°</td></tr>
+            <tr><th scope="row">300</th><td><span class="rt-sw" style="background:#60A5FA"></span></td><td>#60A5FA</td><td>69% 0.16 220°</td></tr>
+            <tr><th scope="row">400</th><td><span class="rt-sw" style="background:#3B82F6"></span></td><td>#3B82F6</td><td>57% 0.20 220°</td></tr>
+            <tr class="is-anchor"><th scope="row">500</th><td><span class="rt-sw" style="background:#2563EB"></span></td><td>#2563EB</td><td>47% 0.22 220°</td></tr>
+            <tr><th scope="row">600</th><td><span class="rt-sw" style="background:#1D4ED8"></span></td><td>#1D4ED8</td><td>38% 0.20 220°</td></tr>
+            <tr><th scope="row">700</th><td><span class="rt-sw" style="background:#1E40AF"></span></td><td>#1E40AF</td><td>31% 0.17 220°</td></tr>
+            <tr><th scope="row">800</th><td><span class="rt-sw" style="background:#1E3A8A"></span></td><td>#1E3A8A</td><td>25% 0.14 220°</td></tr>
+            <tr><th scope="row">900</th><td><span class="rt-sw" style="background:#172554"></span></td><td>#172554</td><td>16% 0.09 220°</td></tr>
+            <tr><th scope="row">950</th><td><span class="rt-sw" style="background:#0F1A3A"></span></td><td>#0F1A3A</td><td>11% 0.06 220°</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="ramp-group">
+      <div class="rg-hdr">
+        <span class="rg-name">Help — Support &amp; Guidance States</span>
+        <span class="rg-meta">Anchor step 500 · #7C3AED · H≈280°</span>
+      </div>
+      <div class="tbl-wrap rt-tbl" style="border:none; border-radius:0; margin:0;">
+        <table>
+          <caption class="sr-only">12-step values for the Help ramp, anchor #7C3AED at step 500</caption>
+          <thead><tr><th scope="col">Step</th><th scope="col">Swatch</th><th scope="col">Hex</th><th scope="col">OKLCH (L C H)</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">25</th><td><span class="rt-sw" style="background:#F5F3FF"></span></td><td>#F5F3FF</td><td>97% 0.02 280°</td></tr>
+            <tr><th scope="row">50</th><td><span class="rt-sw" style="background:#EDE9FE"></span></td><td>#EDE9FE</td><td>93% 0.06 280°</td></tr>
+            <tr><th scope="row">100</th><td><span class="rt-sw" style="background:#DDD6FE"></span></td><td>#DDD6FE</td><td>86% 0.11 280°</td></tr>
+            <tr><th scope="row">200</th><td><span class="rt-sw" style="background:#C4B5FD"></span></td><td>#C4B5FD</td><td>76% 0.16 280°</td></tr>
+            <tr><th scope="row">300</th><td><span class="rt-sw" style="background:#A78BFA"></span></td><td>#A78BFA</td><td>65% 0.19 280°</td></tr>
+            <tr><th scope="row">400</th><td><span class="rt-sw" style="background:#8B5CF6"></span></td><td>#8B5CF6</td><td>53% 0.22 280°</td></tr>
+            <tr class="is-anchor"><th scope="row">500</th><td><span class="rt-sw" style="background:#7C3AED"></span></td><td>#7C3AED</td><td>42% 0.24 280°</td></tr>
+            <tr><th scope="row">600</th><td><span class="rt-sw" style="background:#6D28D9"></span></td><td>#6D28D9</td><td>33% 0.22 280°</td></tr>
+            <tr><th scope="row">700</th><td><span class="rt-sw" style="background:#5B21B6"></span></td><td>#5B21B6</td><td>26% 0.18 280°</td></tr>
+            <tr><th scope="row">800</th><td><span class="rt-sw" style="background:#4C1D95"></span></td><td>#4C1D95</td><td>20% 0.15 280°</td></tr>
+            <tr><th scope="row">900</th><td><span class="rt-sw" style="background:#2E1065"></span></td><td>#2E1065</td><td>12% 0.10 280°</td></tr>
+            <tr><th scope="row">950</th><td><span class="rt-sw" style="background:#1C0940"></span></td><td>#1C0940</td><td>7% 0.07 280°</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="rg-note">Shares its hue family with the Violet dashboard accent below (both H≈280°) — distinguished by role, not color. See §2C-4.</div>
+    </div>
+  </div>
+
+<!-- ════ 2C-4 DASHBOARD ════ -->
+  <div class="section" id="2c-dashboard">
+    <div class="section-header">
+      <span class="section-id">2C-4</span>
+      <h2 class="section-title">Dashboard accent ramps</h2>
+    </div>
+    <hr class="section-hr">
+    <p>Sky Blue drives the Filer dashboard interactive accent; Violet drives the Admin dashboard interactive accent. Violet shares its hue family with the Help utility ramp above — distinguish by role (interactive vs. passive), not color alone.</p>
+
+    <div class="ramp-group">
+      <div class="rg-hdr">
+        <span class="rg-name">Sky Blue — Filer Dashboard Accent</span>
+        <span class="rg-meta">Anchor step 500 · #0284C7 · H≈200°</span>
+      </div>
+      <div class="tbl-wrap rt-tbl" style="border:none; border-radius:0; margin:0;">
+        <table>
+          <caption class="sr-only">12-step values for the Sky Blue ramp, anchor #0284C7 at step 500</caption>
+          <thead><tr><th scope="col">Step</th><th scope="col">Swatch</th><th scope="col">Hex</th><th scope="col">OKLCH (L C H)</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">25</th><td><span class="rt-sw" style="background:#F0F9FF"></span></td><td>#F0F9FF</td><td>97% 0.02 200°</td></tr>
+            <tr><th scope="row">50</th><td><span class="rt-sw" style="background:#E0F2FE"></span></td><td>#E0F2FE</td><td>93% 0.05 200°</td></tr>
+            <tr><th scope="row">100</th><td><span class="rt-sw" style="background:#BAE6FD"></span></td><td>#BAE6FD</td><td>88% 0.09 200°</td></tr>
+            <tr><th scope="row">200</th><td><span class="rt-sw" style="background:#7DD3FC"></span></td><td>#7DD3FC</td><td>81% 0.12 200°</td></tr>
+            <tr><th scope="row">300</th><td><span class="rt-sw" style="background:#38BDF8"></span></td><td>#38BDF8</td><td>73% 0.14 200°</td></tr>
+            <tr><th scope="row">400</th><td><span class="rt-sw" style="background:#0EA5E9"></span></td><td>#0EA5E9</td><td>63% 0.16 200°</td></tr>
+            <tr class="is-anchor"><th scope="row">500</th><td><span class="rt-sw" style="background:#0284C7"></span></td><td>#0284C7</td><td>51% 0.16 200°</td></tr>
+            <tr><th scope="row">600</th><td><span class="rt-sw" style="background:#0369A1"></span></td><td>#0369A1</td><td>41% 0.14 200°</td></tr>
+            <tr><th scope="row">700</th><td><span class="rt-sw" style="background:#075985"></span></td><td>#075985</td><td>33% 0.11 200°</td></tr>
+            <tr><th scope="row">800</th><td><span class="rt-sw" style="background:#0C4A6E"></span></td><td>#0C4A6E</td><td>27% 0.08 200°</td></tr>
+            <tr><th scope="row">900</th><td><span class="rt-sw" style="background:#082F4A"></span></td><td>#082F4A</td><td>18% 0.05 200°</td></tr>
+            <tr><th scope="row">950</th><td><span class="rt-sw" style="background:#041C2E"></span></td><td>#041C2E</td><td>11% 0.03 200°</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="rg-note">The Filer theme CTA uses step 400 (#0EA5E9) rather than step 500 for best contrast on light backgrounds — see §2B for the full contrast breakdown.</div>
+    </div>
+
+    <div class="ramp-group">
+      <div class="rg-hdr">
+        <span class="rg-name">Violet — Admin Dashboard Accent</span>
+        <span class="rg-meta">Anchor step 500 · #7C3AED · H≈280°</span>
+      </div>
+      <div class="tbl-wrap rt-tbl" style="border:none; border-radius:0; margin:0;">
+        <table>
+          <caption class="sr-only">12-step values for the Violet ramp, anchor #7C3AED at step 500</caption>
+          <thead><tr><th scope="col">Step</th><th scope="col">Swatch</th><th scope="col">Hex</th><th scope="col">OKLCH (L C H)</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">25</th><td><span class="rt-sw" style="background:#F5F3FF"></span></td><td>#F5F3FF</td><td>97% 0.02 280°</td></tr>
+            <tr><th scope="row">50</th><td><span class="rt-sw" style="background:#EDE9FE"></span></td><td>#EDE9FE</td><td>93% 0.06 280°</td></tr>
+            <tr><th scope="row">100</th><td><span class="rt-sw" style="background:#DDD6FE"></span></td><td>#DDD6FE</td><td>86% 0.11 280°</td></tr>
+            <tr><th scope="row">200</th><td><span class="rt-sw" style="background:#C4B5FD"></span></td><td>#C4B5FD</td><td>76% 0.16 280°</td></tr>
+            <tr><th scope="row">300</th><td><span class="rt-sw" style="background:#A78BFA"></span></td><td>#A78BFA</td><td>65% 0.19 280°</td></tr>
+            <tr><th scope="row">400</th><td><span class="rt-sw" style="background:#8B5CF6"></span></td><td>#8B5CF6</td><td>53% 0.22 280°</td></tr>
+            <tr class="is-anchor"><th scope="row">500</th><td><span class="rt-sw" style="background:#7C3AED"></span></td><td>#7C3AED</td><td>42% 0.24 280°</td></tr>
+            <tr><th scope="row">600</th><td><span class="rt-sw" style="background:#6D28D9"></span></td><td>#6D28D9</td><td>33% 0.22 280°</td></tr>
+            <tr><th scope="row">700</th><td><span class="rt-sw" style="background:#5B21B6"></span></td><td>#5B21B6</td><td>26% 0.18 280°</td></tr>
+            <tr><th scope="row">800</th><td><span class="rt-sw" style="background:#4C1D95"></span></td><td>#4C1D95</td><td>20% 0.15 280°</td></tr>
+            <tr><th scope="row">900</th><td><span class="rt-sw" style="background:#2E1065"></span></td><td>#2E1065</td><td>12% 0.10 280°</td></tr>
+            <tr><th scope="row">950</th><td><span class="rt-sw" style="background:#1C0940"></span></td><td>#1C0940</td><td>7% 0.07 280°</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="rg-note">Identical in hue to the Help utility ramp above — the same 12-stop ramp referenced by two different semantic token sets. Admin interactive tokens (<code>--theme-accent-*</code>) drive buttons and nav; Help utility tokens (<code>--feedback-help-*</code>) drive passive feedback surfaces. Never cross-reference the two.</div>
+    </div>
+  </div>
+
+</main>
+  <footer class="page-footer">
+    <div>Section 2C — Ramp Table &nbsp;·&nbsp; H2 Prime Web Application Design System &nbsp;·&nbsp; v1.0 (start version) <br><a href="h2p-section-02b-ramp-reference.html">← Section 2B — Ramp Reference</a> &nbsp;·&nbsp; <a href="h2p-section-03-typography.html">Section 3 — Typography →</a> &nbsp;·&nbsp; <a href="h2p-cover.html">Cover</a></div>
+    <div style="text-align:right">Last updated: 2026-07-13<br>9 ramps · 12 stops each · hex + OKLCH</div>
+  </footer>
+
+</div>
+</body>
+</html>

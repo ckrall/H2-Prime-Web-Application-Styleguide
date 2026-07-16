@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Section 4 — Spacing, Layout &amp; Elevation — H2 Prime Design System</title>
+  <link rel="stylesheet" href="h2p-shared.css">
+<style>
+.sp-strip { display: flex; align-items: flex-end; gap: 10px; margin: 1rem 0; flex-wrap: wrap; }
+.sp-item { display: flex; flex-direction: column; align-items: center; gap: 6px; }
+.sp-box { background: var(--a); border-radius: 2px; }
+.sp-lbl { font-family: var(--fm); font-size: 10px; color: var(--t3); text-align: center; }
+
+.lay-frame { border: 1px dashed var(--b2); border-radius: 8px; padding: 1rem; background: var(--s); }
+.lay-region { border-radius: 4px; padding: 8px 12px; font-size: 11px; font-family: var(--fm); color: var(--t2); }
+
+.elev-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 14px; margin: 1rem 0; }
+.elev-card { background: var(--r); border-radius: 8px; padding: 18px 14px; text-align: center; }
+.elev-swatch { width: 100%; height: 54px; border-radius: 6px; background: var(--s); margin-bottom: 10px; }
+.elev-name { font-size: 12px; font-weight: 600; color: var(--t1); }
+.elev-meta { font-family: var(--fm); font-size: 9.5px; color: var(--t3); margin-top: 2px; }
+
+.rad-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); gap: 14px; margin: 1rem 0; }
+.rad-card { text-align: center; }
+.rad-swatch { width: 100%; height: 56px; background: var(--a); margin-bottom: 8px; }
+.rad-lbl { font-size: 11px; color: var(--t2); }
+.rad-val { font-family: var(--fm); font-size: 10px; color: var(--t3); }
+
+.z-stack { position: relative; height: 180px; background: var(--s); border-radius: 8px; border: 1px solid var(--b1); margin: 1rem 0; overflow: hidden; }
+.z-layer { position: absolute; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-family: var(--fm); font-size: 10px; font-weight: 600; box-shadow: var(--shadow-lg, 0 8px 20px rgba(0,0,0,.4)); }
+
+.grid-demo { display: grid; grid-template-columns: repeat(12, 1fr); gap: 6px; margin: 1rem 0; }
+.grid-col { background: var(--al); border: 1px solid var(--ab); border-radius: 3px; height: 28px; }
+</style>
+</head>
+<body>
+
+<a class="skip-link" href="#main-content">Skip to content</a>
+
+<nav class="guide-nav" aria-label="Style guide navigation">
+  <div class="guide-nav-left">
+    <a href="h2p-cover.html" class="guide-nav-home">
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+        <path d="M1 7L7 1l6 6M2.5 5.5V13h3v-3h3v3h3V5.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      H2 Prime Design System
+    </a>
+    <div class="guide-nav-divider" aria-hidden="true"></div>
+    <span class="guide-nav-section">4 — Spacing, Layout &amp; Elevation</span>
+  </div>
+  <div class="guide-nav-right">
+    <a href="h2p-section-03-typography.html" class="guide-nav-btn">← 3 — Typography</a>
+    <a href="h2p-section-05-component-patterns.html" class="guide-nav-btn primary">5 — Component Patterns →</a>
+  </div>
+</nav>
+
+<div class="page-wrap">
+<main id="main-content">
+
+  <div class="doc-header">
+    <div class="doc-kicker">H2 Prime Web Application Design System &amp; Guidelines</div>
+    <h1 class="doc-title">Section 04 — <strong>Spacing, Layout &amp; Elevation</strong></h1>
+    <p class="doc-lead">The structural mechanics underneath every screen: the spacing grid, page and content-region widths, corner radius, shadow depth, and stacking order. These tokens were already defined in <code>tokens.css</code> §2.14–§2.19 as part of the color/typography work — this section is the first place they're documented and demonstrated together.</p>
+    <div class="doc-meta">
+      <div class="doc-meta-item"><strong>Grid unit</strong>4px</div>
+      <div class="doc-meta-item"><strong>Radius scale</strong>9 stops, none → full</div>
+      <div class="doc-meta-item"><strong>Shadow scale</strong>6 stops, none → xl</div>
+      <div class="doc-meta-item"><strong>Z-index scale</strong>8 named layers</div>
+      <div class="doc-meta-item"><strong>Breakpoints</strong>Tailwind v4 defaults (unconfigured)</div>
+      <div class="doc-meta-item"><strong>Compliance</strong>WCAG 2.2 AA minimum</div>
+      <div class="doc-meta-item"><strong>Last updated</strong>2026-07-13</div>
+    </div>
+  </div>
+
+  <nav class="toc" aria-label="Section contents">
+    <div class="toc-label">In this section</div>
+    <div class="toc-cols">
+      <ul class="toc-list">
+        <li><span class="toc-num">4A</span><a href="#4a">Spacing scale</a></li>
+        <li><span class="toc-num">4B</span><a href="#4b">Spacing usage rules</a></li>
+        <li><span class="toc-num">4C</span><a href="#4c">Page layout &amp; breakpoints</a></li>
+      </ul>
+      <ul class="toc-list">
+        <li><span class="toc-num">4D</span><a href="#4d">Border radius scale</a></li>
+        <li><span class="toc-num">4E</span><a href="#4e">Elevation &amp; shadow scale</a></li>
+        <li><span class="toc-num">4F</span><a href="#4f">Z-index scale</a></li>
+      </ul>
+      <ul class="toc-list">
+        <li><span class="toc-num">4G</span><a href="#4g">Motion (adjacent reference)</a></li>
+        <li><span class="toc-num">4H</span><a href="#4h">Anti-patterns</a></li>
+      </ul>
+    </div>
+  </nav>
+
+<!-- ════ 4A ════ -->
+  <div class="section" id="4a">
+    <div class="section-header">
+      <span class="section-id">4A</span>
+      <h2 class="section-title">Spacing scale</h2>
+    </div>
+    <hr class="section-hr">
+    <p>A strict 4px grid, 16 stops from <code>0</code> to <code>96px</code>. Every margin, padding, and gap value in the product should land on one of these stops — no arbitrary pixel values in component code.</p>
+
+    <div class="sp-strip">
+      <div class="sp-item"><div class="sp-box" style="width:2px;height:2px"></div><div class="sp-lbl">0-5<br>2px</div></div>
+      <div class="sp-item"><div class="sp-box" style="width:4px;height:4px"></div><div class="sp-lbl">1<br>4px</div></div>
+      <div class="sp-item"><div class="sp-box" style="width:6px;height:6px"></div><div class="sp-lbl">1-5<br>6px</div></div>
+      <div class="sp-item"><div class="sp-box" style="width:8px;height:8px"></div><div class="sp-lbl">2<br>8px</div></div>
+      <div class="sp-item"><div class="sp-box" style="width:10px;height:10px"></div><div class="sp-lbl">2-5<br>10px</div></div>
+      <div class="sp-item"><div class="sp-box" style="width:12px;height:12px"></div><div class="sp-lbl">3<br>12px</div></div>
+      <div class="sp-item"><div class="sp-box" style="width:16px;height:16px"></div><div class="sp-lbl">4<br>16px</div></div>
+      <div class="sp-item"><div class="sp-box" style="width:20px;height:20px"></div><div class="sp-lbl">5<br>20px</div></div>
+      <div class="sp-item"><div class="sp-box" style="width:24px;height:24px"></div><div class="sp-lbl">6<br>24px</div></div>
+      <div class="sp-item"><div class="sp-box" style="width:32px;height:32px"></div><div class="sp-lbl">8<br>32px</div></div>
+      <div class="sp-item"><div class="sp-box" style="width:40px;height:40px"></div><div class="sp-lbl">10<br>40px</div></div>
+      <div class="sp-item"><div class="sp-box" style="width:48px;height:48px"></div><div class="sp-lbl">12<br>48px</div></div>
+      <div class="sp-item"><div class="sp-box" style="width:64px;height:64px"></div><div class="sp-lbl">16<br>64px</div></div>
+      <div class="sp-item"><div class="sp-box" style="width:80px;height:80px"></div><div class="sp-lbl">20<br>80px</div></div>
+      <div class="sp-item"><div class="sp-box" style="width:96px;height:96px"></div><div class="sp-lbl">24<br>96px</div></div>
+    </div>
+
+    <div class="tbl-wrap">
+      <caption class="sr-only">Spacing token reference showing token name, pixel value, and typical use</caption>
+      <table>
+        <thead><tr><th>Token</th><th>Value</th><th>Typical use</th></tr></thead>
+        <tbody>
+          <tr><td><code>--space-0-5</code></td><td class="contrast-cell">2px</td><td>Icon-to-label micro gaps, border-adjacent nudges</td></tr>
+          <tr><td><code>--space-1</code></td><td class="contrast-cell">4px</td><td>Tight internal gaps — badge padding, icon insets</td></tr>
+          <tr><td><code>--space-1-5</code></td><td class="contrast-cell">6px</td><td>Chip and pill vertical padding</td></tr>
+          <tr><td><code>--space-2</code></td><td class="contrast-cell">8px</td><td>Default gap between related inline elements</td></tr>
+          <tr><td><code>--space-2-5</code></td><td class="contrast-cell">10px</td><td>Input vertical padding</td></tr>
+          <tr><td><code>--space-3</code></td><td class="contrast-cell">12px</td><td>Button horizontal padding, form field gaps</td></tr>
+          <tr><td><code>--space-4</code></td><td class="contrast-cell">16px</td><td>Default card padding, section internal gaps</td></tr>
+          <tr><td><code>--space-5</code></td><td class="contrast-cell">20px</td><td>Comfortable card padding, table cell padding</td></tr>
+          <tr><td><code>--space-6</code></td><td class="contrast-cell">24px</td><td>Gaps between distinct cards/panels</td></tr>
+          <tr><td><code>--space-8</code></td><td class="contrast-cell">32px</td><td>Section-to-section spacing on a page</td></tr>
+          <tr><td><code>--space-10</code></td><td class="contrast-cell">40px</td><td>Page-level top padding on mobile</td></tr>
+          <tr><td><code>--space-12</code></td><td class="contrast-cell">48px</td><td>Page-level top padding on desktop</td></tr>
+          <tr><td><code>--space-16</code></td><td class="contrast-cell">64px</td><td>Empty-state vertical breathing room</td></tr>
+          <tr><td><code>--space-20</code></td><td class="contrast-cell">80px</td><td>Hero/marketing block spacing (rare in-app)</td></tr>
+          <tr><td><code>--space-24</code></td><td class="contrast-cell">96px</td><td>Maximum single gap — reach for layout structure instead beyond this</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+<!-- ════ 4B ════ -->
+  <div class="section" id="4b">
+    <div class="section-header">
+      <span class="section-id">4B</span>
+      <h2 class="section-title">Spacing usage rules</h2>
+    </div>
+    <hr class="section-hr">
+    <p>Three fixed padding tiers cover nearly every container in the product. Pick by density, not by eyeballing a number.</p>
+
+    <div class="ramp-group">
+      <div class="rg-hdr">
+        <span class="rg-name">Container padding tiers</span>
+        <span class="rg-meta">Pick one per container type — don't mix within a single component</span>
+      </div>
+      <div class="rg-desc">
+        <strong style="color:var(--t1)">Compact</strong> (<code>--space-3</code>, 12px) — table cells, dense list rows, filer dashboard density mode.<br>
+        <strong style="color:var(--t1)">Comfortable</strong> (<code>--space-4</code>, 16px) — default card and panel padding, the baseline for most of the app.<br>
+        <strong style="color:var(--t1)">Spacious</strong> (<code>--space-5</code> to <code>--space-6</code>, 20–24px) — top-level page cards, modal bodies, anything meant to feel like the primary focus of the screen.
+      </div>
+    </div>
+
+    <div class="ap-grid">
+      <div class="ap-box ap-dont">
+        <div class="ap-label">Don't hand-pick pixel values</div>
+        <p>A component with <code>padding: 14px</code> or <code>margin-top: 18px</code> is off-grid — it won't line up with anything else on the page, and it's a value nobody else can reuse with intent.</p>
+      </div>
+      <div class="ap-box ap-do">
+        <div class="ap-label">Do compose from the scale</div>
+        <p>Every gap should be a named stop: <code>p-4</code>, <code>gap-2</code>, <code>space-y-6</code>. If nothing on the scale looks right, that's a signal to flag a gap here rather than reach for an arbitrary value — see §4H.</p>
+      </div>
+    </div>
+  </div>
+
+<!-- ════ 4C ════ -->
+  <div class="section" id="4c">
+    <div class="section-header">
+      <span class="section-id">4C</span>
+      <h2 class="section-title">Page layout &amp; breakpoints</h2>
+    </div>
+    <hr class="section-hr">
+    <p>H2 Prime doesn't currently define custom breakpoints in <code>main.css</code> — Tailwind v4's defaults apply unmodified. Documented here so the absence is a decision, not an oversight.</p>
+
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Breakpoint</th><th>Min width</th><th>Primary use in H2 Prime</th></tr></thead>
+        <tbody>
+          <tr><td><code>sm</code></td><td class="contrast-cell">640px</td><td>Large phones landscape — form fields go from stacked to inline</td></tr>
+          <tr><td><code>md</code></td><td class="contrast-cell">768px</td><td>Tablet — sidebar nav becomes visible instead of a drawer</td></tr>
+          <tr><td><code>lg</code></td><td class="contrast-cell">1024px</td><td>Small laptop — the primary desktop breakpoint for this app</td></tr>
+          <tr><td><code>xl</code></td><td class="contrast-cell">1280px</td><td>Desktop — content max-width caps out, extra space becomes margin</td></tr>
+          <tr><td><code>2xl</code></td><td class="contrast-cell">1536px</td><td>Wide desktop — rarely targeted directly</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout note">
+      <div class="callout-label">Mobile-first, deliberately</div>
+      Given the audience (frequent outdoor/field use on phones — reviewing a contract at a job site, not just at a desk), build every screen for the smallest viewport first and add complexity at <code>lg</code> and up, not the reverse. A layout that only works with a sidebar and a wide table is a layout that fails a farmer standing in a field.
+    </div>
+
+    <div class="sub-header"><span class="sub-tag">4C-1</span><span class="sub-title">Content region widths</span></div>
+    <div class="lay-frame">
+      <div class="lay-region" style="background:var(--al);border:1px dashed var(--ab);margin-bottom:8px">Sidebar — fixed 240px (lg+), collapses to drawer below lg</div>
+      <div class="lay-region" style="background:var(--r);border:1px dashed var(--b2);margin-bottom:8px">Content max-width — 1120px, centered with 24px gutters below lg / 32px at lg+</div>
+      <div class="lay-region" style="background:var(--r);border:1px dashed var(--b2)">Reading-width content (contract text, help articles) — 680px max-width within the content region</div>
+    </div>
+
+    <div class="sub-header"><span class="sub-tag">4C-2</span><span class="sub-title">12-column grid</span></div>
+    <p>Used for dashboard cards and multi-panel detail screens (see the Contract Details screen). Gutter is <code>--space-6</code> (24px) at <code>lg+</code>, <code>--space-4</code> (16px) below it.</p>
+    <div class="grid-demo">
+      <div class="grid-col" style="grid-column: span 8"></div>
+      <div class="grid-col" style="grid-column: span 4"></div>
+      <div class="grid-col" style="grid-column: span 4"></div>
+      <div class="grid-col" style="grid-column: span 4"></div>
+      <div class="grid-col" style="grid-column: span 4"></div>
+      <div class="grid-col" style="grid-column: span 12"></div>
+    </div>
+  </div>
+
+<!-- ════ 4D ════ -->
+  <div class="section" id="4d">
+    <div class="section-header">
+      <span class="section-id">4D</span>
+      <h2 class="section-title">Border radius scale</h2>
+    </div>
+    <hr class="section-hr">
+    <p>Nine raw stops, plus eight component-role aliases so individual components never hardcode a radius value directly.</p>
+
+    <div class="rad-grid">
+      <div class="rad-card"><div class="rad-swatch" style="border-radius:0px"></div><div class="rad-lbl">none</div><div class="rad-val">0px</div></div>
+      <div class="rad-card"><div class="rad-swatch" style="border-radius:2px"></div><div class="rad-lbl">xs</div><div class="rad-val">2px</div></div>
+      <div class="rad-card"><div class="rad-swatch" style="border-radius:4px"></div><div class="rad-lbl">sm</div><div class="rad-val">4px</div></div>
+      <div class="rad-card"><div class="rad-swatch" style="border-radius:6px"></div><div class="rad-lbl">md</div><div class="rad-val">6px</div></div>
+      <div class="rad-card"><div class="rad-swatch" style="border-radius:8px"></div><div class="rad-lbl">lg</div><div class="rad-val">8px</div></div>
+      <div class="rad-card"><div class="rad-swatch" style="border-radius:12px"></div><div class="rad-lbl">xl</div><div class="rad-val">12px</div></div>
+      <div class="rad-card"><div class="rad-swatch" style="border-radius:16px"></div><div class="rad-lbl">2xl</div><div class="rad-val">16px</div></div>
+      <div class="rad-card"><div class="rad-swatch" style="border-radius:24px"></div><div class="rad-lbl">3xl</div><div class="rad-val">24px</div></div>
+      <div class="rad-card"><div class="rad-swatch" style="border-radius:9999px"></div><div class="rad-lbl">full</div><div class="rad-val">pill</div></div>
+    </div>
+
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Component role</th><th>Resolves to</th><th>Value</th></tr></thead>
+        <tbody>
+          <tr><td><code>--radius-btn</code></td><td class="contrast-cell"><code>--radius-md</code></td><td class="contrast-cell">6px</td></tr>
+          <tr><td><code>--radius-input</code></td><td class="contrast-cell"><code>--radius-md</code></td><td class="contrast-cell">6px</td></tr>
+          <tr><td><code>--radius-card</code></td><td class="contrast-cell"><code>--radius-lg</code></td><td class="contrast-cell">8px</td></tr>
+          <tr><td><code>--radius-badge</code> / <code>--radius-chip</code></td><td class="contrast-cell"><code>--radius-full</code></td><td class="contrast-cell">pill</td></tr>
+          <tr><td><code>--radius-dialog</code></td><td class="contrast-cell"><code>--radius-xl</code></td><td class="contrast-cell">12px</td></tr>
+          <tr><td><code>--radius-tooltip</code></td><td class="contrast-cell"><code>--radius-sm</code></td><td class="contrast-cell">4px</td></tr>
+          <tr><td><code>--radius-menu</code></td><td class="contrast-cell"><code>--radius-lg</code></td><td class="contrast-cell">8px</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="callout warn">
+      <div class="callout-label">Single-sided borders</div>
+      A left- or top-accent border (used on some callout and status-card patterns — see Section 5) must use <code>border-radius: 0</code>. Rounding a corner that only has a border on one side produces a visible seam where the rounded corner meets a square one.
+    </div>
+  </div>
+
+<!-- ════ 4E ════ -->
+  <div class="section" id="4e">
+    <div class="section-header">
+      <span class="section-id">4E</span>
+      <h2 class="section-title">Elevation &amp; shadow scale</h2>
+    </div>
+    <hr class="section-hr">
+    <p>Six shadow stops mapped to six component roles. Dark mode does not simply reuse light-mode shadow values — opacity is raised significantly, since a soft black shadow all but disappears against an already-dark surface (see §4E-1).</p>
+
+    <div class="elev-grid">
+      <div class="elev-card"><div class="elev-swatch" style="box-shadow:none"></div><div class="elev-name">none</div><div class="elev-meta">flat, no elevation</div></div>
+      <div class="elev-card"><div class="elev-swatch" style="box-shadow:0 1px 2px rgba(0,0,0,.4)"></div><div class="elev-name">xs</div><div class="elev-meta">elevation-input</div></div>
+      <div class="elev-card"><div class="elev-swatch" style="box-shadow:0 1px 3px rgba(0,0,0,.5),0 1px 2px rgba(0,0,0,.4)"></div><div class="elev-name">sm</div><div class="elev-meta">elevation-card</div></div>
+      <div class="elev-card"><div class="elev-swatch" style="box-shadow:0 4px 6px rgba(0,0,0,.45),0 2px 4px rgba(0,0,0,.35)"></div><div class="elev-name">md</div><div class="elev-meta">elevation-tooltip</div></div>
+      <div class="elev-card"><div class="elev-swatch" style="box-shadow:0 10px 15px rgba(0,0,0,.5),0 4px 6px rgba(0,0,0,.35)"></div><div class="elev-name">lg</div><div class="elev-meta">elevation-dropdown, -toast</div></div>
+      <div class="elev-card"><div class="elev-swatch" style="box-shadow:0 20px 25px rgba(0,0,0,.55),0 8px 10px rgba(0,0,0,.3)"></div><div class="elev-name">xl</div><div class="elev-meta">elevation-modal</div></div>
+    </div>
+
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Component role</th><th>Shadow token</th><th>Notes</th></tr></thead>
+        <tbody>
+          <tr><td><code>--elevation-input</code></td><td class="contrast-cell"><code>--shadow-xs</code></td><td>Resting state only — focus uses <code>--input-border-focus</code> ring, not added shadow</td></tr>
+          <tr><td><code>--elevation-card</code></td><td class="contrast-cell"><code>--shadow-sm</code></td><td>Default card/panel elevation above the page</td></tr>
+          <tr><td><code>--elevation-tooltip</code></td><td class="contrast-cell"><code>--shadow-md</code></td><td>Momentary, needs to visually separate from whatever it's covering</td></tr>
+          <tr><td><code>--elevation-dropdown</code></td><td class="contrast-cell"><code>--shadow-lg</code></td><td>Menus, select popovers, comboboxes</td></tr>
+          <tr><td><code>--elevation-toast</code></td><td class="contrast-cell"><code>--shadow-lg</code></td><td>Shares a stop with dropdown — both float above content at the same visual weight</td></tr>
+          <tr><td><code>--elevation-modal</code></td><td class="contrast-cell"><code>--shadow-xl</code></td><td>Highest elevation in the system — reserve for true modal dialogs</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="sub-header"><span class="sub-tag">4E-1</span><span class="sub-title">Light vs dark mode shadow values</span></div>
+    <p>Light mode shadows use a low-opacity near-black (<code>rgba(28,27,30,…)</code>, 4–10% alpha). Dark mode raises opacity to 25–45% at the same blur/spread — without this, a shadow computed for a white page becomes invisible on a near-black one. Only opacity changes between modes; blur and spread stay fixed per stop.</p>
+  </div>
+
+<!-- ════ 4F ════ -->
+  <div class="section" id="4f">
+    <div class="section-header">
+      <span class="section-id">4F</span>
+      <h2 class="section-title">Z-index scale</h2>
+    </div>
+    <hr class="section-hr">
+    <p>Eight named layers, already wired through <code>main.css</code> to Tailwind's <code>z-*</code> utilities. Named tokens only — never an arbitrary <code>z-[999]</code> in component code.</p>
+
+    <div class="z-stack">
+      <div class="z-layer" style="left:8%;top:60%;width:34%;height:34px;background:var(--r);border:1px solid var(--b2);color:var(--t2);z-index:1">raised · 1</div>
+      <div class="z-layer" style="left:18%;top:44%;width:34%;height:34px;background:#1A2040;border:1px solid #2A3A60;color:#93C5FD;z-index:100">dropdown · 100</div>
+      <div class="z-layer" style="left:28%;top:28%;width:34%;height:34px;background:#0F0F11;border:1px solid var(--b2);color:var(--t1);z-index:200">sticky · 200</div>
+      <div class="z-layer" style="left:38%;top:12%;width:38%;height:38px;background:var(--al);border:1px solid var(--ab);color:var(--a);z-index:400">modal · 400</div>
+      <div class="z-layer" style="left:52%;top:2%;width:34%;height:32px;background:#064E3B;border:1px solid #1A4A2E;color:#6EE7B7;z-index:500">toast · 500</div>
+    </div>
+
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Token</th><th>Value</th><th>Use</th></tr></thead>
+        <tbody>
+          <tr><td><code>--z-base</code></td><td class="contrast-cell">0</td><td>Default document flow</td></tr>
+          <tr><td><code>--z-raised</code></td><td class="contrast-cell">1</td><td>Cards that need to sit above page background patterns/dividers</td></tr>
+          <tr><td><code>--z-dropdown</code></td><td class="contrast-cell">100</td><td>Select menus, comboboxes, autocomplete lists</td></tr>
+          <tr><td><code>--z-sticky</code></td><td class="contrast-cell">200</td><td>Sticky table headers, sticky filter bars</td></tr>
+          <tr><td><code>--z-overlay</code></td><td class="contrast-cell">300</td><td>Modal scrim / backdrop</td></tr>
+          <tr><td><code>--z-modal</code></td><td class="contrast-cell">400</td><td>Dialog, sheet, drawer content</td></tr>
+          <tr><td><code>--z-toast</code></td><td class="contrast-cell">500</td><td>Toast notifications — always above modals so a save confirmation isn't trapped behind a dialog</td></tr>
+          <tr><td><code>--z-tooltip</code></td><td class="contrast-cell">600</td><td>Tooltips — highest layer, must never be occluded by anything</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+<!-- ════ 4G ════ -->
+  <div class="section" id="4g">
+    <div class="section-header">
+      <span class="section-id">4G</span>
+      <h2 class="section-title">Motion (adjacent reference)</h2>
+    </div>
+    <hr class="section-hr">
+    <p>Not in scope for this pass, but already token-backed and directly tied to elevation changes (hover shadow transitions, dropdown open/close), so it's listed here for completeness rather than left undiscoverable.</p>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Token</th><th>Value</th></tr></thead>
+        <tbody>
+          <tr><td><code>--duration-fast</code></td><td class="contrast-cell">100ms — hover states, focus rings</td></tr>
+          <tr><td><code>--duration-base</code></td><td class="contrast-cell">200ms — dropdown/tooltip open, shadow transitions</td></tr>
+          <tr><td><code>--duration-slow</code></td><td class="contrast-cell">300ms — modal enter/exit</td></tr>
+          <tr><td><code>--duration-slower</code></td><td class="contrast-cell">500ms — toast auto-dismiss timing cues</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="callout note">
+      <div class="callout-label">Reduced motion</div>
+      All four durations already collapse to <code>0ms</code> under <code>prefers-reduced-motion: reduce</code> in <code>tokens.css</code> §2.19 — no per-component work needed to respect that preference.
+    </div>
+  </div>
+
+<!-- ════ 4H ════ -->
+  <div class="section" id="4h">
+    <div class="section-header">
+      <span class="section-id">4H</span>
+      <h2 class="section-title">Anti-patterns</h2>
+    </div>
+    <hr class="section-hr">
+
+    <div class="ap-grid">
+      <div class="ap-box ap-dont">
+        <div class="ap-label">Don't invent a new shadow for "just this one card"</div>
+        <p>If none of the six stops feel deep enough, that's a cue the component's actual elevation role is unclear — pick the nearest role (card, dropdown, modal) rather than hand-tuning blur and spread.</p>
+      </div>
+      <div class="ap-box ap-do">
+        <div class="ap-label">Do treat radius as a role, not a size choice</div>
+        <p><code>--radius-card</code> should be used because something <em>is</em> a card, not because 8px looked good. Swapping the card radius later should be a one-line token change, not a find-and-replace across component files.</p>
+      </div>
+    </div>
+    <div class="ap-grid">
+      <div class="ap-box ap-dont">
+        <div class="ap-label">Don't stack more than two floating elevations</div>
+        <p>A dropdown opened from inside a modal is fine. A tooltip on a dropdown opened from inside a modal starts to feel structurally unstable, especially on a small mobile viewport — collapse to a simpler pattern instead.</p>
+      </div>
+      <div class="ap-box ap-do">
+        <div class="ap-label">Do flag gaps here instead of improvising</div>
+        <p>This is a start version, consistent with Sections 2 and 3. If a real screen needs a spacing value, radius, or elevation role that doesn't exist yet, add it to <code>tokens.css</code> and this page together.</p>
+      </div>
+    </div>
+  </div>
+
+</main>
+  <footer class="page-footer">
+    <div>Section 4 — Spacing, Layout &amp; Elevation &nbsp;·&nbsp; H2 Prime Web Application Design System &nbsp;·&nbsp; v1.0 (start version) <br><a href="h2p-section-03-typography.html">← Section 3 — Typography</a> &nbsp;·&nbsp; <a href="h2p-section-05-component-patterns.html">Section 5 — Component Patterns →</a> &nbsp;·&nbsp; <a href="h2p-cover.html">Cover</a></div>
+    <div style="text-align:right">Last updated: 2026-07-13<br>4px grid · 9 radius stops · 6 shadow stops · 8 z-layers</div>
+  </footer>
+
+</div>
+</body>
+</html>

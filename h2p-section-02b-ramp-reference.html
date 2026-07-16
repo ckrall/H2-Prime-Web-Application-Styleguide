@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Section 2B — Color Ramp Reference — H2 Prime Design System</title>
+  <link rel="stylesheet" href="h2p-shared.css">
+<style>
+.ramp-full { background:var(--s); border:1px solid var(--b1); border-radius:10px; overflow:hidden; margin-bottom:16px; }
+.rf-hdr    { display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap; padding:10px 14px; background:var(--r); border-bottom:1px solid var(--b2); }
+.rf-name   { font-weight:600; font-size:14px; color:var(--t1); }
+.rf-meta   { font-family:var(--fm); font-size:11px; color:var(--t3); }
+.rf-strip  { display:flex; gap:0; }
+.rf-cell   { flex:1; display:flex; flex-direction:column; position:relative; cursor:default; transition:transform .1s; }
+.rf-cell:hover { transform:scaleY(1.05); z-index:5; }
+.rf-swatch { height:52px; position:relative; }
+.rf-anchor-ring { position:absolute; inset:2px; border:2px solid var(--a); border-radius:1px; pointer-events:none; }
+.rf-info   { padding:5px 4px 8px; border-right:1px solid var(--b1); }
+.rf-cell:last-child .rf-info { border-right:none; }
+.rf-stop   { font-family:var(--fm); font-size:9px; font-weight:600; color:var(--a); display:block; margin-bottom:1px; }
+.rf-hex    { font-family:var(--fm); font-size:8px; color:var(--t3); display:block; word-break:break-all; margin-bottom:2px; }
+.rf-ok     { font-family:var(--fm); font-size:7.5px; color:var(--t3); display:block; margin-bottom:2px; line-height:1.3; }
+.rf-cr     { font-family:var(--fm); font-size:8px; display:block; }
+.rf-desc   { font-size:12px; color:var(--t2); padding:10px 14px; line-height:1.6; border-top:1px solid var(--b1); }
+.rf-tokens { padding:4px 14px 12px; display:flex; gap:5px; flex-wrap:wrap; border-top:1px solid var(--b1); }
+
+.group-label { font-size:10px; font-weight:600; letter-spacing:.1em; text-transform:uppercase; color:var(--a); margin:2rem 0 .75rem; padding-bottom:.5rem; border-bottom:1px solid var(--b1); }
+.group-label:first-child { margin-top:0; }
+</style>
+</head>
+<body>
+
+<nav class="guide-nav" aria-label="Style guide navigation">
+  <div class="guide-nav-left">
+    <a href="h2p-cover.html" class="guide-nav-home">
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+        <path d="M1 7L7 1l6 6M2.5 5.5V13h3v-3h3V5.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      H2 Prime Design System
+    </a>
+    <div class="guide-nav-divider" aria-hidden="true"></div>
+    <span class="guide-nav-section">2B — Color Ramp Reference</span>
+  </div>
+  <div class="guide-nav-right">
+    <a href="h2p-section-02-color-system.html" class="guide-nav-btn">← 2 — Color System</a>
+    <a href="h2p-section-02c-ramp-table.html" class="guide-nav-btn primary">2C — Ramp Table →</a>
+  </div>
+</nav>
+
+<div class="page-wrap">
+
+  <div class="doc-header">
+    <div class="doc-kicker">H2 Prime Web Application Design System &amp; Guidelines</div>
+    <h1 class="doc-title">Section 02B — <strong>Color Ramp Reference</strong></h1>
+    <p class="doc-lead">Full 12-stop reference for all 11 H2 Prime color ramps. Every stop shows hex value, OKLCH coordinates, and contrast ratio against the primary light-mode application surface (Neutral 25, #FBFCFD). Anchor stops are marked with a yellow ring. Token assignments called out per ramp.</p>
+    <div class="doc-meta">
+      <div class="doc-meta-item"><strong>Ramps</strong>11 total</div>
+      <div class="doc-meta-item"><strong>Stops</strong>12 per ramp (25–950)</div>
+      <div class="doc-meta-item"><strong>Color space</strong>OKLCH perceptual</div>
+      <div class="doc-meta-item"><strong>Contrast surface</strong>Neutral 25 (#FBFCFD)</div>
+      <div class="doc-meta-item"><strong>Anchor notation</strong>● yellow ring</div>
+      <div class="doc-meta-item"><strong>Last updated</strong>2026-07-13</div>
+    </div>
+  </div>
+
+  <div class="callout note">
+    <div class="callout-label">Reading this reference</div>
+    <p>Each ramp cell shows: stop number · hex value · approximate OKLCH coordinates (L% C H°) · contrast ratio vs Neutral 25 surface. <span class="cb cb-aaa">AAA</span> = ≥7:1 · <span class="cb cb-aa">AA</span> = ≥4.5:1 · <span class="cb cb-aal">AA-L</span> = ≥3:1 large text only · <span class="cb cb-fail">—</span> = below 3:1. Anchor stops are marked with a yellow border ring. Hover any swatch to see it expand.</p>
+  </div>
+
+<!-- ══ GROUP: BRAND ══ -->
+  <div class="group-label">Brand ramps — Yellow · Brown</div>
+
+  <!-- YELLOW -->
+  <div class="ramp-full">
+    <div class="rf-hdr">
+      <span class="rf-name">Yellow — primary brand · Client dashboard accent</span>
+      <span class="rf-meta">Anchor step 500 · #FFC20E · H≈85° OKLCH · RGB 255 194 14</span>
+    </div>
+    <div class="rf-strip">
+      <div class="rf-cell"><div class="rf-swatch" style="background:#FFFBEB"></div><div class="rf-info"><span class="rf-stop">25</span><span class="rf-hex">#FFFBEB</span><span class="rf-ok">97% 0.04 85°</span><span class="rf-cr" style="color:#6EE7B7">21:1 <span class="cb cb-aaa">AAA</span></span></div></div>
+      <div class="rf-cell"><div class="rf-swatch" style="background:#FFF3C4"></div><div class="rf-info"><span class="rf-stop">50</span><span class="rf-hex">#FFF3C4</span><span class="rf-ok">95% 0.07 85°</span><span class="rf-cr" style="color:#6EE7B7">19:1 <span class="cb cb-aaa">AAA</span></span></div></div>
+      <div class="rf-cell"><div class="rf-swatch" style="background:#FFEA96"></div><div class="rf-info"><span class="rf-stop">100</span><span class="rf-hex">#FFEA96</span><span class="rf-ok">92% 0.12 85°</span><span class="rf-cr" style="color:#6EE7B7">16:1 <span class="cb cb-aaa">AAA</span></span></div></div>
+      <div class="rf-cell"><div class="rf-swatch" style="background:#FFE063"></div><div class="rf-info"><span class="rf-stop">200</span><span class="rf-hex">#FFE063</span><span class="rf-ok">88% 0.16 85°</span><span class="rf-cr" style="color:#93C5FD">13:1 <span class="cb cb-aaa">AAA</span></span></div></div>
+      <div class="rf-cell"><div class="rf-swatch" style="background:#FFD32E"></div><div class="rf-info"><span class="rf-stop">300</span><span class="rf-hex">#FFD32E</span><span class="rf-ok">83% 0.18 85°</span><span class="rf-cr" style="color:#93C5FD">10:1 <span class="cb cb-aaa">AAA</span></span></div></div>
+      <div class="rf-cell"><div class="rf-swatch" style="background:#FFC90E"></div><div class="rf-info"><span class="rf-stop">400</span><span class="rf-hex">#FFC90E</span><span class="rf-ok">79% 0.18 85°</span><span class="rf-cr" style="color:#93C5FD">8.3:1 <span class="cb cb-aaa">AAA</span></span></div></div>
+      <div class="rf-cell"><div class="rf-swatch" style="background:#FFC20E"><div class="rf-anchor-ring"></div></div><div class="rf-info"><span class="rf-stop">●500</span><span class="rf-hex">#FFC20E</span><span class="rf-ok">78% 0.18 85°</span><span class="rf-cr" style="color:#93C5FD">7.8:1 <span class="cb cb-aaa">AAA</span></span></div></div>
+      <div class="rf-cell"><div class="rf-swatch" style="background:#D9A000"></div><div class="rf-info"><span class="rf-stop">600</span><span class="rf-hex">#D9A000</span><span class="rf-ok">66% 0.17 85°</span><span class="rf-cr" style="color:#FCD34D">5.1:1 <span class="cb cb-aa">AA</span></span></div></div>
+      <div class="rf-cell"><div class="rf-swatch" style="background:#A87B00"></div><div class="rf-info"><span class="rf-stop">700</span><span class="rf-hex">#A87B00</span><span class="rf-ok">52% 0.14 85°</span><span class="rf-cr" style="color:#FCA5A5">2.8:1 <span class="cb cb-aal">AA-L</span></span></div></div>
+      <div class="rf-cell"><div class="rf-swatch" style="background:#7A5900"></div><div class="rf-info"><span class="rf-stop">800</span><span class="rf-hex">#7A5900</span><span class="rf-ok">38% 0.11 85°</span><span class="rf-cr" style="color:#FCA5A5">1.7:1 <span class="cb cb-fail">—</span></span></div></div>
+      <div class="rf-cell"><div class="rf-swatch" style="background:#593F00"></div><div class="rf-info"><span class="rf-stop">900</span><span class="rf-hex">#593F00</span><span class="rf-ok">27% 0.08 85°</span><span class="rf-cr" style="color:#FCA5A5">1.3:1 <span class="cb cb-fail">—</span></span></div></div>
+      <div class="rf-cell"><div class="rf-swatch" style="background:#3D2A00"></div><div class="rf-info"><span class="rf-stop">950</span><span class="rf-hex">#3D2A00</span><span class="rf-ok">18% 0.05 85°</span><span class="rf-cr" style="color:#FCA5A5">1.1:1 <span class="cb cb-fail">—</span></span></div></div>
+    </div>
+    <div class="rf-tokens">
+      <span class="tok"><strong>interactive primary</strong> · 500</span>
+      <span class="tok"><strong>hover</strong> · 600</span>
+      <span class="tok"><strong>active/pressed</strong> · 700</span>
+      <span class="tok"><strong>accent tint surface</strong> · 25</span>
+      <span class="tok"><strong>text on light</strong> · 800 (use carefully — low contrast on LM surface)</span>
+      <span class="tok"><strong>text on Yellow fill</strong> · #000000</span>
+    </div>
+    <div class="rf-desc">Steps 25–500 have strong contrast against the LM page surface. Steps 600–700 meet AA/AA-L — suitable for decorative fills or large text, not body copy. Steps 800–950 have insufficient contrast on LM surfaces; they are used for DM surface fills only.</div>
+  </div>
+
+  <!-- BROWN -->
+  <div class="ramp-full">
+    <div class="rf-hdr">
+      <span class="rf-name">Brown — secondary brand / identity</span>
+      <span class="rf-meta">Anchor step 500 · #984616 · H≈46.5° terracotta</span>
+    </div>
+    <div class="rf-strip">
+      <div class="rf-cell"><div class="rf-swatch" style="background:#FFF8F3"></div><div class="rf-info"><span class="rf-stop">25</span><span class="rf-hex">#FFF8F3</span><span class="rf-ok">98% 0.010 58°</span><span class="rf-cr" style="color:#FCA5A5">1.05:1 <span class="cb cb-fail">—</span></span></div></div>
+      <div class="rf-cell"><div class="rf-swatch" style="background:#FFEFE7"></div><div class="rf-info"><span class="rf-stop">50</span><span class="rf-hex">#FFEFE7</span><span class="rf-ok">96% 0.020 49°</span><span class="rf-cr" style="color:#FCA5A5">1.12:1 <span class="cb cb-fail">—</span></span></div></div>
+      <div class="rf-cell"><div class="rf-swatch" style="background:#FEE1D3"></div><div class="rf-info"><span class="rf-stop">100</span><span class="rf-hex">#FEE1D3</span><span class="rf-ok">93% 0.037 47°</span><span class="rf-cr" style="color:#FCA5A5">1.24:1 <span class="cb cb-fail">—</span></span></div></div>
+      <div class="rf-cell"><div class="rf-swatch" style="background:#F5C7B2"></div><div class="rf-info"><span class="rf-stop">200</span><span class="rf-hex">#F5C7B2</span><span class="rf-ok">86% 0.060 46°</span><span class="rf-cr" style="color:#FCA5A5">1.53:1 <span class="cb cb-fail">—</span></span></div></div>
+      <div class="rf-cell"><div class="rf-swatch" style="background:#E7AB8E"></div><div class="rf-info"><span class="rf-stop">300</span><span class="rf-hex">#E7AB8E</span><span class="rf-ok">79% 0.081 47°</span><span class="rf-cr" style="color:#FCA5A5">1.98:1 <span class="cb cb-fail">—</span></span></div></div>
+      <div class="rf-cell"><div class="rf-swatch" style="background:#D68B66"></div><div class="rf-info"><span class="rf-stop">400</span><span class="rf-hex">#D68B66</span><span class="rf-ok">71% 0.105 47°</span><span class="rf-cr" style="color:#FCD34D">2.71:1 <span class="cb cb-aal">AA-L</span></span></div></div>
+      <div class="rf-cell"><div class="rf-swatch" style="background:#984616"><div class="rf-anchor-ring"></div></div><div class="rf-info"><span class="rf-stop">●500</span><span class="rf-hex">#984616</span><span class="rf-ok">49% 0.124 47°</span><span class="rf-cr" style="color:#93C5FD">6.52:1 <span class="cb cb-aa">AA</span></span></div></div>
+      <div class="rf-cell"><div class="rf-swatch" style="background:#782900"></div><div class="rf-info"><span class="rf-stop">600</span><span class="rf-hex">#782900</span><span class="rf-ok">40% 0.119 42°</span><span class="rf-cr" style="color:#6EE7B7">9.93:1 <span class="cb cb-aaa">AAA</span></span></div></div>
+      <div class="rf-cell"><div class="rf-swatch" style="background:#5A1100"></div><div class="rf-info"><span class="rf-stop">700</span><span class="rf-hex">#5A1100</span><span class="rf-ok">31% 0.108 35°</span><span class="rf-cr" style="color:#6EE7B7">13.86:1 <span class="cb cb-aaa">AAA</span></span></div></div>
+      <div class="rf-cell"><div class="rf-swatch" style="background:#3F0000"></div><div class="rf-info"><span class="rf-stop">800</span><span class="rf-hex">#3F0000</span><span class="rf-ok">23% 0.095 29°</span><span class="rf-cr" style="color:#6EE7B7">17.34:1 <span class="cb cb-aaa">AAA</span></span></div></div>
+      <div class="rf-cell"><div class="rf-swatch" style="background:#280000"></div><div class="rf-info"><span class="rf-stop">900</span><span class="rf-hex">#280000</span><span class="rf-ok">17% 0.071 29°</span><span class="rf-cr" style="color:#6EE7B7">19.26:1 <span class="cb cb-aaa">AAA</span></span></div></div>
+      <div class="rf-cell"><div class="rf-swatch" style="background:#230000"></div><div class="rf-info"><span class="rf-stop">950</span><span class="rf-hex">#230000</span><span class="rf-ok">16% 0.066 29°</span><span class="rf-cr" style="color:#6EE7B7">19.60:1 <span class="cb cb-aaa">AAA</span></span></div></div>
+    </div>
+    <div class="rf-tokens">
+      <span class="tok"><strong>identity fill</strong> · 500 (6.52:1 AA on white)</span>
+      <span class="tok"><strong>identity fill (AAA)</strong> · 600 (9.93:1)</span>
+      <span class="tok"><strong>tint surface</strong> · 25</span>
+      <span class="tok"><strong>text on fill</strong> · #FFFFFF</span>
+    </div>
+    <div class="rf-desc">Identity use only — headers, illustration, brand marks, badges. Not used for interactive/CTA fills or status roles; see §2D-2 in the color system page for the full rationale. 13.5° from Warning amber — closer than any other pairing in the palette.</div>
+  </div>
+
+  <!-- NEUTRAL (COOL) -->
+  <div class="ramp-full">
+    <div class="rf-hdr">
+      <span class="rf-name">Neutral (cool) — text, surface, chrome &amp; primary interactive</span>
+      <span class="rf-meta">Recomputed 2026-07-13 · anchor step 800 · #272A2F · H≈258° · replaces Mid Gray + Dark Gray</span>
+    </div>
+    <div class="rf-strip">
+      <div class="rf-cell"><div class="rf-swatch" style="background:#FBFCFD"><div class="rf-anchor-ring" style="border-color:#52575E;opacity:.3"></div></div><div class="rf-info"><span class="rf-stop">25</span><span class="rf-hex">#FBFCFD</span><span class="rf-ok">97% 0.005 258°</span><span class="rf-cr" style="color:#FCA5A5">1.1:1 <span class="cb cb-fail">surface</span></span></div></div>
+      <div class="rf-cell"><div class="rf-swatch" style="background:#F5F7F9"></div><div class="rf-info"><span class="rf-stop">50</span><span class="rf-hex">#F5F7F9</span><span class="rf-ok">94% 0.007 258°</span><span class="rf-cr" style="color:#FCA5A5">1.2:1 <span class="cb cb-fail">surface</span></span></div></div>
+      <div class="rf-cell"><div class="rf-swatch" style="background:#EBEDF0"></div><div class="rf-info"><span class="rf-stop">100</span><span class="rf-hex">#EBEDF0</span><span class="rf-ok">87% 0.009 258°</span><span class="rf-cr" style="color:#FCA5A5">1.55:1 <span class="cb cb-fail">surface</span></span></div></div>
+      <div class="rf-cell"><div class="rf-swatch" style="background:#D6D9DE"></div><div class="rf-info"><span class="rf-stop">200</span><span class="rf-hex">#D6D9DE</span><span class="rf-ok">76% 0.011 258°</span><span class="rf-cr" style="color:#FCA5A5">2.1:1 <span class="cb cb-fail">surface</span></span></div></div>
+      <div class="rf-cell"><div class="rf-swatch" style="background:#BABEC4"></div><div class="rf-info"><span class="rf-stop">300</span><span class="rf-hex">#BABEC4</span><span class="rf-ok">66% 0.011 258°</span><span class="rf-cr" style="color:#FCD34D">3.0:1 <span class="cb cb-aal">AA-L</span></span></div></div>
+      <div class="rf-cell"><div class="rf-swatch" style="background:#959AA1"></div><div class="rf-info"><span class="rf-stop">400</span><span class="rf-hex">#959AA1</span><span class="rf-ok">55% 0.011 259°</span><span class="rf-cr" style="color:#93C5FD">4.6:1 <span class="cb cb-aa">AA</span></span></div></div>
+      <div class="rf-cell"><div class="rf-swatch" style="background:#6D7279"></div><div class="rf-info"><span class="rf-stop">500</span><span class="rf-hex">#6D7279</span><span class="rf-ok">45% 0.012 257°</span><span class="rf-cr" style="color:#93C5FD">4.85:1 <span class="cb cb-aa">AA</span></span></div></div>
+      <div class="rf-cell"><div class="rf-swatch" style="background:#52575E"></div><div class="rf-info"><span class="rf-stop">600</span><span class="rf-hex">#52575E</span><span class="rf-ok">36% 0.013 257°</span><span class="rf-cr" style="color:#6EE7B7">7.28:1 <span class="cb cb-aaa">AAA</span></span></div></div>
+      <div class="rf-cell"><div class="rf-swatch" style="background:#3B3F45"></div><div class="rf-info"><span class="rf-stop">700</span><span class="rf-hex">#3B3F45</span><span class="rf-ok">29% 0.012 258°</span><span class="rf-cr" style="color:#6EE7B7">10.59:1 <span class="cb cb-aaa">AAA</span></span></div></div>
+      <div class="rf-cell"><div class="rf-swatch" style="background:#272A2F"><div class="rf-anchor-ring"></div></div><div class="rf-info"><span class="rf-stop">●800</span><span class="rf-hex">#272A2F</span><span class="rf-ok">23% 0.010 261°</span><span class="rf-cr" style="color:#6EE7B7">14.40:1 <span class="cb cb-aaa">AAA</span></span></div></div>
+      <div class="rf-cell"><div class="rf-swatch" style="background:#15171B"></div><div class="rf-info"><span class="rf-stop">900</span><span class="rf-hex">#15171B</span><span class="rf-ok">17% 0.009 264°</span><span class="rf-cr" style="color:#6EE7B7">17.94:1 <span class="cb cb-aaa">AAA</span></span></div></div>
+      <div class="rf-cell"><div class="rf-swatch" style="background:#07080B"></div><div class="rf-info"><span class="rf-stop">950</span><span class="rf-hex">#07080B</span><span class="rf-ok">13% 0.007 269°</span><span class="rf-cr" style="color:#6EE7B7">20.03:1 <span class="cb cb-aaa">AAA</span></span></div></div>
+    </div>
+    <div class="rf-tokens">
+      <span class="tok"><strong>surface-page LM</strong> · 25 (#FBFCFD)</span>
+      <span class="tok"><strong>surface-raised LM</strong> · #FFFFFF</span>
+      <span class="tok"><strong>surface-sunken LM</strong> · 50</span>
+      <span class="tok"><strong>border-subtle</strong> · 100</span>
+      <span class="tok"><strong>border-default</strong> · 200</span>
+      <span class="tok"><strong>text-secondary</strong> · 700 (10.59:1 AAA)</span>
+      <span class="tok"><strong>text-tertiary</strong> · 600 (7.28:1 AAA)</span>
+      <span class="tok"><strong>interactive-primary-bg LM</strong> · 800 (14.4:1 w/ white text)</span>
+      <span class="tok"><strong>nav-bg</strong> · 800</span>
+      <span class="tok"><strong>interactive-primary-bg DM</strong> · 100, inverted (15.9:1 w/ near-black text)</span>
+      <span class="tok"><strong>surface-page DM</strong> · 950</span>
+      <span class="tok"><strong>surface-raised DM</strong> · 900</span>
+    </div>
+    <div class="rf-desc">Consolidates the former Mid Gray and Dark Gray brand ramps into one system ramp, cooled to H≈258° so Yellow and Brown have a calm surface. Also the ramp behind the primary CTA fill (see §2D-2 in the color system page) — chosen over Brown because it carries zero hue overlap with any utility ramp. <code>--ramp-gray-mid-*</code> / <code>--ramp-gray-dark-*</code> remain in <code>tokens.css</code> as aliases onto this ramp.</div>
+  </div>
+
+<!-- ══ GROUP: UTILITY ══ -->
+  <div class="group-label">Utility ramps — Danger · Warning · Success · Info · Help</div>
+
+  <!-- DANGER -->
+  <div class="ramp-full">
+    <div class="rf-hdr">
+      <span class="rf-name">Danger — error &amp; destructive states</span>
+      <span class="rf-meta">Anchor step 500 · #C83520 · H≈15° red-orange</span>
+    </div>
+    <div class="rf-strip">
+      <div class="rf-cell"><div class="rf-swatch" style="background:#FFF0ED"></div><div class="rf-info"><span class="rf-stop">25</span><span class="rf-hex">#FFF0ED</span><span class="rf-ok">96% 0.02 15°</span><span class="rf-cr" style="color:#FCA5A5">1.1:1 <span class="cb cb-fail">surface</span></span></div></div>
+      <div class="rf-cell"><div class="rf-swatch" style="background:#FFE0D9"></div><div class="rf-info"><span class="rf-stop">50</span><span class="rf-hex">#FFE0D9</span><span class="rf-ok">91% 0.05 15°</span><span class="rf-cr" style="color:#FCA5A5">1.4:1</span></div></div>
+      <div class="rf-cell"><div class="rf-swatch" style="background:#FFC5B8"></div><div class="rf-info"><span class="rf-stop">100</span><span class="rf-hex">#FFC5B8</span><span class="rf-ok">84% 0.09 15°</span><span class="rf-cr" style="color:#FCA5A5">2.0:1</span></div></div>
+      <div class="rf-cell"><div class="rf-swatch" style="background:#FF9E8A"></div><div class="rf-info"><span class="rf-stop">200</span><span class="rf-hex">#FF9E8A</span><span class="rf-ok">74% 0.13 15°</span><span class="rf-cr" style="color:#FCA5A5">2.8:1 <span class="cb cb-aal">AA-L</span></span></div></div>
+      <div class="rf-cell"><div class="rf-swatch" style="background:#F47560"></div><div class="rf-info"><span class="rf-stop">300</span><span class="rf-hex">#F47560</span><span class="rf-ok">62% 0.14 15°</span><span class="rf-cr" style="color:#FCD34D">4.3:1 <span class="cb cb-aal">AA-L</span></span></div></div>
+      <div class="rf-cell"><div class="rf-swatch" style="background:#E04E36"></div><div class="rf-info"><span class="rf-stop">400</span><span class="rf-hex">#E04E36</span><span class="rf-ok">50% 0.16 15°</span><span class="rf-cr" style="color:#93C5FD">5.5:1 <span class="cb cb-aa">AA</span></span></div></div>
+      <div class="rf-cell"><div class="rf-swatch" style="background:#C83520"><div class="rf-anchor-ring"></div></div><div class="rf-info"><span class="rf-stop">●500</span><span class="rf-hex">#C83520</span><span class="rf-ok">39% 0.17 15°</span><span class="rf-cr" style="color:#6EE7B7">8.3:1 <span class="cb cb-aaa">AAA</span></span></div></div>
+      <div class="rf-cell"><div class="rf-swatch" style="background:#A62010"></div><div class="rf-info"><span class="rf-stop">600</span><span class="rf-hex">#A62010</span><span class="rf-ok">31% 0.14 15°</span><span class="rf-cr" style="color:#6EE7B7">11:1 <span class="cb cb-aaa">AAA</span></span></div></div>
+      <div class="rf-cell"><div class="rf-swatch" style="background:#841400"></div><div class="rf-info"><span class="rf-stop">700</span><span class="rf-hex">#841400</span><span class="rf-ok">24% 0.11 15°</span><span class="rf-cr" style="color:#6EE7B7">15:1 <span class="cb cb-aaa">AAA</span></span></div></div>
+      <div class="rf-cell"><div class="rf-swatch" style="background:#5E0E00"></div><div class="rf-info"><span class="rf-stop">800</span><span class="rf-hex">#5E0E00</span><span class="rf-ok">17% 0.08 15°</span><span class="rf-cr" style="color:#6EE7B7">18:1 <span class="cb cb-aaa">AAA</span></span></div></div>
+      <div class="rf-cell"><div class="rf-swatch" style="background:#3E0800"></div><div class="rf-info"><span class="rf-stop">900</span><span class="rf-hex">#3E0800</span><span class="rf-ok">11% 0.05 15°</span><span class="rf-cr" style="color:#6EE7B7">20:1 <span class="cb cb-aaa">AAA</span></span></div></div>
+      <div class="rf-cell"><div class="rf-swatch" style="background:#260400"></div><div class="rf-info"><span class="rf-stop">950</span><span class="rf-hex">#260400</span><span class="rf-ok">7% 0.03 15°</span><span class="rf-cr" style="color:#6EE7B7">21:1 <span class="cb cb-aaa">AAA</span></span></div></div>
+    </div>
+    <div class="rf-tokens">
+      <span class="tok"><strong>surface</strong> · 25</span>
+      <span class="tok"><strong>border</strong> · 400 (5.5:1 AA)</span>
+      <span class="tok"><strong>text</strong> · 700 (15:1 AAA on surface)</span>
+      <span class="tok"><strong>icon</strong> · 500</span>
+      <span class="tok"><strong>solid</strong> · 500 (button/badge fill)</span>
+      <span class="tok"><strong>text on solid</strong> · #FFFFFF</span>
+    </div>
+    <div class="rf-desc">Used for: form validation errors, destructive action warnings, failed transaction states, error toasts. Step 700 text on step 25 surface achieves AAA. Solid fill at step 500 with white text achieves AAA.</div>
+  </div>
+
+  <!-- WARNING -->
+  <div class="ramp-full">
+    <div class="rf-hdr">
+      <span class="rf-name">Warning — caution &amp; attention states</span>
+      <span class="rf-meta">Ramp anchor step 500 · #D97706 · H≈55° amber · Client solid: step 600 #B45309 (H≈38°)</span>
+    </div>
+    <div class="rf-strip">
+      <div class="rf-cell"><div class="rf-swatch" style="background:#FFFBEB"></div><div class="rf-info"><span class="rf-stop">25</span><span class="rf-hex">#FFFBEB</span><span class="rf-ok">97% 0.04 55°</span><span class="rf-cr" style="color:#FCA5A5">1.1:1 <span class="cb cb-fail">surface</span></span></div></div>
+      <div class="rf-cell"><div class="rf-swatch" style="background:#FEF3C7"></div><div class="rf-info"><span class="rf-stop">50</span><span class="rf-hex">#FEF3C7</span><span class="rf-ok">95% 0.08 55°</span><span class="rf-cr" style="color:#FCA5A5">1.2:1</span></div></div>
+      <div class="rf-cell"><div class="rf-swatch" style="background:#FDE68A"></div><div class="rf-info"><span class="rf-stop">100</span><span class="rf-hex">#FDE68A</span><span class="rf-ok">91% 0.14 55°</span><span class="rf-cr" style="color:#FCA5A5">1.6:1</span></div></div>
+      <div class="rf-cell"><div class="rf-swatch" style="background:#FCD34D"></div><div class="rf-info"><span class="rf-stop">200</span><span class="rf-hex">#FCD34D</span><span class="rf-ok">85% 0.17 55°</span><span class="rf-cr" style="color:#FCA5A5">2.4:1</span></div></div>
+      <div class="rf-cell"><div class="rf-swatch" style="background:#FBBF24"></div><div class="rf-info"><span class="rf-stop">300</span><span class="rf-hex">#FBBF24</span><span class="rf-ok">79% 0.17 55°</span><span class="rf-cr" style="color:#FCA5A5">2.9:1 <span class="cb cb-aal">AA-L</span></span></div></div>
+      <div class="rf-cell"><div class="rf-swatch" style="background:#F59E0B"></div><div class="rf-info"><span class="rf-stop">400</span><span class="rf-hex">#F59E0B</span><span class="rf-ok">69% 0.17 55°</span><span class="rf-cr" style="color:#FCD34D">4.0:1 <span class="cb cb-aal">AA-L</span></span></div></div>
+      <div class="rf-cell"><div class="rf-swatch" style="background:#D97706"><div class="rf-anchor-ring"></div></div><div class="rf-info"><span class="rf-stop">●500</span><span class="rf-hex">#D97706</span><span class="rf-ok">56% 0.16 55°</span><span class="rf-cr" style="color:#93C5FD">5.5:1 <span class="cb cb-aa">AA</span></span></div></div>
+      <div class="rf-cell"><div class="rf-swatch" style="background:#B45309"><div style="position:absolute;inset:2px;border:2px solid #7C3AED;border-radius:1px;pointer-events:none"></div></div><div class="rf-info"><span class="rf-stop">600 ★</span><span class="rf-hex">#B45309</span><span class="rf-ok">45% 0.13 38°</span><span class="rf-cr" style="color:#6EE7B7">8.4:1 <span class="cb cb-aaa">AAA</span></span></div></div>
+      <div class="rf-cell"><div class="rf-swatch" style="background:#92400E"></div><div class="rf-info"><span class="rf-stop">700</span><span class="rf-hex">#92400E</span><span class="rf-ok">34% 0.10 38°</span><span class="rf-cr" style="color:#6EE7B7">11:1 <span class="cb cb-aaa">AAA</span></span></div></div>
+      <div class="rf-cell"><div class="rf-swatch" style="background:#6B2F09"></div><div class="rf-info"><span class="rf-stop">800</span><span class="rf-hex">#6B2F09</span><span class="rf-ok">24% 0.07 38°</span><span class="rf-cr" style="color:#6EE7B7">16:1 <span class="cb cb-aaa">AAA</span></span></div></div>
+      <div class="rf-cell"><div class="rf-swatch" style="background:#451E04"></div><div class="rf-info"><span class="rf-stop">900</span><span class="rf-hex">#451E04</span><span class="rf-ok">16% 0.04 38°</span><span class="rf-cr" style="color:#6EE7B7">19:1 <span class="cb cb-aaa">AAA</span></span></div></div>
+      <div class="rf-cell"><div class="rf-swatch" style="background:#2C1002"></div><div class="rf-info"><span class="rf-stop">950</span><span class="rf-hex">#2C1002</span><span class="rf-ok">10% 0.02 38°</span><span class="rf-cr" style="color:#6EE7B7">21:1 <span class="cb cb-aaa">AAA</span></span></div></div>
+    </div>
+    <div class="rf-tokens">
+      <span class="tok"><strong>surface</strong> · 25 (all themes)</span>
+      <span class="tok"><strong>text</strong> · 700 (all themes)</span>
+      <span class="tok"><strong>border / icon / solid (client)</strong> · 600 ★ #B45309</span>
+      <span class="tok"><strong>border / icon / solid (filer/admin)</strong> · 500 #D97706</span>
+      <span class="tok"><strong>text on solid (client)</strong> · #FFFFFF</span>
+      <span class="tok"><strong>text on solid (filer/admin)</strong> · #000000</span>
+    </div>
+    <div class="rf-desc">★ Step 600 is the client-theme anchor for visible Warning surfaces (border, icon, solid fill) — shifted from step 500 to prevent perceptual collision with Brand Yellow (#FFC20E, H≈85°). Step 600 at H≈38° reads as orange-amber, clearly distinct from yellow-amber at H≈55°. See §2D of the Color System for full rationale.</div>
+  </div>
+
+  <!-- SUCCESS -->
+  <div class="ramp-full">
+    <div class="rf-hdr">
+      <span class="rf-name">Success — positive &amp; confirmation states</span>
+      <span class="rf-meta">Anchor step 500 · #16A34A · H≈142° forest green</span>
+    </div>
+    <div class="rf-strip">
+      <div class="rf-cell"><div class="rf-swatch" style="background:#F0FDF4"></div><div class="rf-info"><span class="rf-stop">25</span><span class="rf-hex">#F0FDF4</span><span class="rf-ok">98% 0.02 142°</span><span class="rf-cr" style="color:#FCA5A5">1.1:1 <span class="cb cb-fail">surface</span></span></div></div>
+      <div class="rf-cell"><div class="rf-swatch" style="background:#DCFCE7"></div><div class="rf-info"><span class="rf-stop">50</span><span class="rf-hex">#DCFCE7</span><span class="rf-ok">95% 0.06 142°</span><span class="rf-cr" style="color:#FCA5A5">1.3:1</span></div></div>
+      <div class="rf-cell"><div class="rf-swatch" style="background:#BBF7D0"></div><div class="rf-info"><span class="rf-stop">100</span><span class="rf-hex">#BBF7D0</span><span class="rf-ok">90% 0.11 142°</span><span class="rf-cr" style="color:#FCA5A5">1.7:1</span></div></div>
+      <div class="rf-cell"><div class="rf-swatch" style="background:#86EFAC"></div><div class="rf-info"><span class="rf-stop">200</span><span class="rf-hex">#86EFAC</span><span class="rf-ok">84% 0.14 142°</span><span class="rf-cr" style="color:#FCA5A5">2.2:1</span></div></div>
+      <div class="rf-cell"><div class="rf-swatch" style="background:#4ADE80"></div><div class="rf-info"><span class="rf-stop">300</span><span class="rf-hex">#4ADE80</span><span class="rf-ok">77% 0.17 142°</span><span class="rf-cr" style="color:#FCA5A5">2.8:1 <span class="cb cb-aal">AA-L</span></span></div></div>
+      <div class="rf-cell"><div class="rf-swatch" style="background:#22C55E"></div><div class="rf-info"><span class="rf-stop">400</span><span class="rf-hex">#22C55E</span><span class="rf-ok">69% 0.18 142°</span><span class="rf-cr" style="color:#FCD34D">4.2:1 <span class="cb cb-aal">AA-L</span></span></div></div>
+      <div class="rf-cell"><div class="rf-swatch" style="background:#16A34A"><div class="rf-anchor-ring"></div></div><div class="rf-info"><span class="rf-stop">●500</span><span class="rf-hex">#16A34A</span><span class="rf-ok">57% 0.17 142°</span><span class="rf-cr" style="color:#93C5FD">6.1:1 <span class="cb cb-aa">AA</span></span></div></div>
+      <div class="rf-cell"><div class="rf-swatch" style="background:#15803D"></div><div class="rf-info"><span class="rf-stop">600</span><span class="rf-hex">#15803D</span><span class="rf-ok">46% 0.14 142°</span><span class="rf-cr" style="color:#6EE7B7">9.1:1 <span class="cb cb-aaa">AAA</span></span></div></div>
+      <div class="rf-cell"><div class="rf-swatch" style="background:#166534"></div><div class="rf-info"><span class="rf-stop">700</span><span class="rf-hex">#166534</span><span class="rf-ok">36% 0.11 142°</span><span class="rf-cr" style="color:#6EE7B7">13:1 <span class="cb cb-aaa">AAA</span></span></div></div>
+      <div class="rf-cell"><div class="rf-swatch" style="background:#14532D"></div><div class="rf-info"><span class="rf-stop">800</span><span class="rf-hex">#14532D</span><span class="rf-ok">29% 0.08 142°</span><span class="rf-cr" style="color:#6EE7B7">16:1 <span class="cb cb-aaa">AAA</span></span></div></div>
+      <div class="rf-cell"><div class="rf-swatch" style="background:#052E16"></div><div class="rf-info"><span class="rf-stop">900</span><span class="rf-hex">#052E16</span><span class="rf-ok">17% 0.05 142°</span><span class="rf-cr" style="color:#6EE7B7">20:1 <span class="cb cb-aaa">AAA</span></span></div></div>
+      <div class="rf-cell"><div class="rf-swatch" style="background:#021D0D"></div><div class="rf-info"><span class="rf-stop">950</span><span class="rf-hex">#021D0D</span><span class="rf-ok">11% 0.03 142°</span><span class="rf-cr" style="color:#6EE7B7">21:1 <span class="cb cb-aaa">AAA</span></span></div></div>
+    </div>
+    <div class="rf-tokens">
+      <span class="tok"><strong>surface</strong> · 25</span>
+      <span class="tok"><strong>border</strong> · 400</span>
+      <span class="tok"><strong>text</strong> · 700 (13:1 AAA)</span>
+      <span class="tok"><strong>icon</strong> · 500</span>
+      <span class="tok"><strong>solid</strong> · 500 · text on solid: #FFFFFF</span>
+    </div>
+  </div>
+
+  <!-- INFO -->
+  <div class="ramp-full">
+    <div class="rf-hdr">
+      <span class="rf-name">Info — informational &amp; neutral-positive states</span>
+      <span class="rf-meta">Anchor step 500 · #2563EB · H≈220° clear blue</span>
+    </div>
+    <div class="rf-strip">
+      <div class="rf-cell"><div class="rf-swatch" style="background:#EFF6FF"></div><div class="rf-info"><span class="rf-stop">25</span><span class="rf-hex">#EFF6FF</span><span class="rf-ok">97% 0.02 220°</span><span class="rf-cr" style="color:#FCA5A5">1.1:1 <span class="cb cb-fail">surface</span></span></div></div>
+      <div class="rf-cell"><div class="rf-swatch" style="background:#DBEAFE"></div><div class="rf-info"><span class="rf-stop">50</span><span class="rf-hex">#DBEAFE</span><span class="rf-ok">93% 0.05 220°</span><span class="rf-cr" style="color:#FCA5A5">1.3:1</span></div></div>
+      <div class="rf-cell"><div class="rf-swatch" style="background:#BFDBFE"></div><div class="rf-info"><span class="rf-stop">100</span><span class="rf-hex">#BFDBFE</span><span class="rf-ok">87% 0.09 220°</span><span class="rf-cr" style="color:#FCA5A5">1.7:1</span></div></div>
+      <div class="rf-cell"><div class="rf-swatch" style="background:#93C5FD"></div><div class="rf-info"><span class="rf-stop">200</span><span class="rf-hex">#93C5FD</span><span class="rf-ok">79% 0.13 220°</span><span class="rf-cr" style="color:#FCA5A5">2.3:1</span></div></div>
+      <div class="rf-cell"><div class="rf-swatch" style="background:#60A5FA"></div><div class="rf-info"><span class="rf-stop">300</span><span class="rf-hex">#60A5FA</span><span class="rf-ok">69% 0.16 220°</span><span class="rf-cr" style="color:#FCA5A5">2.9:1 <span class="cb cb-aal">AA-L</span></span></div></div>
+      <div class="rf-cell"><div class="rf-swatch" style="background:#3B82F6"></div><div class="rf-info"><span class="rf-stop">400</span><span class="rf-hex">#3B82F6</span><span class="rf-ok">57% 0.20 220°</span><span class="rf-cr" style="color:#93C5FD">4.9:1 <span class="cb cb-aa">AA</span></span></div></div>
+      <div class="rf-cell"><div class="rf-swatch" style="background:#2563EB"><div class="rf-anchor-ring"></div></div><div class="rf-info"><span class="rf-stop">●500</span><span class="rf-hex">#2563EB</span><span class="rf-ok">47% 0.22 220°</span><span class="rf-cr" style="color:#6EE7B7">7.9:1 <span class="cb cb-aaa">AAA</span></span></div></div>
+      <div class="rf-cell"><div class="rf-swatch" style="background:#1D4ED8"></div><div class="rf-info"><span class="rf-stop">600</span><span class="rf-hex">#1D4ED8</span><span class="rf-ok">38% 0.20 220°</span><span class="rf-cr" style="color:#6EE7B7">11:1 <span class="cb cb-aaa">AAA</span></span></div></div>
+      <div class="rf-cell"><div class="rf-swatch" style="background:#1E40AF"></div><div class="rf-info"><span class="rf-stop">700</span><span class="rf-hex">#1E40AF</span><span class="rf-ok">31% 0.17 220°</span><span class="rf-cr" style="color:#6EE7B7">14:1 <span class="cb cb-aaa">AAA</span></span></div></div>
+      <div class="rf-cell"><div class="rf-swatch" style="background:#1E3A8A"></div><div class="rf-info"><span class="rf-stop">800</span><span class="rf-hex">#1E3A8A</span><span class="rf-ok">25% 0.14 220°</span><span class="rf-cr" style="color:#6EE7B7">17:1 <span class="cb cb-aaa">AAA</span></span></div></div>
+      <div class="rf-cell"><div class="rf-swatch" style="background:#172554"></div><div class="rf-info"><span class="rf-stop">900</span><span class="rf-hex">#172554</span><span class="rf-ok">16% 0.09 220°</span><span class="rf-cr" style="color:#6EE7B7">20:1 <span class="cb cb-aaa">AAA</span></span></div></div>
+      <div class="rf-cell"><div class="rf-swatch" style="background:#0F1A3A"></div><div class="rf-info"><span class="rf-stop">950</span><span class="rf-hex">#0F1A3A</span><span class="rf-ok">11% 0.06 220°</span><span class="rf-cr" style="color:#6EE7B7">21:1 <span class="cb cb-aaa">AAA</span></span></div></div>
+    </div>
+    <div class="rf-tokens">
+      <span class="tok"><strong>surface</strong> · 25</span>
+      <span class="tok"><strong>border</strong> · 400</span>
+      <span class="tok"><strong>text</strong> · 700 (14:1 AAA)</span>
+      <span class="tok"><strong>icon</strong> · 500</span>
+      <span class="tok"><strong>solid</strong> · 500 · text on solid: #FFFFFF</span>
+      <span class="tok"><strong>text-link LM</strong> · 600 (7.1:1 AAA on white)</span>
+      <span class="tok"><strong>text-link DM</strong> · 300 (5.9:1 AA on DM surface)</span>
+    </div>
+  </div>
+
+  <!-- HELP -->
+  <div class="ramp-full">
+    <div class="rf-hdr">
+      <span class="rf-name">Help — support &amp; guidance states</span>
+      <span class="rf-meta">Anchor step 500 · #7C3AED · H≈280° violet · Note: shares hue family with Admin accent</span>
+    </div>
+    <div class="rf-strip">
+      <div class="rf-cell"><div class="rf-swatch" style="background:#F5F3FF"></div><div class="rf-info"><span class="rf-stop">25</span><span class="rf-hex">#F5F3FF</span><span class="rf-ok">97% 0.02 280°</span><span class="rf-cr" style="color:#FCA5A5">1.1:1 <span class="cb cb-fail">surface</span></span></div></div>
+      <div class="rf-cell"><div class="rf-swatch" style="background:#EDE9FE"></div><div class="rf-info"><span class="rf-stop">50</span><span class="rf-hex">#EDE9FE</span><span class="rf-ok">93% 0.06 280°</span><span class="rf-cr" style="color:#FCA5A5">1.3:1</span></div></div>
+      <div class="rf-cell"><div class="rf-swatch" style="background:#DDD6FE"></div><div class="rf-info"><span class="rf-stop">100</span><span class="rf-hex">#DDD6FE</span><span class="rf-ok">86% 0.11 280°</span><span class="rf-cr" style="color:#FCA5A5">1.7:1</span></div></div>
+      <div class="rf-cell"><div class="rf-swatch" style="background:#C4B5FD"></div><div class="rf-info"><span class="rf-stop">200</span><span class="rf-hex">#C4B5FD</span><span class="rf-ok">76% 0.16 280°</span><span class="rf-cr" style="color:#FCA5A5">2.3:1</span></div></div>
+      <div class="rf-cell"><div class="rf-swatch" style="background:#A78BFA"></div><div class="rf-info"><span class="rf-stop">300</span><span class="rf-hex">#A78BFA</span><span class="rf-ok">65% 0.19 280°</span><span class="rf-cr" style="color:#FCA5A5">3.1:1 <span class="cb cb-aal">AA-L</span></span></div></div>
+      <div class="rf-cell"><div class="rf-swatch" style="background:#8B5CF6"></div><div class="rf-info"><span class="rf-stop">400</span><span class="rf-hex">#8B5CF6</span><span class="rf-ok">53% 0.22 280°</span><span class="rf-cr" style="color:#93C5FD">5.0:1 <span class="cb cb-aa">AA</span></span></div></div>
+      <div class="rf-cell"><div class="rf-swatch" style="background:#7C3AED"><div class="rf-anchor-ring"></div></div><div class="rf-info"><span class="rf-stop">●500</span><span class="rf-hex">#7C3AED</span><span class="rf-ok">42% 0.24 280°</span><span class="rf-cr" style="color:#6EE7B7">8.2:1 <span class="cb cb-aaa">AAA</span></span></div></div>
+      <div class="rf-cell"><div class="rf-swatch" style="background:#6D28D9"></div><div class="rf-info"><span class="rf-stop">600</span><span class="rf-hex">#6D28D9</span><span class="rf-ok">33% 0.22 280°</span><span class="rf-cr" style="color:#6EE7B7">12:1 <span class="cb cb-aaa">AAA</span></span></div></div>
+      <div class="rf-cell"><div class="rf-swatch" style="background:#5B21B6"></div><div class="rf-info"><span class="rf-stop">700</span><span class="rf-hex">#5B21B6</span><span class="rf-ok">26% 0.18 280°</span><span class="rf-cr" style="color:#6EE7B7">16:1 <span class="cb cb-aaa">AAA</span></span></div></div>
+      <div class="rf-cell"><div class="rf-swatch" style="background:#4C1D95"></div><div class="rf-info"><span class="rf-stop">800</span><span class="rf-hex">#4C1D95</span><span class="rf-ok">20% 0.15 280°</span><span class="rf-cr" style="color:#6EE7B7">19:1 <span class="cb cb-aaa">AAA</span></span></div></div>
+      <div class="rf-cell"><div class="rf-swatch" style="background:#2E1065"></div><div class="rf-info"><span class="rf-stop">900</span><span class="rf-hex">#2E1065</span><span class="rf-ok">12% 0.10 280°</span><span class="rf-cr" style="color:#6EE7B7">21:1 <span class="cb cb-aaa">AAA</span></span></div></div>
+      <div class="rf-cell"><div class="rf-swatch" style="background:#1C0940"></div><div class="rf-info"><span class="rf-stop">950</span><span class="rf-hex">#1C0940</span><span class="rf-ok">7% 0.07 280°</span><span class="rf-cr" style="color:#6EE7B7">21:1 <span class="cb cb-aaa">AAA</span></span></div></div>
+    </div>
+    <div class="rf-tokens">
+      <span class="tok"><strong>surface</strong> · 25</span>
+      <span class="tok"><strong>border</strong> · 400</span>
+      <span class="tok"><strong>text</strong> · 700 (16:1 AAA)</span>
+      <span class="tok"><strong>icon</strong> · 500</span>
+      <span class="tok"><strong>solid</strong> · 500 · text on solid: #FFFFFF</span>
+    </div>
+    <div class="rf-desc">Used for: help panels, onboarding guidance, tooltip-triggered explanation states, documentation links. In Admin dashboard contexts, Help violet passive feedback surfaces coexist with Admin violet interactive accents — always distinguish with a text label.</div>
+  </div>
+
+<!-- ══ GROUP: DASHBOARD ══ -->
+  <div class="group-label">Dashboard accent ramps — Sky Blue (Filer) · Violet (Admin)</div>
+
+  <!-- SKY -->
+  <div class="ramp-full">
+    <div class="rf-hdr">
+      <span class="rf-name">Sky Blue — Filer dashboard accent</span>
+      <span class="rf-meta">Anchor step 500 · #0284C7 · H≈200° · 115° from Brand Yellow</span>
+    </div>
+    <div class="rf-strip">
+      <div class="rf-cell"><div class="rf-swatch" style="background:#F0F9FF"></div><div class="rf-info"><span class="rf-stop">25</span><span class="rf-hex">#F0F9FF</span><span class="rf-ok">97% 0.02 200°</span><span class="rf-cr" style="color:#FCA5A5">1.1:1</span></div></div>
+      <div class="rf-cell"><div class="rf-swatch" style="background:#E0F2FE"></div><div class="rf-info"><span class="rf-stop">50</span><span class="rf-hex">#E0F2FE</span><span class="rf-ok">93% 0.05 200°</span><span class="rf-cr" style="color:#FCA5A5">1.3:1</span></div></div>
+      <div class="rf-cell"><div class="rf-swatch" style="background:#BAE6FD"></div><div class="rf-info"><span class="rf-stop">100</span><span class="rf-hex">#BAE6FD</span><span class="rf-ok">88% 0.09 200°</span><span class="rf-cr" style="color:#FCA5A5">1.7:1</span></div></div>
+      <div class="rf-cell"><div class="rf-swatch" style="background:#7DD3FC"></div><div class="rf-info"><span class="rf-stop">200</span><span class="rf-hex">#7DD3FC</span><span class="rf-ok">81% 0.12 200°</span><span class="rf-cr" style="color:#FCA5A5">2.2:1</span></div></div>
+      <div class="rf-cell"><div class="rf-swatch" style="background:#38BDF8"></div><div class="rf-info"><span class="rf-stop">300</span><span class="rf-hex">#38BDF8</span><span class="rf-ok">73% 0.14 200°</span><span class="rf-cr" style="color:#FCA5A5">2.8:1 <span class="cb cb-aal">AA-L</span></span></div></div>
+      <div class="rf-cell"><div class="rf-swatch" style="background:#0EA5E9"></div><div class="rf-info"><span class="rf-stop">400</span><span class="rf-hex">#0EA5E9</span><span class="rf-ok">63% 0.16 200°</span><span class="rf-cr" style="color:#FCD34D">4.2:1 <span class="cb cb-aal">AA-L</span></span></div></div>
+      <div class="rf-cell"><div class="rf-swatch" style="background:#0284C7"><div class="rf-anchor-ring"></div></div><div class="rf-info"><span class="rf-stop">●500</span><span class="rf-hex">#0284C7</span><span class="rf-ok">51% 0.16 200°</span><span class="rf-cr" style="color:#93C5FD">6.7:1 <span class="cb cb-aaa">AAA</span></span></div></div>
+      <div class="rf-cell"><div class="rf-swatch" style="background:#0369A1"></div><div class="rf-info"><span class="rf-stop">600</span><span class="rf-hex">#0369A1</span><span class="rf-ok">41% 0.14 200°</span><span class="rf-cr" style="color:#6EE7B7">10:1 <span class="cb cb-aaa">AAA</span></span></div></div>
+      <div class="rf-cell"><div class="rf-swatch" style="background:#075985"></div><div class="rf-info"><span class="rf-stop">700</span><span class="rf-hex">#075985</span><span class="rf-ok">33% 0.11 200°</span><span class="rf-cr" style="color:#6EE7B7">14:1 <span class="cb cb-aaa">AAA</span></span></div></div>
+      <div class="rf-cell"><div class="rf-swatch" style="background:#0C4A6E"></div><div class="rf-info"><span class="rf-stop">800</span><span class="rf-hex">#0C4A6E</span><span class="rf-ok">27% 0.08 200°</span><span class="rf-cr" style="color:#6EE7B7">17:1 <span class="cb cb-aaa">AAA</span></span></div></div>
+      <div class="rf-cell"><div class="rf-swatch" style="background:#082F4A"></div><div class="rf-info"><span class="rf-stop">900</span><span class="rf-hex">#082F4A</span><span class="rf-ok">18% 0.05 200°</span><span class="rf-cr" style="color:#6EE7B7">20:1 <span class="cb cb-aaa">AAA</span></span></div></div>
+      <div class="rf-cell"><div class="rf-swatch" style="background:#041C2E"></div><div class="rf-info"><span class="rf-stop">950</span><span class="rf-hex">#041C2E</span><span class="rf-ok">11% 0.03 200°</span><span class="rf-cr" style="color:#6EE7B7">21:1 <span class="cb cb-aaa">AAA</span></span></div></div>
+    </div>
+    <div class="rf-tokens">
+      <span class="tok"><strong>filer --theme-accent-500</strong> · step 400 #0EA5E9 (best LM solid contrast)</span>
+      <span class="tok"><strong>filer hover</strong> · step 500 #0284C7</span>
+      <span class="tok"><strong>filer active</strong> · step 600 #0369A1</span>
+      <span class="tok"><strong>filer tint surface</strong> · step 25</span>
+      <span class="tok"><strong>phase-5 solid</strong> · step 400 #0EA5E9</span>
+    </div>
+    <div class="rf-desc">Note: the Filer theme CTA uses step 400 (#0EA5E9) rather than step 500 for best contrast on light backgrounds. Step 500 and above are used for hover/active states and dark-mode contexts.</div>
+  </div>
+
+  <!-- VIOLET -->
+  <div class="ramp-full">
+    <div class="rf-hdr">
+      <span class="rf-name">Violet — Admin dashboard accent</span>
+      <span class="rf-meta">Anchor step 500 · #7C3AED · H≈280° · 195° from Brand Yellow · Shares hue with Help utility</span>
+    </div>
+    <div class="rf-strip">
+      <div class="rf-cell"><div class="rf-swatch" style="background:#F5F3FF"></div><div class="rf-info"><span class="rf-stop">25</span><span class="rf-hex">#F5F3FF</span><span class="rf-ok">97% 0.02 280°</span><span class="rf-cr" style="color:#FCA5A5">1.1:1</span></div></div>
+      <div class="rf-cell"><div class="rf-swatch" style="background:#EDE9FE"></div><div class="rf-info"><span class="rf-stop">50</span><span class="rf-hex">#EDE9FE</span><span class="rf-ok">93% 0.06 280°</span><span class="rf-cr" style="color:#FCA5A5">1.3:1</span></div></div>
+      <div class="rf-cell"><div class="rf-swatch" style="background:#DDD6FE"></div><div class="rf-info"><span class="rf-stop">100</span><span class="rf-hex">#DDD6FE</span><span class="rf-ok">86% 0.11 280°</span><span class="rf-cr" style="color:#FCA5A5">1.7:1</span></div></div>
+      <div class="rf-cell"><div class="rf-swatch" style="background:#C4B5FD"></div><div class="rf-info"><span class="rf-stop">200</span><span class="rf-hex">#C4B5FD</span><span class="rf-ok">76% 0.16 280°</span><span class="rf-cr" style="color:#FCA5A5">2.3:1</span></div></div>
+      <div class="rf-cell"><div class="rf-swatch" style="background:#A78BFA"></div><div class="rf-info"><span class="rf-stop">300</span><span class="rf-hex">#A78BFA</span><span class="rf-ok">65% 0.19 280°</span><span class="rf-cr" style="color:#FCA5A5">3.1:1 <span class="cb cb-aal">AA-L</span></span></div></div>
+      <div class="rf-cell"><div class="rf-swatch" style="background:#8B5CF6"></div><div class="rf-info"><span class="rf-stop">400</span><span class="rf-hex">#8B5CF6</span><span class="rf-ok">53% 0.22 280°</span><span class="rf-cr" style="color:#93C5FD">5.0:1 <span class="cb cb-aa">AA</span></span></div></div>
+      <div class="rf-cell"><div class="rf-swatch" style="background:#7C3AED"><div class="rf-anchor-ring"></div></div><div class="rf-info"><span class="rf-stop">●500</span><span class="rf-hex">#7C3AED</span><span class="rf-ok">42% 0.24 280°</span><span class="rf-cr" style="color:#6EE7B7">8.2:1 <span class="cb cb-aaa">AAA</span></span></div></div>
+      <div class="rf-cell"><div class="rf-swatch" style="background:#6D28D9"></div><div class="rf-info"><span class="rf-stop">600</span><span class="rf-hex">#6D28D9</span><span class="rf-ok">33% 0.22 280°</span><span class="rf-cr" style="color:#6EE7B7">12:1 <span class="cb cb-aaa">AAA</span></span></div></div>
+      <div class="rf-cell"><div class="rf-swatch" style="background:#5B21B6"></div><div class="rf-info"><span class="rf-stop">700</span><span class="rf-hex">#5B21B6</span><span class="rf-ok">26% 0.18 280°</span><span class="rf-cr" style="color:#6EE7B7">16:1 <span class="cb cb-aaa">AAA</span></span></div></div>
+      <div class="rf-cell"><div class="rf-swatch" style="background:#4C1D95"></div><div class="rf-info"><span class="rf-stop">800</span><span class="rf-hex">#4C1D95</span><span class="rf-ok">20% 0.15 280°</span><span class="rf-cr" style="color:#6EE7B7">19:1 <span class="cb cb-aaa">AAA</span></span></div></div>
+      <div class="rf-cell"><div class="rf-swatch" style="background:#2E1065"></div><div class="rf-info"><span class="rf-stop">900</span><span class="rf-hex">#2E1065</span><span class="rf-ok">12% 0.10 280°</span><span class="rf-cr" style="color:#6EE7B7">21:1 <span class="cb cb-aaa">AAA</span></span></div></div>
+      <div class="rf-cell"><div class="rf-swatch" style="background:#1C0940"></div><div class="rf-info"><span class="rf-stop">950</span><span class="rf-hex">#1C0940</span><span class="rf-ok">7% 0.07 280°</span><span class="rf-cr" style="color:#6EE7B7">21:1 <span class="cb cb-aaa">AAA</span></span></div></div>
+    </div>
+    <div class="rf-tokens">
+      <span class="tok"><strong>admin --theme-accent-500</strong> · step 400 #8B5CF6</span>
+      <span class="tok"><strong>admin hover</strong> · step 500 #7C3AED</span>
+      <span class="tok"><strong>admin active</strong> · step 600 #6D28D9</span>
+      <span class="tok"><strong>admin tint surface</strong> · step 25</span>
+    </div>
+    <div class="rf-desc">The Violet ramp is identical in hue to the Help utility ramp — they are the same 12-stop ramp referenced by two different semantic token sets. Admin interactive tokens (<code>--theme-accent-*</code>) drive buttons and nav. Help utility tokens (<code>--feedback-help-*</code>) drive passive feedback surfaces. Never confuse or cross-reference these two token sets.</div>
+  </div>
+
+  <footer class="page-footer">
+    <div>Section 2B — Color Ramp Reference &nbsp;·&nbsp; H2 Prime Web Application Design System &nbsp;·&nbsp; v1.0<br><a href="h2p-section-02-color-system.html">← Section 2 — Color System</a> &nbsp;·&nbsp; <a href="h2p-section-02c-ramp-table.html">Section 2C — Ramp Table →</a> &nbsp;·&nbsp; <a href="h2p-cover.html">Cover</a></div>
+    <div style="text-align:right">Last updated: 2026-07-13<br>Contrast ratios vs Neutral 25 (#FBFCFD) · WCAG 2.2</div>
+  </footer>
+
+</div>
+</body>
+</html>

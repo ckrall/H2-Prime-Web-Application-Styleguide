@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Section 6 — Interaction &amp; State Design — H2 Prime Design System</title>
+  <link rel="stylesheet" href="h2p-shared.css">
+<style>
+.demo { background: var(--s); border: 1px solid var(--b1); border-radius: 10px; padding: 20px; margin: 1rem 0; }
+.demo-row { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; margin-bottom: 10px; }
+.demo-row:last-child { margin-bottom: 0; }
+.demo-label { font-size: 10px; font-weight: 500; letter-spacing: .08em; text-transform: uppercase; color: var(--t3); margin-bottom: 10px; }
+
+pre.code { background: var(--code); border: 1px solid var(--b1); border-radius: 8px; padding: 14px 16px; overflow-x: auto; margin: .75rem 0; }
+pre.code code { background: none; border: none; padding: 0; font-size: 12px; color: var(--t2); line-height: 1.6; }
+
+/* ── Buttons (mirrors §5A, extended with explicit state classes) ── */
+.btn { font-family: var(--fu); font-size: 14px; font-weight: 500; padding: 9px 18px; border-radius: 6px; border: 1px solid transparent; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; transition: background-color .1s cubic-bezier(.4,0,.2,1), border-color .1s cubic-bezier(.4,0,.2,1), transform .1s cubic-bezier(.4,0,.2,1); }
+.btn-primary { background: #272A2F; color: #fff; }
+.btn-primary:hover { background: #15171B; }
+.btn-primary:active { background: #07080B; transform: translateY(1px); }
+.btn-primary:focus-visible { outline: 2px solid var(--a); outline-offset: 2px; }
+.btn-secondary { background: transparent; border-color: #4A4A56; color: var(--t1); }
+.btn-secondary:hover { background: #232328; }
+.btn-secondary:focus-visible { outline: 2px solid var(--a); outline-offset: 2px; }
+.btn-ghost { background: transparent; color: var(--t2); }
+.btn-ghost:hover { background: #232328; }
+.btn-ghost:focus-visible { outline: 2px solid var(--a); outline-offset: 2px; }
+.btn[disabled] { opacity: .45; cursor: not-allowed; }
+.btn[disabled]:hover { background: inherit; }
+
+/* ── State-swatch strip ── */
+.state-strip { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; margin: 10px 0; }
+.state-cell { text-align: center; }
+.state-sw { height: 40px; border-radius: 6px; border: 1px solid var(--b2); margin-bottom: 6px; display: flex; align-items: center; justify-content: center; }
+.state-name { font-size: 10px; color: var(--t3); font-family: var(--fm); }
+
+/* ── Form field demo ── */
+.field { display: flex; flex-direction: column; gap: 6px; margin-bottom: 14px; }
+.field:last-child { margin-bottom: 0; }
+.field label { font-size: 13px; font-weight: 500; color: var(--t1); }
+.field .hint { font-size: 12px; color: var(--t3); }
+.field .err { font-size: 12px; color: #FCA5A5; }
+.field input[type="text"], .field input[type="email"], .field select {
+  background: #18181B; border: 1px solid #3A3A44; border-radius: 6px;
+  padding: 9px 12px; font-size: 14px; color: var(--t1); font-family: var(--fu);
+  transition: border-color .1s cubic-bezier(.4,0,.2,1);
+}
+.field input:hover, .field select:hover { border-color: #5C5860; }
+.field input:focus, .field select:focus { outline: 2px solid var(--a); outline-offset: 1px; border-color: var(--a); }
+.field input.err-state { border-color: #C83520; }
+.field input[readonly] { background: #1C1C22; color: var(--t2); border-style: dashed; }
+.field input[disabled] { background: #18181B; color: #6C6C80; border-color: #2C2C33; cursor: not-allowed; }
+.field-check { display: flex; align-items: center; gap: 8px; }
+.field-check label { font-size: 13px; font-weight: 400; color: var(--t2); }
+.field-check input:focus-visible { outline: 2px solid var(--a); outline-offset: 2px; }
+
+/* ── Tab demo ── */
+.tab-list { display: flex; gap: 2px; border-bottom: 1px solid var(--b2); }
+.tab { font-size: 13px; font-weight: 500; color: var(--t2); background: transparent; border: none; padding: 9px 16px; cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -1px; transition: color .1s, border-color .1s; }
+.tab:hover { color: var(--t1); }
+.tab:focus-visible { outline: 2px solid var(--a); outline-offset: -2px; }
+.tab[aria-current="page"], .tab[aria-selected="true"] { color: var(--a); border-bottom-color: var(--a); }
+
+/* ── Nav item demo ── */
+.nav-demo { background: #272A2F; border-radius: 8px; padding: 8px; max-width: 260px; }
+.nav-demo a { display: block; font-size: 13px; color: #EBEDF0; text-decoration: none; padding: 8px 10px; border-radius: 6px; margin-bottom: 2px; transition: background-color .1s; }
+.nav-demo a:last-child { margin-bottom: 0; }
+.nav-demo a:hover { background: rgba(255,255,255,.07); }
+.nav-demo a[aria-current="page"] { background: rgba(255,194,14,.12); color: var(--a); font-weight: 600; }
+.nav-demo a:focus-visible { outline: 2px solid var(--a); outline-offset: -2px; }
+
+/* ── Checkbox / radio row ── */
+.check-row { display: flex; gap: 20px; flex-wrap: wrap; }
+.check-item { display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--t2); }
+.check-item input:focus-visible { outline: 2px solid var(--a); outline-offset: 2px; }
+
+/* ── Table row selection ── */
+.sel-table { width: 100%; font-size: 12px; }
+.sel-table th, .sel-table td { padding: 8px 10px; border-bottom: 1px solid var(--b1); text-align: left; }
+.sel-table thead th { background: var(--r); color: var(--t2); font-size: 10px; text-transform: uppercase; letter-spacing: .06em; }
+.sel-table tbody tr:hover td { background: var(--sub); }
+.sel-table tbody tr[aria-selected="true"] td { background: rgba(255,194,14,.08); }
+.sel-table tbody tr[aria-selected="true"] td:first-child { box-shadow: inset 3px 0 0 var(--a); }
+
+/* ── Spinner ── */
+.spinner { width: 20px; height: 20px; border: 2.5px solid var(--b2); border-top-color: var(--a); border-radius: 50%; animation: h2p-spin .7s linear infinite; }
+@media (prefers-reduced-motion: reduce) { .spinner { animation-duration: 1.4s; } }
+@keyframes h2p-spin { to { transform: rotate(360deg); } }
+.skel { background: linear-gradient(90deg, var(--b1) 25%, var(--sub) 37%, var(--b1) 63%); background-size: 400% 100%; animation: h2p-skel 1.6s ease-in-out infinite; border-radius: 4px; }
+@media (prefers-reduced-motion: reduce) { .skel { animation: none; background: var(--b1); } }
+@keyframes h2p-skel { 0% { background-position: 100% 50%; } 100% { background-position: 0 50%; } }
+
+.icon { width: 16px; height: 16px; display: inline-block; vertical-align: -3px; }
+.target-demo { display: inline-flex; align-items: center; justify-content: center; border: 1px dashed var(--b3); border-radius: 4px; }
+.gap-tag { font-family: var(--fm); font-size: 9px; font-weight: 700; letter-spacing: .05em; padding: 1px 6px; border-radius: 3px; background: #3B2600; color: #FCD34D; border: 1px solid #6B4500; margin-left: 6px; vertical-align: 2px; }
+</style>
+</head>
+<body>
+
+<a class="skip-link" href="#main-content">Skip to content</a>
+
+<nav class="guide-nav" aria-label="Style guide navigation">
+  <div class="guide-nav-left">
+    <a href="h2p-cover.html" class="guide-nav-home">
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+        <path d="M1 7L7 1l6 6M2.5 5.5V13h3v-3h3v3h3V5.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      H2 Prime Design System
+    </a>
+    <div class="guide-nav-divider" aria-hidden="true"></div>
+    <span class="guide-nav-section">6 — Interaction &amp; State Design</span>
+  </div>
+  <div class="guide-nav-right">
+    <a href="h2p-section-05-component-patterns.html" class="guide-nav-btn">← 5 — Component Patterns</a>
+    <a href="h2p-section-07-motion-animation.html" class="guide-nav-btn primary">7 — Motion &amp; Animation →</a>
+  </div>
+</nav>
+
+<div class="page-wrap">
+<main id="main-content">
+
+  <div class="doc-header">
+    <div class="doc-kicker">H2 Prime Web Application Design System &amp; Guidelines</div>
+    <h1 class="doc-title">Section 06 — <strong>Interaction &amp; State Design</strong></h1>
+    <p class="doc-lead">Hover, focus, active, disabled, error, selected, and busy states, pulled out of Section 5's component CSS and given their own token-backed layer. Most of the underlying tokens already existed in <code>tokens.css</code> §2.4–2.5 before this section was written — what was missing was a single place that shows every state side-by-side, explains <em>when</em> each one fires, and calls out where the token layer doesn't reach yet. Several of those reach-gaps are flagged inline and summarized in §6I.</p>
+    <div class="doc-meta">
+      <div class="doc-meta-item"><strong>Token source</strong>tokens.css §2.4 (Interactive), §2.5 (Input states), §2.11 (Navigation)</div>
+      <div class="doc-meta-item"><strong>Focus ring</strong><code>--border-focus</code> — Brand Yellow, all themes</div>
+      <div class="doc-meta-item"><strong>Compliance target</strong>WCAG 2.2 AA minimum (2.4.7, 2.4.11, 2.5.8), AAA where feasible</div>
+      <div class="doc-meta-item"><strong>Last updated</strong>2026-07-16</div>
+    </div>
+
+    <div class="callout warn">
+      <div class="callout-label">Read this before shipping a component</div>
+      Every interactive element below has tokens defined for hover, focus, and active. Not every element has those tokens actually wired up in <code>components.css</code> yet — the demos on this page use page-local CSS to show the intended behavior, the same way Section 5's demos do. Wiring these into real, reusable component classes in <code>components.css</code> (or Svelte component props per Section 9) is tracked as an open decision in §6I, not assumed done.
+    </div>
+  </div>
+
+  <nav class="toc" aria-label="Section contents">
+    <div class="toc-label">In this section</div>
+    <div class="toc-cols">
+      <ul class="toc-list">
+        <li><span class="toc-num">6A</span><a href="#6a">The state model</a></li>
+        <li><span class="toc-num">6B</span><a href="#6b">Focus visibility</a></li>
+        <li><span class="toc-num">6C</span><a href="#6c">Touch target size</a></li>
+      </ul>
+      <ul class="toc-list">
+        <li><span class="toc-num">6D</span><a href="#6d">Buttons — full state matrix</a></li>
+        <li><span class="toc-num">6E</span><a href="#6e">Form fields — full state matrix</a></li>
+        <li><span class="toc-num">6F</span><a href="#6f">Selection controls</a></li>
+      </ul>
+      <ul class="toc-list">
+        <li><span class="toc-num">6G</span><a href="#6g">Navigation &amp; tabs</a></li>
+        <li><span class="toc-num">6H</span><a href="#6h">Loading &amp; busy states</a></li>
+        <li><span class="toc-num">6I</span><a href="#6i">Gaps &amp; open decisions</a></li>
+      </ul>
+    </div>
+  </nav>
+
+<!-- ════ 6A ════ -->
+  <div class="section" id="6a">
+    <div class="section-header">
+      <span class="section-id">6A</span>
+      <h2 class="section-title">The state model</h2>
+    </div>
+    <hr class="section-hr">
+    <p>Every interactive element in H2 Prime can carry up to seven distinct states. Not all seven apply to every component — a link has no "disabled," a static card has no "active" — but where a state applies, it draws from the same named layer every time rather than a one-off value invented at the point of use.</p>
+
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>State</th><th>Trigger</th><th>Token pattern</th><th>Applies to</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Default</strong></td><td>Resting state</td><td><code>--interactive-*-bg</code> / <code>--input-border</code></td><td>All interactive elements</td></tr>
+          <tr><td><strong>Hover</strong></td><td>Pointer over element (no effect on touch)</td><td><code>--interactive-*-bg-hover</code> / <code>--input-border-hover</code></td><td>Buttons, links, nav items, table rows, inputs</td></tr>
+          <tr><td><strong>Focus</strong></td><td>Keyboard focus (or programmatic focus)</td><td><code>--border-focus</code> / <code>--input-border-focus</code></td><td>Every focusable element — never optional</td></tr>
+          <tr><td><strong>Active / pressed</strong></td><td>Mouse down or touch-down, before release</td><td><code>--interactive-primary-bg-active</code></td><td>Buttons, tabs, toggles</td></tr>
+          <tr><td><strong>Disabled</strong></td><td>Element cannot currently be activated</td><td><code>--interactive-disabled-*</code></td><td>Buttons, inputs, menu items</td></tr>
+          <tr><td><strong>Error / invalid</strong></td><td>Failed validation</td><td><code>--input-border-error</code></td><td>Form inputs, fieldsets</td></tr>
+          <tr><td><strong>Selected / current</strong><span class="gap-tag">PARTIAL</span></td><td>Item is the active tab, current nav page, or a checked table row</td><td><code>--nav-item-bg-active</code> / <code>--nav-text-active</code> only — no generic <code>--selected-*</code> layer yet</td><td>Tabs, nav, table row selection, checkbox/radio</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>Two states are deliberately <strong>not</strong> layered on top of each other with compounded styling: disabled elements never also show a hover or focus treatment (a disabled control should look and behave like it's off, full stop), and an element that is both selected and hovered shows the hover treatment as a subtle addition to the selected background, not a replacement for it — see the table row demo in §6F.</p>
+  </div>
+
+<!-- ════ 6B ════ -->
+  <div class="section" id="6b">
+    <div class="section-header">
+      <span class="section-id">6B</span>
+      <h2 class="section-title">Focus visibility</h2>
+    </div>
+    <hr class="section-hr">
+    <p>Every focusable element gets a visible focus ring — <code>--border-focus</code>, Brand Yellow, 2px, with a small offset so it never merges into the element's own border. This is non-negotiable under WCAG 2.4.7 (Focus Visible) and holds across all three dashboard themes and both light and dark mode, since Yellow's high contrast is the reason it was chosen as the one color that never gets themed away.</p>
+
+    <div class="demo">
+      <div class="demo-label">Live — tab through these with your keyboard</div>
+      <div class="demo-row">
+        <button class="btn btn-primary">Primary</button>
+        <button class="btn btn-secondary">Secondary</button>
+        <a href="#6b" style="color:var(--a)">A text link</a>
+        <input type="checkbox" id="focus-demo-cb"><label for="focus-demo-cb" style="font-size:13px;color:var(--t2)">Checkbox</label>
+      </div>
+    </div>
+
+    <div class="ap-grid">
+      <div class="ap-box ap-dont">
+        <div class="ap-label">Don't use <code>:focus</code> alone</div>
+        <p>A plain <code>:focus</code> ring also fires on mouse click, which reads as visual noise to someone who didn't ask for it. All H2 Prime focus styling uses <code>:focus-visible</code>, which the browser reserves for keyboard and other non-pointer focus.</p>
+      </div>
+      <div class="ap-box ap-do">
+        <div class="ap-label">Do use <code>:focus-visible</code> everywhere</div>
+        <p>Every demo on this page uses <code>:focus-visible</code>. It's supported in every browser H2 Prime targets and needs no polyfill.</p>
+      </div>
+    </div>
+
+    <p>WCAG 2.2's newer 2.4.11 (Focus Not Obscured, Minimum) also applies: a sticky header, toast, or bottom sheet must never fully cover a focused element. This matters specifically for the mobile bottom-sheet patterns implied by the outdoor/one-handed use case — flagged as an open decision in §6I since no sticky-header/focused-element collision rule is written down yet.</p>
+
+    <pre class="code"><code>button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+select:focus-visible {
+  outline: 2px solid var(--border-focus);
+  outline-offset: 2px;
+}</code></pre>
+  </div>
+
+<!-- ════ 6C ════ -->
+  <div class="section" id="6c">
+    <div class="section-header">
+      <span class="section-id">6C</span>
+      <h2 class="section-title">Touch target size<span class="gap-tag">GAP</span></h2>
+    </div>
+    <hr class="section-hr">
+    <p>No file in the system currently sets a minimum tap-target size. This is a real gap, not a minor one — H2 Prime's audience is explicitly older and frequently on a phone outdoors, which is exactly the profile WCAG 2.5.8 (Target Size, Minimum) and the mobile-first principle on the cover page were written for.</p>
+
+    <div class="callout warn">
+      <div class="callout-label">Decision point — not yet made</div>
+      WCAG 2.2 AA's 2.5.8 floor is 24×24 CSS px (with spacing exceptions). Given the stated audience, that floor is arguably too low for H2 Prime's primary actions. The open question is whether to adopt a stricter in-house minimum — 44×44px is the common mobile-platform convention (Apple HIG / Material) — for primary buttons and icon-only controls specifically, while allowing the AA floor for dense contexts like table row actions. This hasn't been decided; treat both numbers below as illustrative until it is.
+    </div>
+
+    <div class="demo">
+      <div class="demo-label">Current icon button (§5H) vs. two candidate minimums</div>
+      <div class="demo-row" style="align-items:flex-end">
+        <div style="text-align:center">
+          <div class="target-demo" style="width:34px;height:34px">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2m3 0v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6h14Z"/></svg>
+          </div>
+          <div class="state-name" style="margin-top:6px">34×34 (current)</div>
+        </div>
+        <div style="text-align:center">
+          <div class="target-demo" style="width:24px;height:24px">
+            <svg class="icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2m3 0v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6h14Z"/></svg>
+          </div>
+          <div class="state-name" style="margin-top:6px">24×24 (AA floor)</div>
+        </div>
+        <div style="text-align:center">
+          <div class="target-demo" style="width:44px;height:44px">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2m3 0v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6h14Z"/></svg>
+          </div>
+          <div class="state-name" style="margin-top:6px">44×44 (platform convention)</div>
+        </div>
+      </div>
+    </div>
+    <p>Note that the current icon button from §5H (9px padding around a 16px icon, 34×34 total) already clears the AA floor but falls short of the 44px convention. Nothing needs to change today — but no new icon-only control should ship smaller than 34×34, and the 44px question should be settled before the pattern multiplies across the mobile client dashboard.</p>
+  </div>
+
+<!-- ════ 6D ════ -->
+  <div class="section" id="6d">
+    <div class="section-header">
+      <span class="section-id">6D</span>
+      <h2 class="section-title">Buttons — full state matrix</h2>
+    </div>
+    <hr class="section-hr">
+    <p>Extends §5A with every state each variant actually carries. Primary's active/pressed state nudges one full step darker on the Neutral ramp (<code>neutral-950</code>) rather than reusing the hover value, so a press reads as distinct from a hover even to someone using a mouse.</p>
+
+    <div class="demo">
+      <div class="demo-label">Live — hover, click, and tab through these</div>
+      <div class="demo-row">
+        <button class="btn btn-primary">Primary</button>
+        <button class="btn btn-secondary">Secondary</button>
+        <button class="btn btn-ghost">Ghost</button>
+        <button class="btn btn-primary" disabled aria-disabled="true">Disabled</button>
+      </div>
+    </div>
+
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>State</th><th>Primary background</th><th>Secondary background</th><th>Ghost background</th></tr></thead>
+        <tbody>
+          <tr><td>Default</td><td class="contrast-cell"><code>--interactive-primary-bg</code></td><td class="contrast-cell">transparent</td><td class="contrast-cell">transparent</td></tr>
+          <tr><td>Hover</td><td class="contrast-cell"><code>--interactive-primary-bg-hover</code></td><td class="contrast-cell"><code>--interactive-secondary-bg-hover</code></td><td class="contrast-cell"><code>--interactive-ghost-bg-hover</code></td></tr>
+          <tr><td>Active</td><td class="contrast-cell"><code>--interactive-primary-bg-active</code></td><td class="contrast-cell">same as hover, no dedicated token<span class="gap-tag">GAP</span></td><td class="contrast-cell">same as hover, no dedicated token<span class="gap-tag">GAP</span></td></tr>
+          <tr><td>Focus</td><td colspan="3" class="contrast-cell"><code>--border-focus</code> outline, 2px offset — identical ring on all three variants</td></tr>
+          <tr><td>Disabled</td><td colspan="3" class="contrast-cell"><code>--interactive-disabled-bg</code> / <code>-text</code> / <code>-border</code></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <pre class="code"><code>.btn-primary        { background: var(--interactive-primary-bg); color: var(--interactive-primary-text); }
+.btn-primary:hover  { background: var(--interactive-primary-bg-hover); }
+.btn-primary:active { background: var(--interactive-primary-bg-active); }
+.btn-primary:focus-visible { outline: 2px solid var(--border-focus); outline-offset: 2px; }
+.btn-primary[disabled] {
+  background: var(--interactive-disabled-bg);
+  color: var(--interactive-disabled-text);
+  cursor: not-allowed;
+}</code></pre>
+
+    <div class="callout note">
+      <div class="callout-label">Disabled buttons stay in the tab order — on purpose</div>
+      H2 Prime uses <code>aria-disabled="true"</code> alongside the native <code>disabled</code> attribute is <em>not</em> the default here: a truly disabled native button is removed from the tab order entirely, which means a keyboard or screen-reader user tabbing through a form has no way to discover <em>why</em> the Submit button won't activate. Where the reason matters (e.g. "Submit contract" disabled until all required fields are complete), prefer a focusable-but-inert pattern (<code>aria-disabled="true"</code> without the native <code>disabled</code> attribute, blocking the click handler in script) so the reason can be surfaced via <code>aria-describedby</code>. Where the reason is obvious or irrelevant (e.g. a "Submitting…" state mid-request), native <code>disabled</code> is fine. This distinction isn't applied consistently across Section 5's examples yet — see §6I.
+    </div>
+  </div>
+
+<!-- ════ 6E ════ -->
+  <div class="section" id="6e">
+    <div class="section-header">
+      <span class="section-id">6E</span>
+      <h2 class="section-title">Form fields — full state matrix</h2>
+    </div>
+    <hr class="section-hr">
+    <p>Extends §5B. Read-only is included here as its own state — distinct from disabled — because H2 Prime has a real read-only use case: a Filer viewing a field a Client already locked in during an earlier contract phase.</p>
+
+    <div class="demo">
+      <div class="demo-label">Live — dark shell</div>
+      <div class="field">
+        <label for="s6-default">Default</label>
+        <input type="text" id="s6-default" value="Rivera Farms">
+      </div>
+      <div class="field">
+        <label for="s6-error">Error</label>
+        <input type="email" id="s6-error" class="err-state" value="not-an-email" aria-invalid="true" aria-describedby="s6-error-msg">
+        <span class="err" id="s6-error-msg" role="alert">Enter a valid email address</span>
+      </div>
+      <div class="field">
+        <label for="s6-readonly">Read-only</label>
+        <input type="text" id="s6-readonly" value="14 workers" readonly aria-readonly="true">
+        <span class="hint">Locked by the client during Initiation — contact them to change it</span>
+      </div>
+      <div class="field">
+        <label for="s6-disabled">Disabled</label>
+        <input type="text" id="s6-disabled" value="Not applicable to this phase" disabled>
+      </div>
+    </div>
+
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>State</th><th>Border</th><th>Background</th><th>Meaning to the user</th></tr></thead>
+        <tbody>
+          <tr><td>Default</td><td class="contrast-cell"><code>--input-border</code></td><td class="contrast-cell"><code>--input-bg</code></td><td>Editable, untouched</td></tr>
+          <tr><td>Hover</td><td class="contrast-cell"><code>--input-border-hover</code></td><td class="contrast-cell"><code>--input-bg</code></td><td>Editable, pointer nearby</td></tr>
+          <tr><td>Focus</td><td class="contrast-cell"><code>--input-border-focus</code></td><td class="contrast-cell"><code>--input-bg-focus</code></td><td>Editable, currently active</td></tr>
+          <tr><td>Error</td><td class="contrast-cell"><code>--input-border-error</code></td><td class="contrast-cell"><code>--input-bg</code></td><td>Editable, but rejected on validation</td></tr>
+          <tr><td>Read-only<span class="gap-tag">GAP</span></td><td class="contrast-cell">dashed, ad hoc — no token</td><td class="contrast-cell">ad hoc — no token</td><td>Correct, but locked — not the same as disabled</td></tr>
+          <tr><td>Disabled</td><td class="contrast-cell"><code>--interactive-disabled-border</code></td><td class="contrast-cell"><code>--interactive-disabled-bg</code></td><td>Not applicable right now</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout warn">
+      <div class="callout-label">Read-only has no token pair yet</div>
+      The read-only demo above uses hand-picked values, not <code>tokens.css</code> tokens — because none exist for this state. It needs its own <code>--input-readonly-bg</code> / <code>--input-readonly-border</code> pair (visually distinct from both default and disabled) before it ships anywhere real. Tracked in §6I.
+    </div>
+  </div>
+
+<!-- ════ 6F ════ -->
+  <div class="section" id="6f">
+    <div class="section-header">
+      <span class="section-id">6F</span>
+      <h2 class="section-title">Selection controls<span class="gap-tag">GAP</span></h2>
+    </div>
+    <hr class="section-hr">
+    <p>Checked, indeterminate, and row-selected states have no dedicated semantic tokens today — checkbox and radio styling currently rides on default browser rendering (see the checkbox demos throughout Section 5), and table row selection is demonstrated below using a hand-picked yellow tint, not a system token.</p>
+
+    <div class="demo">
+      <div class="demo-label">Live — checkbox / radio states</div>
+      <div class="check-row">
+        <span class="check-item"><input type="checkbox" id="s6-cb1" checked><label for="s6-cb1">Checked</label></span>
+        <span class="check-item"><input type="checkbox" id="s6-cb2"><label for="s6-cb2">Unchecked</label></span>
+        <span class="check-item"><input type="checkbox" id="s6-cb3" disabled checked><label for="s6-cb3">Disabled, checked</label></span>
+        <span class="check-item"><input type="radio" name="s6-r" id="s6-r1" checked><label for="s6-r1">Radio, selected</label></span>
+      </div>
+    </div>
+
+    <div class="demo">
+      <div class="demo-label">Live — selectable table rows, hover the rows below</div>
+      <table class="sel-table">
+        <caption class="sr-only">Contracts with one row selected, demonstrating hover and selected states together</caption>
+        <thead><tr><th scope="col"><span class="sr-only">Select</span></th><th scope="col">Contract</th><th scope="col">Phase</th></tr></thead>
+        <tbody>
+          <tr aria-selected="true"><td><input type="checkbox" checked aria-label="Select Rivera Farms"></td><td>Rivera Farms</td><td>Negotiation</td></tr>
+          <tr><td><input type="checkbox" aria-label="Select Coastal Growers"></td><td>Coastal Growers</td><td>Review</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <pre class="code"><code>&lt;tr aria-selected="true"&gt;
+  &lt;td&gt;&lt;input type="checkbox" checked aria-label="Select Rivera Farms"&gt;&lt;/td&gt;
+  &lt;td&gt;Rivera Farms&lt;/td&gt;
+&lt;/tr&gt;</code></pre>
+
+    <div class="callout warn">
+      <div class="callout-label">Decision point — native styling or custom?</div>
+      Native checkbox/radio rendering is accessible by default but can't be color-matched to the token system (no <code>accent-color</code> token exists either, which is itself a small gap). The open question is whether H2 Prime custom-styles these controls to carry Brand Yellow / Neutral like everything else, or deliberately leaves them native for the reliability that comes with browser-native semantics on an older, less technical audience. Leaning native is reasonable given the audience principle, but it hasn't been written down as a decision — see §6I.
+    </div>
+  </div>
+
+<!-- ════ 6G ════ -->
+  <div class="section" id="6g">
+    <div class="section-header">
+      <span class="section-id">6G</span>
+      <h2 class="section-title">Navigation &amp; tabs</h2>
+    </div>
+    <hr class="section-hr">
+    <p>The current page or tab is marked with <code>aria-current="page"</code> (for nav links) or <code>aria-selected="true"</code> (for a tab within a <code>role="tablist"</code>) — never by color alone. Both draw from <code>--nav-text-active</code> and <code>--nav-item-bg-active</code>, which already resolve through <code>--theme-accent-*</code> so the active indicator matches whichever dashboard theme (Brown-primary Client/Filer, Violet-primary Admin) is active once Section 11 lands.</p>
+
+    <div class="demo">
+      <div class="demo-label">Live — sidebar nav, dark shell</div>
+      <nav class="nav-demo" aria-label="Example primary navigation">
+        <a href="#" aria-current="page">Dashboard</a>
+        <a href="#">Contracts</a>
+        <a href="#">Workers</a>
+        <a href="#">Settings</a>
+      </nav>
+    </div>
+
+    <div class="demo">
+      <div class="demo-label">Live — tabs</div>
+      <div class="tab-list" role="tablist" aria-label="Contract detail sections">
+        <button class="tab" role="tab" aria-selected="true">Overview</button>
+        <button class="tab" role="tab" aria-selected="false">Documents</button>
+        <button class="tab" role="tab" aria-selected="false">Timeline</button>
+      </div>
+    </div>
+
+    <pre class="code"><code>&lt;nav aria-label="Primary"&gt;
+  &lt;a href="/dashboard" aria-current="page"&gt;Dashboard&lt;/a&gt;
+  &lt;a href="/contracts"&gt;Contracts&lt;/a&gt;
+&lt;/nav&gt;
+
+&lt;div role="tablist" aria-label="Contract detail sections"&gt;
+  &lt;button role="tab" aria-selected="true"&gt;Overview&lt;/button&gt;
+  &lt;button role="tab" aria-selected="false"&gt;Documents&lt;/button&gt;
+&lt;/div&gt;</code></pre>
+
+    <div class="callout note">
+      <div class="callout-label">Keyboard behavior, not just visual state</div>
+      A real <code>role="tablist"</code> implementation needs arrow-key navigation between tabs and a single tab stop for the whole group (roving <code>tabindex</code>) per the WAI-ARIA Tabs pattern — that interaction logic lives in the Svelte component, not in this style guide, but it's called out here so it isn't lost between Section 6 (visual state) and Section 9 (framework implementation).
+    </div>
+  </div>
+
+<!-- ════ 6H ════ -->
+  <div class="section" id="6h">
+    <div class="section-header">
+      <span class="section-id">6H</span>
+      <h2 class="section-title">Loading &amp; busy states<span class="gap-tag">GAP</span></h2>
+    </div>
+    <hr class="section-hr">
+    <p>No loading pattern exists anywhere in the system before this page. The two shown below — an inline spinner for short waits and a skeleton block for content that hasn't arrived yet — are proposed starting points, not settled patterns; both need real screens to validate against before they're considered done.</p>
+
+    <div class="demo">
+      <div class="demo-label">Live — inline spinner (respects reduced motion — see §7C)</div>
+      <div class="demo-row">
+        <button class="btn btn-primary" disabled aria-disabled="true" aria-busy="true">
+          <span class="spinner" aria-hidden="true"></span> Submitting…
+        </button>
+      </div>
+    </div>
+
+    <div class="demo">
+      <div class="demo-label">Live — skeleton loading (respects reduced motion — see §7C)</div>
+      <div aria-busy="true" aria-live="polite">
+        <span class="sr-only">Loading contract list</span>
+        <div class="skel" style="height:14px;width:70%;margin-bottom:8px"></div>
+        <div class="skel" style="height:14px;width:45%;margin-bottom:8px"></div>
+        <div class="skel" style="height:14px;width:60%"></div>
+      </div>
+    </div>
+
+    <pre class="code"><code>&lt;div aria-busy="true" aria-live="polite"&gt;
+  &lt;span class="sr-only"&gt;Loading contract list&lt;/span&gt;
+  &lt;div class="skel" style="height:14px;width:70%"&gt;&lt;/div&gt;
+  ...
+&lt;/div&gt;</code></pre>
+
+    <div class="callout warn">
+      <div class="callout-label">Open questions this section doesn't answer</div>
+      How long a wait needs a spinner versus a skeleton versus nothing at all; whether a full-page loading state exists and what it looks like; how a failed load is communicated (a distinct state from both loading and empty); and whether <code>aria-live="polite"</code> is the right verbosity everywhere or whether some loads are noisy enough to warrant <code>aria-live="off"</code> with a manual announcement on completion instead. None of this is decided — flagged in §6I.
+    </div>
+  </div>
+
+<!-- ════ 6I ════ -->
+  <div class="section" id="6i">
+    <div class="section-header">
+      <span class="section-id">6I</span>
+      <h2 class="section-title">Gaps &amp; open decisions</h2>
+    </div>
+    <hr class="section-hr">
+    <p>Consolidated from the flags above, so nothing gets lost between sections.</p>
+
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Gap / decision</th><th>Where flagged</th><th>Blocking?</th></tr></thead>
+        <tbody>
+          <tr><td>No in-house touch-target minimum decided (AA 24px floor vs. 44px platform convention)</td><td>§6C</td><td>No — but should land before more icon-only controls ship</td></tr>
+          <tr><td>Secondary/ghost buttons have no dedicated <code>-active</code> token — reuse hover value</td><td>§6D</td><td>No</td></tr>
+          <tr><td><code>aria-disabled</code> vs. native <code>disabled</code> not applied consistently across Section 5's examples</td><td>§6D</td><td>Yes, for any "why is this disabled" flow</td></tr>
+          <tr><td>Read-only inputs have no token pair — currently hand-styled</td><td>§6E</td><td>Yes, before read-only ships anywhere real</td></tr>
+          <tr><td>Checkbox/radio: native vs. custom-styled, not decided; no <code>accent-color</code> token</td><td>§6F</td><td>No</td></tr>
+          <tr><td>No generic <code>--selected-*</code> token layer — table row selection is hand-styled</td><td>§6A, §6F</td><td>Yes, before multi-select tables ship</td></tr>
+          <tr><td>Sticky header / focused-element collision (WCAG 2.4.11) has no written rule</td><td>§6B</td><td>No — worth a rule once a sticky mobile header exists</td></tr>
+          <tr><td>Loading state duration thresholds, failed-load state, and <code>aria-live</code> verbosity undecided</td><td>§6H</td><td>Yes, before any real async load ships</td></tr>
+          <tr><td>Interaction states exist as tokens but aren't yet materialized as reusable classes in <code>components.css</code></td><td>Intro callout</td><td>Yes, for Section 9 to have something concrete to wrap</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</main>
+  <footer class="page-footer">
+    <div>Section 6 — Interaction &amp; State Design &nbsp;·&nbsp; H2 Prime Web Application Design System &nbsp;·&nbsp; v1.0 (start version) <br><a href="h2p-section-05-component-patterns.html">← Section 5 — Component Patterns</a> &nbsp;·&nbsp; <a href="h2p-section-07-motion-animation.html">Section 7 — Motion &amp; Animation →</a> &nbsp;·&nbsp; <a href="h2p-cover.html">Cover</a><br><span style="color:var(--t3)">Several states in this section (read-only inputs, row selection, loading) are proposed starting points, not settled patterns — see §6I.</span></div>
+    <div style="text-align:right">Last updated: 2026-07-16<br>Semantic HTML5 · WCAG 2.2 AA</div>
+  </footer>
+
+</div>
+</body>
+</html>

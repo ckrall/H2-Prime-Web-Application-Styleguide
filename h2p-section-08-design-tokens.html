@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Section 8 — Design Tokens — H2 Prime Design System</title>
+  <link rel="stylesheet" href="h2p-shared.css">
+<style>
+.contrast-cell { font-family: var(--fm); font-size: 11px; color: var(--t2); }
+
+pre.code { background: var(--code); border: 1px solid var(--b1); border-radius: 8px; padding: 14px 16px; overflow-x: auto; margin: .75rem 0; }
+pre.code code { background: none; border: none; padding: 0; font-size: 12px; color: var(--t2); line-height: 1.6; }
+
+/* ── Three-tier flow diagram ── */
+.tier-flow { display: flex; align-items: stretch; gap: 0; margin: 1rem 0 1.25rem; flex-wrap: wrap; }
+.tier-card { flex: 1; min-width: 190px; background: var(--s); border: 1px solid var(--b1); border-radius: 10px; padding: 16px 18px; }
+.tier-card.t1 { border-top: 3px solid #93C5FD; }
+.tier-card.t2 { border-top: 3px solid var(--a); }
+.tier-card.t3 { border-top: 3px solid #6EE7B7; }
+.tier-num { font-family: var(--fm); font-size: 10px; color: var(--t3); margin-bottom: 6px; }
+.tier-name { font-size: 14px; font-weight: 600; color: var(--t1); margin-bottom: 6px; }
+.tier-desc { font-size: 12px; color: var(--t2); line-height: 1.6; margin-bottom: 10px; }
+.tier-ex { font-family: var(--fm); font-size: 11px; color: var(--t3); background: var(--code); border: 1px solid var(--b1); border-radius: 4px; padding: 6px 8px; }
+.tier-arrow { display: flex; align-items: center; justify-content: center; width: 34px; flex-shrink: 0; color: var(--t3); font-size: 16px; }
+@media (max-width: 720px) {
+  .tier-flow { flex-direction: column; }
+  .tier-arrow { width: 100%; height: 24px; transform: rotate(90deg); }
+}
+
+/* ── Token anatomy ── */
+.anatomy-row { display: flex; flex-wrap: wrap; gap: 2px; align-items: baseline; font-family: var(--fm); font-size: 15px; margin: 1rem 0 .75rem; padding: 14px 16px; background: var(--code); border: 1px solid var(--b1); border-radius: 8px; }
+.anatomy-seg { padding: 2px 3px; border-radius: 3px; }
+.anatomy-seg.cat  { color: #93C5FD; background: #1A2040; }
+.anatomy-seg.role { color: var(--a); background: var(--al); }
+.anatomy-seg.var  { color: #6EE7B7; background: #0A1E14; }
+.anatomy-seg.state{ color: #FCA5A5; background: #1E0A0A; }
+.anatomy-punct { color: var(--t3); }
+.anatomy-legend { display: flex; flex-wrap: wrap; gap: 14px; margin-bottom: 1.25rem; }
+.anatomy-legend-item { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--t2); }
+.anatomy-swatch { width: 10px; height: 10px; border-radius: 2px; flex-shrink: 0; }
+.anatomy-swatch.cat  { background: #93C5FD; }
+.anatomy-swatch.role { background: var(--a); }
+.anatomy-swatch.var  { background: #6EE7B7; }
+.anatomy-swatch.state{ background: #FCA5A5; }
+
+/* ── File tree ── */
+.file-tree { background: var(--s); border: 1px solid var(--b1); border-radius: 10px; padding: 6px 0; margin: 1rem 0; }
+.file-tree ol { list-style: none; counter-reset: step; }
+.file-tree li { display: flex; align-items: baseline; gap: 12px; padding: 10px 18px; border-bottom: 1px solid var(--b1); }
+.file-tree li:last-child { border-bottom: none; }
+.file-step { font-family: var(--fm); font-size: 11px; color: var(--t3); flex-shrink: 0; width: 16px; }
+.file-name { font-family: var(--fm); font-size: 13px; color: var(--t1); font-weight: 500; flex-shrink: 0; min-width: 130px; }
+.file-desc { font-size: 12.5px; color: var(--t2); }
+
+/* ── Light/dark demo strip ── */
+.mode-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 1rem 0; }
+@media (max-width: 600px) { .mode-grid { grid-template-columns: 1fr; } }
+.mode-demo { border-radius: 10px; overflow: hidden; border: 1px solid var(--b2); }
+.mode-demo.light { background: #FBFCFD; }
+.mode-demo.dark   { background: #1C1B1E; }
+.mode-topbar { padding: 9px 14px; font-size: 11px; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; border-bottom: 1px solid; }
+.mode-demo.light .mode-topbar { background: #FFFFFF; border-color: #D8D6DA; color: #2E2D30; }
+.mode-demo.dark  .mode-topbar { background: #2E2D30; border-color: #464247; color: #FBFCFD; }
+.mode-body { padding: 16px 14px; }
+.mode-demo.light .mode-body p { color: #55565A; }
+.mode-demo.dark  .mode-body p { color: #C8C8D0; }
+.mode-btn { font-size: 12px; font-weight: 600; padding: 7px 16px; border-radius: 6px; border: none; display: inline-block; margin-top: 8px; }
+.mode-demo.light .mode-btn { background: #272A2F; color: #fff; }
+.mode-demo.dark  .mode-btn { background: #EBEDF0; color: #07080B; }
+</style>
+</head>
+<body>
+
+<a class="skip-link" href="#main-content">Skip to content</a>
+
+<nav class="guide-nav" aria-label="Style guide navigation">
+  <div class="guide-nav-left">
+    <a href="h2p-cover.html" class="guide-nav-home">
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+        <path d="M1 7L7 1l6 6M2.5 5.5V13h3v-3h3v3h3V5.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      H2 Prime Design System
+    </a>
+    <div class="guide-nav-divider" aria-hidden="true"></div>
+    <span class="guide-nav-section">8 — Design Tokens</span>
+  </div>
+  <div class="guide-nav-right">
+    <a href="h2p-section-07-motion-animation.html" class="guide-nav-btn">← 7 — Motion &amp; Animation</a>
+    <a href="h2p-section-09-framework-implementation.html" class="guide-nav-btn primary">9 — Framework Implementation →</a>
+  </div>
+</nav>
+
+<div class="page-wrap">
+<main id="main-content">
+
+  <div class="doc-header">
+    <div class="doc-kicker">H2 Prime Web Application Design System &amp; Guidelines</div>
+    <h1 class="doc-title">Section 08 — <strong>Design Tokens</strong></h1>
+    <p class="doc-lead">What a token is, why the system is split into three tiers, how tokens are named, how light and dark mode swap underneath the same semantic names, and where every token physically lives. This section documents the architecture already implemented across <code>tokens.css</code>, <code>main.css</code>, and <code>components.css</code> — it doesn't introduce anything new, it explains the system those files already follow. Framework-specific wiring (Tailwind's <code>@theme</code>, the shadcn/shadcn-svelte bridge) is covered in Section 9, not duplicated here.</p>
+    <div class="doc-meta">
+      <div class="doc-meta-item"><strong>Tiers</strong>3 — primitive, semantic, component</div>
+      <div class="doc-meta-item"><strong>Naming pattern</strong><code>--category-role[-variant][-state]</code></div>
+      <div class="doc-meta-item"><strong>Mode strategy</strong>Attribute override + media query fallback</div>
+      <div class="doc-meta-item"><strong>Source files</strong>3 — tokens.css, main.css, components.css</div>
+      <div class="doc-meta-item"><strong>Compliance</strong>WCAG 2.2 AA minimum</div>
+      <div class="doc-meta-item"><strong>Last updated</strong>2026-07-16</div>
+    </div>
+  </div>
+
+  <nav class="toc" aria-label="Section contents">
+    <div class="toc-label">In this section</div>
+    <div class="toc-cols">
+      <ul class="toc-list">
+        <li><span class="toc-num">8A</span><a href="#8a">What is a design token</a></li>
+        <li><span class="toc-num">8B</span><a href="#8b">Three-tier architecture</a></li>
+      </ul>
+      <ul class="toc-list">
+        <li><span class="toc-num">8C</span><a href="#8c">Token naming conventions</a></li>
+        <li><span class="toc-num">8D</span><a href="#8d">Light &amp; dark mode mapping</a></li>
+      </ul>
+      <ul class="toc-list">
+        <li><span class="toc-num">8E</span><a href="#8e">Token file structure</a></li>
+        <li><span class="toc-num">8F</span><a href="#8f">Where framework specifics live</a></li>
+        <li><span class="toc-num">8G</span><a href="#8g">Anti-patterns</a></li>
+      </ul>
+    </div>
+  </nav>
+
+<!-- ════ 8A ════ -->
+  <div class="section" id="8a">
+    <div class="section-header">
+      <span class="section-id">8A</span>
+      <h2 class="section-title">What is a design token</h2>
+    </div>
+    <hr class="section-hr">
+    <p>A design token is a named value that stands in for a raw design decision — a color, a size, a shadow, a font weight — so that decision can be referenced by name instead of repeated as a literal everywhere it's used. <code>#984616</code> is a color. <code>--ramp-brown-500</code> is a token: the same color, but with a name that carries meaning, a single place it's defined, and a single place it changes.</p>
+    <p>In H2 Prime, tokens are implemented as CSS custom properties (<code>--like-this</code>), defined once in <code>tokens.css</code> and consumed everywhere else — component markup, Tailwind utility classes, and the shadcn/shadcn-svelte component library all read from the same set of names rather than each holding their own copy of a hex code or a pixel value.</p>
+    <div class="callout brand">
+      <div class="callout-label">Why this matters for H2 Prime specifically</div>
+      Every rebrand-scale decision this system has already made — retiring Violet as brand, adding Brown, recomputing Neutral to H≈258°, moving the primary action color off Brown and onto Neutral — was a one-file change precisely because components never held raw values. A token layer isn't stylistic preference here; it's what made three separate mid-project pivots cheap instead of a full re-audit of every screen.
+    </div>
+  </div>
+
+<!-- ════ 8B ════ -->
+  <div class="section" id="8b">
+    <div class="section-header">
+      <span class="section-id">8B</span>
+      <h2 class="section-title">Three-tier architecture</h2>
+    </div>
+    <hr class="section-hr">
+    <p>Every token in <code>tokens.css</code> belongs to exactly one of three tiers. Each tier only ever points at the tier above it — a semantic token can reference a primitive, but a primitive never references a semantic token, and nothing above Tier 1 contains a raw hex value.</p>
+
+    <div class="tier-flow">
+      <div class="tier-card t1">
+        <div class="tier-num">TIER 1</div>
+        <div class="tier-name">Primitives</div>
+        <div class="tier-desc">Raw ramp values. 12-step OKLCH ramps for every brand and utility color, plus raw scales for spacing, radius, and type size. Never referenced directly in component code.</div>
+        <div class="tier-ex">--ramp-brown-500: #984616;</div>
+      </div>
+      <div class="tier-arrow" aria-hidden="true">→</div>
+      <div class="tier-card t2">
+        <div class="tier-num">TIER 2</div>
+        <div class="tier-name">Semantics</div>
+        <div class="tier-desc">Role-named aliases pointing at Tier 1. This is what "light mode" and "dark mode" actually are — the same semantic name resolving to a different primitive depending on <code>[data-mode]</code>.</div>
+        <div class="tier-ex">--text-primary: var(--ramp-gray-dark-900);</div>
+      </div>
+      <div class="tier-arrow" aria-hidden="true">→</div>
+      <div class="tier-card t3">
+        <div class="tier-num">TIER 3</div>
+        <div class="tier-name">Components</div>
+        <div class="tier-desc">Component-scoped overrides in <code>components.css</code> — applying semantic type roles to real HTML elements, or a single component's one-off need. Still never a raw value.</div>
+        <div class="tier-ex">h1 { font-size: var(--type-h1-size); }</div>
+      </div>
+    </div>
+
+    <div class="callout note">
+      <div class="callout-label">The rule that keeps this from leaking</div>
+      Component code (Svelte templates, Tailwind classes, shadcn overrides) should only ever reach for Tier 2 or Tier 3 names — <code>bg-surface-page</code>, <code>text-text-primary</code>, <code>rounded-card</code>. A raw <code>--ramp-*</code> reference, or worse a hardcoded hex, inside a <code>.svelte</code> file is a bug to fix, not a shortcut to allow. See §8G.
+    </div>
+
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Tier</th><th>Lives in</th><th>Changes when…</th><th>Example count</th></tr></thead>
+        <tbody>
+          <tr><td>1 · Primitive</td><td><code>tokens.css</code> §1</td><td>A ramp is recomputed (e.g. the 2026-07-13 Neutral hue shift)</td><td class="contrast-cell">9 ramps × 12 steps</td></tr>
+          <tr><td>2 · Semantic</td><td><code>tokens.css</code> §2–§5</td><td>A role's meaning changes (e.g. primary action moving from Brown to Neutral)</td><td class="contrast-cell">~90 role tokens</td></tr>
+          <tr><td>3 · Component</td><td><code>components.css</code></td><td>An HTML element's default treatment changes, or one component needs an exception</td><td class="contrast-cell">Per-element, open-ended</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+<!-- ════ 8C ════ -->
+  <div class="section" id="8c">
+    <div class="section-header">
+      <span class="section-id">8C</span>
+      <h2 class="section-title">Token naming conventions</h2>
+    </div>
+    <hr class="section-hr">
+    <p>Semantic and component tokens follow a fixed segment order. Not every token uses every segment — <code>--surface-page</code> has no variant or state — but when a segment is present, it always appears in this position.</p>
+
+    <div class="anatomy-row">
+      <span class="anatomy-punct">--</span><span class="anatomy-seg cat">interactive</span><span class="anatomy-punct">-</span><span class="anatomy-seg role">primary</span><span class="anatomy-punct">-</span><span class="anatomy-seg var">bg</span><span class="anatomy-punct">-</span><span class="anatomy-seg state">hover</span>
+    </div>
+    <div class="anatomy-legend">
+      <div class="anatomy-legend-item"><span class="anatomy-swatch cat"></span>category — the token family (surface, text, border, interactive, feedback, input…)</div>
+      <div class="anatomy-legend-item"><span class="anatomy-swatch role"></span>role — which one within that family (primary, secondary, danger, warning…)</div>
+      <div class="anatomy-legend-item"><span class="anatomy-swatch var"></span>property — which visual property (bg, border, text, icon, solid…)</div>
+      <div class="anatomy-legend-item"><span class="anatomy-swatch state"></span>state — interaction state, only when the token varies by it (hover, active, disabled, error, focus)</div>
+    </div>
+
+    <p>Primitive ramps follow a simpler two-segment pattern: <code>--ramp-{name}-{step}</code>, where step is always one of the 12 fixed stops (<code>25 · 50 · 100 · 200 · 300 · 400 · 500 · 600 · 700 · 800 · 900 · 950</code>). Component-scoped tokens in Tier 3 prefer a role-based name over an element name where the role is reusable — <code>--radius-card</code>, not <code>--radius-contract-card</code> — so a new component that is also "card-shaped" can reuse it without a rename.</p>
+
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Pattern</th><th>Example</th><th>Used for</th></tr></thead>
+        <tbody>
+          <tr><td><code>--ramp-{name}-{step}</code></td><td><code>--ramp-neutral-700</code></td><td>Tier 1 primitives — every color ramp</td></tr>
+          <tr><td><code>--{category}-{role}</code></td><td><code>--surface-raised</code></td><td>Tier 2 semantics with no state variation</td></tr>
+          <tr><td><code>--{category}-{role}-{property}</code></td><td><code>--feedback-danger-icon</code></td><td>Tier 2 semantics with multiple visual properties per role</td></tr>
+          <tr><td><code>--{category}-{role}-{property}-{state}</code></td><td><code>--interactive-primary-bg-hover</code></td><td>Tier 2 semantics that change on interaction</td></tr>
+          <tr><td><code>--{role}-{property}</code></td><td><code>--radius-card</code>, <code>--elevation-modal</code></td><td>Tier 3 component-role aliases (spacing, radius, shadow, z-index)</td></tr>
+          <tr><td><code>--type-{role}-{property}</code></td><td><code>--type-h1-leading</code></td><td>Semantic type roles — family, weight, size, leading, tracking bundled per role</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout warn">
+      <div class="callout-label">One naming exception, and why</div>
+      <code>--ramp-gray-mid-*</code> and <code>--ramp-gray-dark-*</code> break the pattern deliberately — they're retained as backward-compatible aliases onto the consolidated <code>--ramp-neutral-*</code> ramp (2026-07-13 revision) so existing component-layer references keep resolving without a rename pass. Do not add <em>new</em> references to the legacy names; reach for <code>--ramp-neutral-*</code> or the semantic <code>--neutral-*</code> aliases instead. See <code>tokens.css</code> §1.3.
+    </div>
+  </div>
+
+<!-- ════ 8D ════ -->
+  <div class="section" id="8d">
+    <div class="section-header">
+      <span class="section-id">8D</span>
+      <h2 class="section-title">Light &amp; dark mode mapping</h2>
+    </div>
+    <hr class="section-hr">
+    <p>Light mode is the default value of every Tier 2 token, defined directly in <code>:root</code> in <code>tokens.css</code> §2. Dark mode doesn't add new tokens — it redeclares the <em>same</em> semantic names inside a scope that activates two ways at once, so the override applies whether the mode comes from an explicit user/app choice or from the OS-level preference:</p>
+
+    <pre class="code"><code>[data-mode="dark"],
+@media (prefers-color-scheme: dark) {
+  :root {
+    --surface-page: var(--ramp-gray-dark-950); /* was --ramp-gray-dark-25 in light */
+    --text-primary: var(--ramp-gray-dark-25);  /* was --ramp-gray-dark-900 in light */
+    /* …every other §2 semantic token redeclared, primitives untouched */
+  }
+}</code></pre>
+
+    <p>Tier 1 primitives never change between modes — <code>--ramp-neutral-700</code> is the same hex value in both. What changes is <em>which</em> primitive step a Tier 2 name points to: light mode reaches for near-black text on a near-white surface, dark mode inverts to near-white text on a near-black surface, both drawn from the same 12-step ramp.</p>
+
+    <div class="mode-grid">
+      <div class="mode-demo light">
+        <div class="mode-topbar">Light mode</div>
+        <div class="mode-body">
+          <p><strong style="color:#2E2D30">--text-primary</strong> on <strong style="color:#2E2D30">--surface-page</strong></p>
+          <p>Body copy reads at ~14.5:1 against the page canvas.</p>
+          <span class="mode-btn">--interactive-primary-bg</span>
+        </div>
+      </div>
+      <div class="mode-demo dark">
+        <div class="mode-topbar">Dark mode</div>
+        <div class="mode-body">
+          <p><strong style="color:#FBFCFD">--text-primary</strong> on <strong style="color:#FBFCFD">--surface-page</strong></p>
+          <p>Same token names, same ramp — the near-white and near-black steps swap roles.</p>
+          <span class="mode-btn">--interactive-primary-bg</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout brand">
+      <div class="callout-label">Why interactive-primary isn't a simple swap</div>
+      Most §2 tokens invert cleanly (light step ↔ dark step, same ramp position logic). <code>--interactive-primary-bg</code> does not — it resolves to Neutral-800 in light mode but Neutral-100 in dark mode, both near the <em>opposite</em> end of the ramp from what a naive inversion would suggest, specifically so the fill never goes muddy or vanishes into the dark-mode page canvas. See the primary-action decision documented at the top of <code>tokens.css</code>.
+    </div>
+
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Trigger</th><th>Selector</th><th>Fires when</th></tr></thead>
+        <tbody>
+          <tr><td>Explicit</td><td><code>[data-mode="dark"]</code></td><td>App or user sets the attribute directly — this always wins if present</td></tr>
+          <tr><td>System</td><td><code>@media (prefers-color-scheme: dark)</code></td><td>No explicit attribute is set; OS/browser preference is used as the fallback</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+<!-- ════ 8E ════ -->
+  <div class="section" id="8e">
+    <div class="section-header">
+      <span class="section-id">8E</span>
+      <h2 class="section-title">Token file structure</h2>
+    </div>
+    <hr class="section-hr">
+    <p>Three files, loaded in a fixed order. Each has one job, and nothing downstream re-defines a token that a file earlier in the chain already owns.</p>
+
+    <div class="file-tree">
+      <ol>
+        <li><span class="file-step">1</span><span class="file-name">tokens.css</span><span class="file-desc">Authoritative source. All three tiers — primitives (§1), light-mode semantics (§2), dark-mode overrides (§3), dashboard theme layer (§4), contract phase context (§5), and the shadcn/Radix bridge (§6). Framework-agnostic — plain CSS custom properties, no Tailwind syntax.</span></li>
+        <li><span class="file-step">2</span><span class="file-name">main.css</span><span class="file-desc">Tailwind v4 entry point. Imports Tailwind, imports <code>components.css</code>, and maps every Tier 2/3 token in <code>tokens.css</code> into an <code>@theme</code> block so each one becomes a real Tailwind utility class. Covered in full in Section 9.</span></li>
+        <li><span class="file-step">3</span><span class="file-name">components.css</span><span class="file-desc">Tier 3 base layer. Applies semantic type roles to real HTML elements (<code>h1</code>–<code>h6</code>, <code>p</code>, <code>code</code>) inside a Tailwind <code>@layer base</code> block, so correctly-used semantic markup looks right with zero utility classes.</span></li>
+      </ol>
+    </div>
+
+    <p>A fourth file, <code>h2p-shared.css</code>, exists only for this documentation site — it is not part of the runtime token system and should never be imported into the product build.</p>
+  </div>
+
+<!-- ════ 8F ════ -->
+  <div class="section" id="8f">
+    <div class="section-header">
+      <span class="section-id">8F</span>
+      <h2 class="section-title">Where framework specifics live</h2>
+    </div>
+    <hr class="section-hr">
+    <p>This section deliberately stops at the framework-agnostic layer — what a token is, how it's tiered, named, mode-mapped, and filed. How those same tokens get wired into Tailwind's utility generator, and how the shadcn/ui and shadcn-svelte component libraries consume them, is covered next in <a href="h2p-section-09-framework-implementation.html">Section 9 — Framework Implementation</a> rather than duplicated here — one place to update when the stack changes, not two.</p>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Concern</th><th>Documented here (§8)</th><th>Documented in §9</th></tr></thead>
+        <tbody>
+          <tr><td>Token definition &amp; tiering</td><td class="contrast-cell">✓</td><td class="contrast-cell">—</td></tr>
+          <tr><td>Tailwind <code>@theme</code> mapping</td><td class="contrast-cell">—</td><td class="contrast-cell">✓ §9A</td></tr>
+          <tr><td>shadcn/ui variable bridge</td><td class="contrast-cell">—</td><td class="contrast-cell">✓ §9B</td></tr>
+          <tr><td>shadcn-svelte install &amp; config</td><td class="contrast-cell">—</td><td class="contrast-cell">✓ §9C</td></tr>
+          <tr><td>Svelte component consumption</td><td class="contrast-cell">—</td><td class="contrast-cell">✓ §9D</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+<!-- ════ 8G ════ -->
+  <div class="section" id="8g">
+    <div class="section-header">
+      <span class="section-id">8G</span>
+      <h2 class="section-title">Anti-patterns</h2>
+    </div>
+    <hr class="section-hr">
+
+    <div class="ap-grid">
+      <div class="ap-box ap-dont">
+        <div class="ap-label">Don't reference a Tier 1 primitive from a component</div>
+        <p><code>bg-[#984616]</code> or <code>var(--ramp-brown-500)</code> inside a Svelte component skips the semantic layer entirely — it won't respond to a mode change or a future role reassignment the way <code>bg-surface-brand</code> would.</p>
+      </div>
+      <div class="ap-box ap-do">
+        <div class="ap-label">Do add a new semantic token, not a new hardcoded value</div>
+        <p>If a real screen needs a role that doesn't exist yet, add it to <code>tokens.css</code> §2 (and the dark-mode override in §3) before using it — not as a one-off value in the component that needed it first.</p>
+      </div>
+    </div>
+    <div class="ap-grid">
+      <div class="ap-box ap-dont">
+        <div class="ap-label">Don't invent a naming pattern mid-file</div>
+        <p>A token like <code>--btn-primary-color</code> alongside <code>--interactive-primary-bg</code> creates two competing vocabularies for the same concept. Match the segment order in §8C even when it feels verbose for a one-off.</p>
+      </div>
+      <div class="ap-box ap-do">
+        <div class="ap-label">Do keep dark-mode overrides token-for-token complete</div>
+        <p>Every semantic token declared in §2 needs a considered dark-mode value in §3 — even if that value is "unchanged, see comment" like <code>--border-focus</code>. A silently-missing override falls back to the light-mode value, which usually breaks contrast rather than looking merely undithered.</p>
+      </div>
+    </div>
+  </div>
+
+</main>
+  <footer class="page-footer">
+    <div>Section 8 — Design Tokens &nbsp;·&nbsp; H2 Prime Web Application Design System &nbsp;·&nbsp; v1.0 (start version) <br><a href="h2p-section-07-motion-animation.html">← Section 7 — Motion &amp; Animation</a> &nbsp;·&nbsp; <a href="h2p-section-09-framework-implementation.html">Section 9 — Framework Implementation →</a> &nbsp;·&nbsp; <a href="h2p-cover.html">Cover</a><br><span style="color:var(--t3)">Sections 10–13 (Contract Phase System, Dashboard Themes, Writing &amp; UX Copy, Figma Variable Reference) remain planned.</span></div>
+    <div style="text-align:right">Last updated: 2026-07-16<br>3 tiers · 3 source files · dual mode trigger</div>
+  </footer>
+
+</div>
+</body>
+</html>

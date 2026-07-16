@@ -1,0 +1,809 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Section 2 — Color System — H2 Prime Design System</title>
+  <link rel="stylesheet" href="h2p-shared.css">
+<style>
+.swatch-row   { display:flex; gap:6px; flex-wrap:wrap; margin:10px 0; }
+.swatch-cell  { display:flex; flex-direction:column; align-items:center; gap:4px; }
+.sw           { width:52px; height:52px; border-radius:6px; border:1px solid rgba(255,255,255,.08); }
+.sw-hex       { font-family:var(--fm); font-size:9px; color:var(--t3); }
+.sw-label     { font-size:9px; color:var(--t3); text-align:center; }
+
+.theme-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin:1rem 0; }
+.theme-card { background:var(--s); border:1px solid var(--b1); border-radius:8px; overflow:hidden; }
+.tc-bar     { padding:9px 12px; border-bottom:1px solid rgba(255,255,255,.08); font-size:11px; font-weight:600; display:flex; align-items:center; justify-content:space-between; }
+.tc-body    { padding:12px; }
+.tc-row     { display:flex; gap:4px; margin-bottom:8px; }
+.tc-sw      { width:22px; height:22px; border-radius:3px; border:1px solid rgba(255,255,255,.08); }
+.tc-desc    { font-size:11px; color:var(--t2); line-height:1.5; }
+.tc-token   { font-family:var(--fm); font-size:9px; color:var(--t3); margin-top:2px; }
+
+.phase-row  { display:grid; grid-template-columns:repeat(5,1fr); gap:8px; margin:1rem 0; }
+.pc         { border-radius:6px; overflow:hidden; border:1px solid var(--b1); }
+.pc-head    { padding:7px 8px; font-size:10px; font-weight:600; text-align:center; }
+.pc-body    { padding:8px; background:var(--s); }
+.pc-swatches { display:flex; gap:2px; margin-bottom:4px; }
+.pc-sw      { flex:1; height:14px; border-radius:2px; }
+.pc-name    { font-size:10px; color:var(--t1); font-weight:500; margin-bottom:1px; }
+.pc-sub     { font-size:9px; color:var(--t3); }
+
+.util-grid { display:grid; grid-template-columns:repeat(5,1fr); gap:8px; margin:1rem 0; }
+.uc        { border-radius:6px; overflow:hidden; border:1px solid var(--b1); }
+.uc-solid  { height:40px; display:flex; align-items:center; justify-content:center; font-size:10px; font-weight:600; }
+.uc-body   { padding:8px; background:var(--s); }
+.uc-name   { font-size:11px; color:var(--t1); font-weight:500; }
+.uc-hue    { font-family:var(--fm); font-size:9px; color:var(--t3); margin-bottom:4px; }
+.uc-surf   { height:20px; border-radius:3px; border:1px solid rgba(255,255,255,.08); margin-bottom:3px; }
+.uc-token  { font-family:var(--fm); font-size:9px; color:var(--t3); }
+
+.contrast-cell { font-family:var(--fm); font-size:11px; color:var(--t2); }
+
+.sep-table td:first-child { font-weight:500; color:var(--t1); }
+
+.warn-note { background:#1E1200; border:1px solid #5A3800; border-left:3px solid #B45309; border-radius:6px; padding:12px 14px; margin:1rem 0; }
+.warn-note-label { font-size:10px; font-weight:600; letter-spacing:.08em; text-transform:uppercase; color:#FCD34D; margin-bottom:6px; }
+.warn-note p { font-size:12px; color:var(--t2); margin-bottom:0; }
+</style>
+</head>
+<body>
+
+<nav class="guide-nav" aria-label="Style guide navigation">
+  <div class="guide-nav-left">
+    <a href="h2p-cover.html" class="guide-nav-home">
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+        <path d="M1 7L7 1l6 6M2.5 5.5V13h3v-3h3v3h3V5.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      H2 Prime Design System
+    </a>
+    <div class="guide-nav-divider" aria-hidden="true"></div>
+    <span class="guide-nav-section">2 — Color System</span>
+  </div>
+  <div class="guide-nav-right">
+    <a href="h2p-cover.html" class="guide-nav-btn">← Cover</a>
+    <a href="h2p-section-02b-ramp-reference.html" class="guide-nav-btn primary">2B — Ramp Reference →</a>
+  </div>
+</nav>
+
+<div class="page-wrap">
+
+  <!-- Header -->
+  <div class="doc-header">
+    <div class="doc-kicker">H2 Prime Web Application Design System &amp; Guidelines</div>
+    <h1 class="doc-title">Section 02 — <strong>Color System</strong></h1>
+    <p class="doc-lead">The color architecture for the H2 Prime web application platform. Purpose-built for a multi-environment SaaS with three distinct dashboard contexts, five contract phase views, and a full semantic utility palette. Every decision is driven by semantic clarity, perceptual precision, and WCAG 2.2 AA compliance on actual application surfaces.</p>
+    <div class="doc-meta">
+      <div class="doc-meta-item"><strong>Ramps</strong>11 ramps · 12 stops · OKLCH</div>
+      <div class="doc-meta-item"><strong>Brand</strong>Yellow #FFC20E · Brown #984616</div>
+      <div class="doc-meta-item"><strong>Utility</strong>Danger · Warning · Success · Info · Help</div>
+      <div class="doc-meta-item"><strong>Dashboard themes</strong>Client · Filer · Admin</div>
+      <div class="doc-meta-item"><strong>Contract phases</strong>5 phase palettes</div>
+      <div class="doc-meta-item"><strong>Compliance</strong>WCAG 2.2 AA minimum</div>
+      <div class="doc-meta-item"><strong>Last updated</strong>2026-07-13</div>
+    </div>
+  </div>
+
+  <!-- TOC -->
+  <nav class="toc" aria-label="Section contents">
+    <div class="toc-label">In this section</div>
+    <div class="toc-cols">
+      <ul class="toc-list">
+        <li><span class="toc-num">2A</span><a href="#2a">Ramp structure &amp; overview</a></li>
+        <li><span class="toc-num">2B</span><a href="#2b">Brand colors</a></li>
+        <li><span class="toc-num">2C</span><a href="#2c">Utility colors</a></li>
+        <li><span class="toc-num">2D</span><a href="#2d">Warning anchor decision</a></li>
+        <li><span class="toc-num">2D-2</span><a href="#2d2">Primary action color — Neutral vs Brown</a></li>
+      </ul>
+      <ul class="toc-list">
+        <li><span class="toc-num">2E</span><a href="#2e">Dashboard theme profiles</a></li>
+        <li><span class="toc-num">2F</span><a href="#2f">Contract phase palette</a></li>
+        <li><span class="toc-num">2G</span><a href="#2g">Semantic token rules</a></li>
+        <li><span class="toc-num">2H</span><a href="#2h">Surface hierarchy</a></li>
+      </ul>
+      <ul class="toc-list">
+        <li><span class="toc-num">2I</span><a href="#2i">Contrast &amp; accessibility</a></li>
+        <li><span class="toc-num">2J</span><a href="#2j">Data visualization palette</a></li>
+        <li><span class="toc-num">2K</span><a href="#2k">Dark mode</a></li>
+        <li><span class="toc-num">2L</span><a href="#2l">Anti-patterns</a></li>
+      </ul>
+    </div>
+  </nav>
+
+<!-- ════ 2A ════ -->
+  <div class="section" id="2a">
+    <div class="section-header">
+      <span class="section-id">2A</span>
+      <h2 class="section-title">Ramp structure &amp; palette overview</h2>
+    </div>
+    <hr class="section-hr">
+    <p>The palette is built from 11 color ramps. Each ramp is a single hue scaled across 12 stops using OKLCH perceptual color space. OKLCH ensures uniform perceived lightness intervals — equal numeric steps produce equal perceived differences. This makes contrast ratios at specific stops predictable across all ramps.</p>
+    <p>Stops are numbered <strong>25 · 50 · 100 · 200 · 300 · 400 · 500 · 600 · 700 · 800 · 900 · 950</strong>. The extra stops at each end provide more granularity for surfaces (light end) and accessible text on dark surfaces (dark end).</p>
+
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Stop range</th><th>Primary use</th><th>Examples</th></tr></thead>
+        <tbody>
+          <tr><td><strong>25 – 50</strong></td><td>Page backgrounds, alert fills, badge tints</td><td>Feedback surfaces <span class="b-lm">LM</span>, app canvas tints</td></tr>
+          <tr><td><strong>100 – 200</strong></td><td>UI element backgrounds, hover states on surfaces</td><td>Table zebra rows, chip fills, hover fills</td></tr>
+          <tr><td><strong>300 – 400</strong></td><td>Borders, separators, subtle outlines</td><td>Card outlines, dividers, feedback borders</td></tr>
+          <tr><td><strong>500 – 600</strong></td><td>Solid fills — buttons, badges, active indicators</td><td>Primary button, nav active indicator, status badge</td></tr>
+          <tr><td><strong>700 – 800</strong></td><td>Accessible text on light surfaces <span class="b-lm">LM</span></td><td>Feedback body text, secondary text</td></tr>
+          <tr><td><strong>900 – 950</strong></td><td>Deep fills for DM surfaces; maximum contrast text</td><td>Dark mode cards, deepest surface fills</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p style="margin-top:1rem">The 11 ramps are organized into four groups:</p>
+
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Group</th><th>Ramps</th><th>Purpose</th></tr></thead>
+        <tbody>
+          <tr><td><span class="badge b-brand">Brand</span></td><td>Yellow · Brown</td><td>H2 Prime brand identity and structural chrome</td></tr>
+          <tr><td><span class="badge b-utility">Utility</span></td><td>Danger · Warning · Success · Info · Help</td><td>Semantic feedback states only — never decorative</td></tr>
+          <tr><td><span class="badge b-dash">Dashboard</span></td><td>Sky Blue · Violet</td><td>Filer and Admin dashboard accent colors</td></tr>
+          <tr><td><span class="badge b-phase">Phases</span></td><td>5 micro-palettes (5 stops each)</td><td>Contract phase identification in client view</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+<!-- ════ 2B ════ -->
+  <div class="section" id="2b">
+    <div class="section-header">
+      <span class="section-id">2B</span>
+      <h2 class="section-title">Brand colors</h2>
+    </div>
+    <hr class="section-hr">
+    <p>H2 Prime has two brand colors as of 2026-07-13: a warm golden Yellow and a muted terracotta Brown. Mid Gray and Dark Gray are retired as separate brand anchors — both now draw from a single cool system Neutral ramp (below), which also carries primary interactive surfaces. See §2D-2 for why the primary CTA color is Neutral rather than Brand Yellow or Brown.</p>
+
+    <div class="ramp-group">
+      <div class="rg-hdr">
+        <span class="rg-name">Yellow — primary brand</span>
+        <span class="rg-meta">Anchor #FFC20E · step 500 · H≈85° OKLCH · RGB 255 194 14</span>
+      </div>
+      <div class="rg-desc">The primary brand color and Client dashboard accent. Used exclusively on interactive surfaces — primary buttons, active nav indicators, focus rings, and progress bars. Never used as a utility feedback color. Text on Yellow fills must be <code>#000000</code> (black) to satisfy contrast requirements.</div>
+      <div class="rg-strip">
+        <div class="ramp-strip">
+          <div class="rs-cell"><div class="rs-sw" style="background:#FFFBEB"></div><div class="rs-lbl">25</div></div>
+          <div class="rs-cell"><div class="rs-sw" style="background:#FFF3C4"></div><div class="rs-lbl">50</div></div>
+          <div class="rs-cell"><div class="rs-sw" style="background:#FFEA96"></div><div class="rs-lbl">100</div></div>
+          <div class="rs-cell"><div class="rs-sw" style="background:#FFE063"></div><div class="rs-lbl">200</div></div>
+          <div class="rs-cell"><div class="rs-sw" style="background:#FFD32E"></div><div class="rs-lbl">300</div></div>
+          <div class="rs-cell"><div class="rs-sw" style="background:#FFC90E"></div><div class="rs-lbl">400</div></div>
+          <div class="rs-cell"><div class="rs-sw rs-anchor" style="background:#FFC20E"></div><div class="rs-atag">●500</div></div>
+          <div class="rs-cell"><div class="rs-sw" style="background:#D9A000"></div><div class="rs-lbl">600</div></div>
+          <div class="rs-cell"><div class="rs-sw" style="background:#A87B00"></div><div class="rs-lbl">700</div></div>
+          <div class="rs-cell"><div class="rs-sw" style="background:#7A5900"></div><div class="rs-lbl">800</div></div>
+          <div class="rs-cell"><div class="rs-sw" style="background:#593F00"></div><div class="rs-lbl">900</div></div>
+          <div class="rs-cell"><div class="rs-sw" style="background:#3D2A00"></div><div class="rs-lbl">950</div></div>
+        </div>
+      </div>
+      <div class="rg-tokens">
+        <span class="tok"><strong>interactive</strong> · step 500 = primary CTA fill</span>
+        <span class="tok"><strong>hover</strong> · step 600</span>
+        <span class="tok"><strong>active</strong> · step 700</span>
+        <span class="tok"><strong>tint surface</strong> · step 25</span>
+        <span class="tok"><strong>text on light</strong> · step 800</span>
+        <span class="tok"><strong>text on fill</strong> · #000000</span>
+      </div>
+      <div class="rg-note">CRITICAL: Yellow (H≈85°) must never be used for Warning states. The full H≈20°–100° arc is occupied by Danger (H≈15°) and Brand Yellow (H≈85°). Any amber/orange Warning color in this range will either read as a lighter Danger or a different-shade brand color. See §2D for the Warning anchor decision.</div>
+    </div>
+
+    <div class="ramp-group">
+      <div class="rg-hdr">
+        <span class="rg-name">Brown — secondary brand</span>
+        <span class="rg-meta">Anchor #984616 · step 500 · H≈46.5° OKLCH · RGB 152 70 22</span>
+      </div>
+      <div class="rg-desc">New (2026-07-13). Identity color paired with Yellow — headers, illustration accents, brand marks, and badges. <strong>Not</strong> the primary interactive color; see §2D-2. 13.5° from Warning amber (H≈55–65°) — the closest hue pairing anywhere in the palette, which is why Brown stays out of interactive/CTA and status roles alike.</div>
+      <div class="rg-strip">
+        <div class="ramp-strip">
+          <div class="rs-cell"><div class="rs-sw" style="background:#FFF8F3"></div><div class="rs-lbl">25</div></div>
+          <div class="rs-cell"><div class="rs-sw" style="background:#FFEFE7"></div><div class="rs-lbl">50</div></div>
+          <div class="rs-cell"><div class="rs-sw" style="background:#FEE1D3"></div><div class="rs-lbl">100</div></div>
+          <div class="rs-cell"><div class="rs-sw" style="background:#F5C7B2"></div><div class="rs-lbl">200</div></div>
+          <div class="rs-cell"><div class="rs-sw" style="background:#E7AB8E"></div><div class="rs-lbl">300</div></div>
+          <div class="rs-cell"><div class="rs-sw" style="background:#D68B66"></div><div class="rs-lbl">400</div></div>
+          <div class="rs-cell"><div class="rs-sw rs-anchor" style="background:#984616"></div><div class="rs-atag">●500</div></div>
+          <div class="rs-cell"><div class="rs-sw" style="background:#782900"></div><div class="rs-lbl">600</div></div>
+          <div class="rs-cell"><div class="rs-sw" style="background:#5A1100"></div><div class="rs-lbl">700</div></div>
+          <div class="rs-cell"><div class="rs-sw" style="background:#3F0000"></div><div class="rs-lbl">800</div></div>
+          <div class="rs-cell"><div class="rs-sw" style="background:#280000"></div><div class="rs-lbl">900</div></div>
+          <div class="rs-cell"><div class="rs-sw" style="background:#230000"></div><div class="rs-lbl">950</div></div>
+        </div>
+      </div>
+      <div class="rg-tokens">
+        <span class="tok"><strong>identity fill</strong> · step 500 = 6.52:1 on white (AA)</span>
+        <span class="tok"><strong>identity fill (AAA)</strong> · step 600 = 9.93:1 on white</span>
+        <span class="tok"><strong>tint surface</strong> · step 25</span>
+        <span class="tok"><strong>text on fill</strong> · #FFFFFF</span>
+      </div>
+      <div class="rg-note">Do not reach for Brown on buttons, badges of status, or focus rings. It is available for header bands, illustration, and brand marks — see the Component Patterns section for approved placements.</div>
+    </div>
+
+    <div class="ramp-group">
+      <div class="rg-hdr">
+        <span class="rg-name">Neutral (cool) — text, surface, chrome &amp; primary interactive</span>
+        <span class="rg-meta">Recomputed 2026-07-13 · H≈258° OKLCH · replaces Mid Gray + Dark Gray</span>
+      </div>
+      <div class="rg-desc">A single 12-step system ramp consolidating the former Mid Gray (H≈265°) and Dark Gray (H≈270°) brand anchors, pushed slightly cooler so Yellow and Brown have a calm surface to sit on rather than competing for warmth. This is the ramp behind <code>--interactive-primary-*</code> — see §2D-2 for why. A warm neutral (H≈58°) was evaluated and rejected: at only 11.5° from Brown it would read as a washed-out brand tint, not a true neutral, and would give the palette three warm colors with nothing left to anchor against.</div>
+      <div class="rg-strip">
+        <div class="ramp-strip">
+          <div class="rs-cell"><div class="rs-sw" style="background:#FBFCFD"></div><div class="rs-lbl">25</div></div>
+          <div class="rs-cell"><div class="rs-sw" style="background:#F5F7F9"></div><div class="rs-lbl">50</div></div>
+          <div class="rs-cell"><div class="rs-sw" style="background:#EBEDF0"></div><div class="rs-lbl">100</div></div>
+          <div class="rs-cell"><div class="rs-sw" style="background:#D6D9DE"></div><div class="rs-lbl">200</div></div>
+          <div class="rs-cell"><div class="rs-sw" style="background:#BABEC4"></div><div class="rs-lbl">300</div></div>
+          <div class="rs-cell"><div class="rs-sw" style="background:#959AA1"></div><div class="rs-lbl">400</div></div>
+          <div class="rs-cell"><div class="rs-sw" style="background:#6D7279"></div><div class="rs-lbl">500</div></div>
+          <div class="rs-cell"><div class="rs-sw" style="background:#52575E"></div><div class="rs-lbl">600</div></div>
+          <div class="rs-cell"><div class="rs-sw" style="background:#3B3F45"></div><div class="rs-lbl">700</div></div>
+          <div class="rs-cell"><div class="rs-sw rs-anchor" style="background:#272A2F"></div><div class="rs-atag">●800</div></div>
+          <div class="rs-cell"><div class="rs-sw" style="background:#15171B"></div><div class="rs-lbl">900</div></div>
+          <div class="rs-cell"><div class="rs-sw" style="background:#07080B"></div><div class="rs-lbl">950</div></div>
+        </div>
+      </div>
+      <div class="rg-tokens">
+        <span class="tok"><strong>surface-page LM</strong> · step 25</span>
+        <span class="tok"><strong>surface-raised LM</strong> · #FFFFFF</span>
+        <span class="tok"><strong>nav-bg</strong> · step 800</span>
+        <span class="tok"><strong>text-secondary</strong> · step 700</span>
+        <span class="tok"><strong>interactive-primary-bg (LM)</strong> · step 800 = 14.4:1 w/ white text</span>
+        <span class="tok"><strong>interactive-primary-bg (DM)</strong> · step 100, inverted = 15.9:1 w/ near-black text</span>
+        <span class="tok"><strong>surface-page DM</strong> · step 950</span>
+      </div>
+      <div class="rg-note"><code>--ramp-gray-mid-*</code> and <code>--ramp-gray-dark-*</code> remain defined in <code>tokens.css</code> as aliases onto this ramp, so existing component references keep resolving. Don't add new references to the legacy names — use <code>--ramp-neutral-*</code> or the <code>--neutral-*</code> semantic tier instead.</div>
+    </div>
+  </div>
+
+<!-- ════ 2D-2 ════ -->
+  <div class="section" id="2d2">
+    <div class="section-header">
+      <span class="section-id">2D-2</span>
+      <h2 class="section-title">Primary action color decision — Neutral, not Brown</h2>
+    </div>
+    <hr class="section-hr">
+    <p>The single most-repeated interactive color in the product — the primary CTA fill — resolves to the Neutral ramp, not to Brand Yellow, Brown, or the per-theme dashboard accent. This was a close call worth documenting in full, because the initial exploration (see <code>h2prime-ramps-v2.html</code>) proposed Brown for this role.</p>
+
+    <div class="ap-grid">
+      <div class="ap-box ap-dont">
+        <div class="ap-label">Brown as primary — rejected</div>
+        <p><strong>Strength:</strong> ties the most-clicked pixel to brand identity; Brown-500 clears AA on white text (6.52:1), Brown-600 clears AAA (9.93:1).</p>
+        <p><strong>Gap:</strong> Brown-500 goes muddy against near-black dark-mode chrome — needs a mode-aware promotion to step 400, so "primary" can't be one ramp step reused across modes.</p>
+        <p><strong>Conflict:</strong> sits only 13.5° from Warning amber in hue — closer than any other pairing in the palette. As primary, this collision risk re-appears on every screen, for an audience that skews older and often views the app outdoors.</p>
+      </div>
+      <div class="ap-box ap-do">
+        <div class="ap-label">Neutral as primary — chosen</div>
+        <p><strong>Strength:</strong> zero hue overlap with any utility ramp, in either mode, permanently. Neutral-600+ clears AAA in light mode; inverted neutral in dark mode has no muddiness failure at any step.</p>
+        <p><strong>Strength:</strong> cleanly separates "who we are" (Yellow + Brown, identity) from "what you can click" (Neutral, interactive) — a more legible model for a non-technical audience.</p>
+        <p><strong>Gap:</strong> the CTA doesn't read as overtly branded on its own — Brown/Yellow must show up deliberately elsewhere in the same view (header bands, icons, illustration) so the brand doesn't disappear from the product surface.</p>
+      </div>
+    </div>
+
+    <div class="tbl-wrap">
+      <caption class="sr-only">Side-by-side comparison of Brown and Neutral as the primary action color across light and dark mode</caption>
+      <table>
+        <thead><tr><th>Context</th><th>Brown primary</th><th>Neutral primary</th></tr></thead>
+        <tbody>
+          <tr><td>Light mode button fill</td><td><code>#984616</code> · 6.52:1 w/ white text · AA</td><td><code>#272A2F</code> (neutral-800) · 14.4:1 w/ white text · AAA</td></tr>
+          <tr><td>Dark mode button fill</td><td>needs step 400 (<code>#D68B66</code>) — step 500 reads muddy on near-black chrome</td><td>neutral-100 (<code>#EBEDF0</code>), inverted — clean at any step</td></tr>
+          <tr><td>Distance from Warning amber (H≈55–65°)</td><td>13.5° — tightest pairing in the palette</td><td>not applicable — Neutral carries no hue</td></tr>
+          <tr><td>Brand legibility on the CTA itself</td><td>high — button is literally the brand color</td><td>low — brand must be reinforced elsewhere in view</td></tr>
+          <tr><td>White-label blast radius</td><td>primary CTA is a per-tenant brand ramp</td><td>primary CTA stays on a system-locked ramp</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout brand">
+      <div class="callout-label">Decision</div>
+      Go with Neutral. The Warning-hue proximity is a standing, screen-by-screen risk with Brown and a non-issue with Neutral — decisive given the audience (older, non-technical, frequent outdoor/mobile use, where color perception is worse) and the eventual white-label goal, where keeping interactive-primary on a system ramp lowers blast radius when a tenant's brand color doesn't play nicely with the utility ramps. Brown keeps real estate — headers, illustration, badges — just not the button. See <code>tokens.css</code> §2.4 for the resulting token values.
+    </div>
+  </div>
+
+<!-- ════ 2C ════ -->
+  <div class="section" id="2c">
+    <div class="section-header">
+      <span class="section-id">2C</span>
+      <h2 class="section-title">Utility colors — semantic only</h2>
+    </div>
+    <hr class="section-hr">
+    <p>Five utility colors provide semantic feedback states. These are <strong>never used decoratively</strong> — each hue carries an assigned meaning across the entire product. The hue choices are constrained by the Brand Yellow (H≈85°) occupying the conventional warning arc; see §2D for the Warning decision rationale.</p>
+
+    <div class="util-grid">
+      <div class="uc">
+        <div class="uc-solid" style="background:#C83520;color:#fff">Danger</div>
+        <div class="uc-body">
+          <div class="uc-name">Danger / Error</div>
+          <div class="uc-hue">H≈15° red-orange</div>
+          <div class="uc-surf" style="background:#FFF0ED"></div>
+          <div class="uc-token">surface: step 25<br>border: step 400<br>text: step 700<br>solid: step 500</div>
+        </div>
+      </div>
+      <div class="uc">
+        <div class="uc-solid" style="background:#B45309;color:#fff">Warning</div>
+        <div class="uc-body">
+          <div class="uc-name">Warning</div>
+          <div class="uc-hue">H≈55° amber (ramp)<br>client solid: step 600</div>
+          <div class="uc-surf" style="background:#FFFBEB"></div>
+          <div class="uc-token">surface: step 25<br>border: step 600*<br>text: step 700<br>solid: step 600*</div>
+        </div>
+      </div>
+      <div class="uc">
+        <div class="uc-solid" style="background:#16A34A;color:#fff">Success</div>
+        <div class="uc-body">
+          <div class="uc-name">Success</div>
+          <div class="uc-hue">H≈142° forest green</div>
+          <div class="uc-surf" style="background:#F0FDF4"></div>
+          <div class="uc-token">surface: step 25<br>border: step 400<br>text: step 700<br>solid: step 500</div>
+        </div>
+      </div>
+      <div class="uc">
+        <div class="uc-solid" style="background:#2563EB;color:#fff">Info</div>
+        <div class="uc-body">
+          <div class="uc-name">Info</div>
+          <div class="uc-hue">H≈220° clear blue</div>
+          <div class="uc-surf" style="background:#EFF6FF"></div>
+          <div class="uc-token">surface: step 25<br>border: step 400<br>text: step 700<br>solid: step 500</div>
+        </div>
+      </div>
+      <div class="uc">
+        <div class="uc-solid" style="background:#7C3AED;color:#fff">Help</div>
+        <div class="uc-body">
+          <div class="uc-name">Help</div>
+          <div class="uc-hue">H≈280° violet</div>
+          <div class="uc-surf" style="background:#F5F3FF"></div>
+          <div class="uc-token">surface: step 25<br>border: step 400<br>text: step 700<br>solid: step 500</div>
+        </div>
+      </div>
+    </div>
+    <p style="font-size:12px;color:var(--t3)">* Warning is now a single uniform anchor across all three dashboard themes — see §2D.</p>
+
+    <div class="tbl-wrap" style="margin-top:1.25rem">
+      <table>
+        <thead><tr><th>Utility</th><th>Hue (H°)</th><th>Separation from Brown (H≈46.5°)</th><th>Closest neighbor</th></tr></thead>
+        <tbody>
+          <tr><td><span style="display:inline-block;width:10px;height:10px;background:#C83520;border-radius:2px;vertical-align:middle;margin-right:6px"></span>Danger</td><td class="contrast-cell">H≈15°</td><td class="contrast-cell">31.5° away</td><td class="contrast-cell">Warning (H≈55°) · 40° gap</td></tr>
+          <tr><td><span style="display:inline-block;width:10px;height:10px;background:#D97706;border-radius:2px;vertical-align:middle;margin-right:6px"></span>Warning</td><td class="contrast-cell">H≈55–65°</td><td class="contrast-cell">13.5° away</td><td class="contrast-cell">Brown (H≈46.5°) · 13.5° gap — tightest in the palette</td></tr>
+          <tr><td><span style="display:inline-block;width:10px;height:10px;background:#16A34A;border-radius:2px;vertical-align:middle;margin-right:6px"></span>Success</td><td class="contrast-cell">H≈142°</td><td class="contrast-cell">95.5° away</td><td class="contrast-cell">Info (H≈220°) · 78° gap</td></tr>
+          <tr><td><span style="display:inline-block;width:10px;height:10px;background:#2563EB;border-radius:2px;vertical-align:middle;margin-right:6px"></span>Info</td><td class="contrast-cell">H≈220°</td><td class="contrast-cell">173.5° away</td><td class="contrast-cell">Help (H≈280°) · 60° gap</td></tr>
+          <tr><td><span style="display:inline-block;width:10px;height:10px;background:#7C3AED;border-radius:2px;vertical-align:middle;margin-right:6px"></span>Help</td><td class="contrast-cell">H≈280°</td><td class="contrast-cell">233.5° away</td><td class="contrast-cell">Info (H≈220°) · 60° gap</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+<!-- ════ 2D ════ -->
+  <div class="section" id="2d">
+    <div class="section-header">
+      <span class="section-id">2D</span>
+      <h2 class="section-title">Warning anchor decision — revised 2026-07-13</h2>
+    </div>
+    <hr class="section-hr">
+
+    <div class="warn-note">
+      <div class="warn-note-label">Architectural decision record — Warning color, revised</div>
+      <p>The previous decision (per-theme step-600 override to dodge Brand Yellow) is superseded. Warning is now a single conventional amber ramp, anchored at step 500, used identically across Client, Filer, and Admin — the per-theme override and its branching logic are removed entirely.</p>
+    </div>
+
+    <p>Familiarity beats hue-purity here. Warning stays a standard amber (H≈55–65°) everywhere. It now sits ~25° from Yellow and <strong>~13.5° from Brown</strong> — tighter than the old client-theme override was, and tighter to Brown (used everywhere, unrestricted) than to Yellow (the one color already kept fully out of status roles). This is exactly why Brown was rejected as the primary interactive color rather than Warning being pushed again — see §2D-2.</p>
+
+    <div class="ap-grid">
+      <div class="ap-box ap-dont">
+        <div class="ap-label">Rejected — push Warning again</div>
+        <p>Chasing more hue separation from Brown would mean a third Warning variant (after the original amber, then the client-theme step-600 orange-amber) with no natural resting hue left — Danger already holds H≈15°, and pushing further toward red risks Warning reading as Danger instead.</p>
+      </div>
+      <div class="ap-box ap-do">
+        <div class="ap-label">Chosen — hold the line on lightness/chroma</div>
+        <p>Warning-500 is bright and saturated (a true safety-amber); Brown-500 is muted and dark (a terracotta identity color). The 13.5° hue gap holds up in practice because these two colors don't actually look alike side by side — managed by usage governance (Brown and Yellow both stay out of status/feedback roles) rather than by hunting for more hue distance.</p>
+      </div>
+    </div>
+
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Theme</th><th>Warning solid / border token resolves to</th><th>Hex</th><th>Hue</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><strong>Client</strong> <span style="font-size:10px;color:var(--t3)">[data-theme="client"]</span></td>
+            <td><code>--ramp-warning-500</code></td>
+            <td class="contrast-cell">#D97706</td>
+            <td class="contrast-cell">H≈55°</td>
+          </tr>
+          <tr>
+            <td><strong>Filer</strong> <span style="font-size:10px;color:var(--t3)">[data-theme="filer"]</span></td>
+            <td><code>--ramp-warning-500</code></td>
+            <td class="contrast-cell">#D97706</td>
+            <td class="contrast-cell">H≈55°</td>
+          </tr>
+          <tr>
+            <td><strong>Admin</strong> <span style="font-size:10px;color:var(--t3)">[data-theme="admin"]</span></td>
+            <td><code>--ramp-warning-500</code></td>
+            <td class="contrast-cell">#D97706</td>
+            <td class="contrast-cell">H≈55°</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout brand" style="margin-top:1rem">
+      <div class="callout-label">Implementation note</div>
+      <p>This is a token-level decision — not a ramp change. <code>--feedback-warning-border</code>, <code>--feedback-warning-icon</code>, and <code>--feedback-warning-solid</code> are overridden in the <code>[data-theme="client"]</code> block in <code>tokens.css</code>. The amber ramp primitives (§1.5) are not modified.</p>
+    </div>
+  </div>
+
+<!-- ════ 2E ════ -->
+  <div class="section" id="2e">
+    <div class="section-header">
+      <span class="section-id">2E</span>
+      <h2 class="section-title">Dashboard theme profiles</h2>
+    </div>
+    <hr class="section-hr">
+
+    <div class="callout warn">
+      <div class="callout-label">Parked — predates the Brown/Neutral revision</div>
+      This section is not being rebuilt in this pass. Two things changed underneath it: (1) the primary CTA fill no longer comes from <code>--theme-accent-*</code> at all (see §2D-2) — <code>--theme-accent-*</code> below now drives nav highlights and secondary accents only, and (2) Brown/Yellow identity treatment per dashboard hasn't been decided yet. Treat the cards below as historical reference, not a settled spec — a dedicated pass is planned once dashboard-theme direction is finalized.
+    </div>
+
+    <p>Three dashboard environments share the same component library but carry different accent hues. Activated via <code>[data-theme="client|filer|admin"]</code> on the layout root.</p>
+
+    <div class="theme-grid">
+      <div class="theme-card">
+        <div class="tc-bar" style="background:#2A2200;border-color:#5A4000;color:#FFC20E">
+          <span>Client</span>
+          <span style="font-size:9px;font-family:var(--fm);color:#A87B00">data-theme="client"</span>
+        </div>
+        <div class="tc-body">
+          <div class="tc-row">
+            <div class="tc-sw" style="background:#FFC20E" title="Yellow 500 — primary CTA"></div>
+            <div class="tc-sw" style="background:#D9A000" title="Yellow 600 — hover"></div>
+            <div class="tc-sw" style="background:#A87B00" title="Yellow 700 — active"></div>
+            <div class="tc-sw" style="background:#FFFBEB" title="Yellow 25 — tint surface"></div>
+            <div class="tc-sw" style="background:#272A2F" title="Neutral 800 — nav/chrome"></div>
+          </div>
+          <div class="tc-desc"><strong style="color:var(--t1)">Accent:</strong> Brand Yellow H≈85°<br><strong style="color:var(--t1)">Interactive links:</strong> Info Blue<br><strong style="color:var(--t1)">Warning:</strong> step 600 (see §2D)<br><strong style="color:var(--t1)">Mood:</strong> Warm, approachable, commercial. Most common end-user context.</div>
+          <div class="tc-token">--theme-accent-500: #FFC20E<br>--theme-accent-on: #000000</div>
+        </div>
+      </div>
+      <div class="theme-card">
+        <div class="tc-bar" style="background:#001520;border-color:#003050;color:#0EA5E9">
+          <span>Filer</span>
+          <span style="font-size:9px;font-family:var(--fm);color:#075985">data-theme="filer"</span>
+        </div>
+        <div class="tc-body">
+          <div class="tc-row">
+            <div class="tc-sw" style="background:#0EA5E9" title="Sky 400 — primary CTA"></div>
+            <div class="tc-sw" style="background:#0284C7" title="Sky 500 — hover"></div>
+            <div class="tc-sw" style="background:#0369A1" title="Sky 600 — active"></div>
+            <div class="tc-sw" style="background:#F0F9FF" title="Sky 25 — tint surface"></div>
+            <div class="tc-sw" style="background:#FFC20E" title="Yellow — KPI highlight"></div>
+          </div>
+          <div class="tc-desc"><strong style="color:var(--t1)">Accent:</strong> Sky Blue H≈200°<br><strong style="color:var(--t1)">Highlight:</strong> Brand Yellow (KPI callouts)<br><strong style="color:var(--t1)">Warning:</strong> step 500 (standard)<br><strong style="color:var(--t1)">Mood:</strong> Professional, elevated, managerial.</div>
+          <div class="tc-token">--theme-accent-500: #0EA5E9<br>--theme-accent-on: #FFFFFF</div>
+        </div>
+      </div>
+      <div class="theme-card">
+        <div class="tc-bar" style="background:#160020;border-color:#300050;color:#8B5CF6">
+          <span>Admin</span>
+          <span style="font-size:9px;font-family:var(--fm);color:#4C1D95">data-theme="admin"</span>
+        </div>
+        <div class="tc-body">
+          <div class="tc-row">
+            <div class="tc-sw" style="background:#8B5CF6" title="Violet 400 — primary CTA"></div>
+            <div class="tc-sw" style="background:#7C3AED" title="Violet 500 — hover"></div>
+            <div class="tc-sw" style="background:#6D28D9" title="Violet 600 — active"></div>
+            <div class="tc-sw" style="background:#F5F3FF" title="Violet 25 — tint surface"></div>
+            <div class="tc-sw" style="background:#FFC20E" title="Yellow — KPI highlight"></div>
+          </div>
+          <div class="tc-desc"><strong style="color:var(--t1)">Accent:</strong> Violet H≈280°<br><strong style="color:var(--t1)">Highlight:</strong> Brand Yellow (key metrics)<br><strong style="color:var(--t1)">Warning:</strong> step 500 (standard)<br><strong style="color:var(--t1)">Mood:</strong> Authority, platform-level. Deepest chrome (step 950 nav).</div>
+          <div class="tc-token">--theme-accent-500: #8B5CF6<br>--theme-accent-on: #FFFFFF</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Theme</th><th>Accent hue</th><th>H° (OKLCH)</th><th>Separation from Yellow H≈85°</th><th>Separation from each other</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Client</strong></td><td><span style="display:inline-block;width:10px;height:10px;background:#FFC20E;border-radius:2px;vertical-align:middle;margin-right:5px"></span>Yellow</td><td class="contrast-cell">H≈85°</td><td class="contrast-cell">—</td><td class="contrast-cell">115° from Sky · 195° from Violet</td></tr>
+          <tr><td><strong>Filer</strong></td><td><span style="display:inline-block;width:10px;height:10px;background:#0EA5E9;border-radius:2px;vertical-align:middle;margin-right:5px"></span>Sky Blue</td><td class="contrast-cell">H≈200°</td><td class="contrast-cell">115° away ✓</td><td class="contrast-cell">80° from Violet</td></tr>
+          <tr><td><strong>Admin</strong></td><td><span style="display:inline-block;width:10px;height:10px;background:#8B5CF6;border-radius:2px;vertical-align:middle;margin-right:5px"></span>Violet</td><td class="contrast-cell">H≈280°</td><td class="contrast-cell">195° away ✓</td><td class="contrast-cell">80° from Sky</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout warn" style="margin-top:1rem">
+      <div class="callout-label">Admin / Help violet overlap</div>
+      <p>The Admin accent (Violet, H≈280°) and the Help utility color (H≈280°) share the same hue family. They are distinguished by role — Admin violet appears on <strong>interactive surfaces</strong> (buttons, nav active indicators). Help violet appears on <strong>passive feedback surfaces</strong> (banners, badges). In any Admin view where both appear, they must always be accompanied by a text label; never distinguish them by color alone.</p>
+    </div>
+  </div>
+
+<!-- ════ 2F ════ -->
+  <div class="section" id="2f">
+    <div class="section-header">
+      <span class="section-id">2F</span>
+      <h2 class="section-title">Contract phase palette</h2>
+    </div>
+    <hr class="section-hr">
+    <p>Five contract phases each carry a distinct 5-stop micro-palette. Phases are only visible in the Client dashboard view. Applied via <code>[data-phase="1–5"]</code> on a contract container — components inside inherit <code>--phase-*</code> tokens automatically.</p>
+
+    <div class="phase-row">
+      <div class="pc">
+        <div class="pc-head" style="background:#1E3A5F;color:#93C5FD">Phase 1</div>
+        <div class="pc-body">
+          <div class="pc-swatches">
+            <div class="pc-sw" style="background:#EFF6FF"></div>
+            <div class="pc-sw" style="background:#93C5FD"></div>
+            <div class="pc-sw" style="background:#3B82F6"></div>
+            <div class="pc-sw" style="background:#1D4ED8"></div>
+            <div class="pc-sw" style="background:#1E3A8A"></div>
+          </div>
+          <div class="pc-name">Initiation</div>
+          <div class="pc-sub">Slate Blue H≈225°<br>#3B82F6 solid</div>
+        </div>
+      </div>
+      <div class="pc">
+        <div class="pc-head" style="background:#1C3829;color:#6EE7B7">Phase 2</div>
+        <div class="pc-body">
+          <div class="pc-swatches">
+            <div class="pc-sw" style="background:#ECFDF5"></div>
+            <div class="pc-sw" style="background:#6EE7B7"></div>
+            <div class="pc-sw" style="background:#10B981"></div>
+            <div class="pc-sw" style="background:#065F46"></div>
+            <div class="pc-sw" style="background:#022C22"></div>
+          </div>
+          <div class="pc-name">Negotiation</div>
+          <div class="pc-sub">Emerald H≈162°<br>#10B981 solid</div>
+        </div>
+      </div>
+      <div class="pc">
+        <div class="pc-head" style="background:#431407;color:#FED7AA">Phase 3</div>
+        <div class="pc-body">
+          <div class="pc-swatches">
+            <div class="pc-sw" style="background:#FFF7ED"></div>
+            <div class="pc-sw" style="background:#FED7AA"></div>
+            <div class="pc-sw" style="background:#F97316"></div>
+            <div class="pc-sw" style="background:#C2410C"></div>
+            <div class="pc-sw" style="background:#7C2D12"></div>
+          </div>
+          <div class="pc-name">Execution</div>
+          <div class="pc-sub">Burnt Orange H≈28°<br>#F97316 solid ⚠</div>
+        </div>
+      </div>
+      <div class="pc">
+        <div class="pc-head" style="background:#3B0764;color:#E9D5FF">Phase 4</div>
+        <div class="pc-body">
+          <div class="pc-swatches">
+            <div class="pc-sw" style="background:#FDF4FF"></div>
+            <div class="pc-sw" style="background:#E9D5FF"></div>
+            <div class="pc-sw" style="background:#A855F7"></div>
+            <div class="pc-sw" style="background:#7E22CE"></div>
+            <div class="pc-sw" style="background:#3B0764"></div>
+          </div>
+          <div class="pc-name">Review</div>
+          <div class="pc-sub">Fuchsia H≈292°<br>#A855F7 solid ⚠</div>
+        </div>
+      </div>
+      <div class="pc">
+        <div class="pc-head" style="background:#0C4A6E;color:#BAE6FD">Phase 5</div>
+        <div class="pc-body">
+          <div class="pc-swatches">
+            <div class="pc-sw" style="background:#F0F9FF"></div>
+            <div class="pc-sw" style="background:#BAE6FD"></div>
+            <div class="pc-sw" style="background:#0EA5E9"></div>
+            <div class="pc-sw" style="background:#0369A1"></div>
+            <div class="pc-sw" style="background:#0C4A6E"></div>
+          </div>
+          <div class="pc-name">Closed</div>
+          <div class="pc-sub">Sky/Steel H≈200°<br>#0EA5E9 solid</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout warn">
+      <div class="callout-label">WCAG 1.4.1 — Phase 3 and Phase 4 proximity warnings</div>
+      <p><strong>Phase 3 Execution (H≈28°, burnt orange)</strong> is 13° from Danger (H≈15°). These must never be distinguished by hue alone. Always pair Phase 3 with the "Execution" label. Consider a shape or pattern cue (e.g. a numbered step indicator) as a secondary signal.</p>
+      <p style="margin-top:6px"><strong>Phase 4 Review (H≈292°, fuchsia)</strong> is 12° from Help violet (H≈280°). Always pair Phase 4 with the "Review" label in any view where Help banners may also appear.</p>
+    </div>
+
+    <div class="tbl-wrap" style="margin-top:1rem">
+      <table>
+        <thead><tr><th>Token</th><th>Stop</th><th>Usage</th></tr></thead>
+        <tbody>
+          <tr><td><code>--phase-surface</code></td><td>25</td><td>Phase card or section background tint</td></tr>
+          <tr><td><code>--phase-border</code></td><td>300</td><td>Card border, timeline track, step connector</td></tr>
+          <tr><td><code>--phase-solid</code></td><td>400–500</td><td>Phase badge fill, step indicator dot</td></tr>
+          <tr><td><code>--phase-text</code></td><td>700</td><td>Phase label text on light surface (AA verified)</td></tr>
+          <tr><td><code>--phase-deep</code></td><td>900–950</td><td>High-contrast text on phase surface (AAA)</td></tr>
+          <tr><td><code>--phase-on-solid</code></td><td>#FFFFFF</td><td>Text on solid fill badge</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+<!-- ════ 2G ════ -->
+  <div class="section" id="2g">
+    <div class="section-header">
+      <span class="section-id">2G</span>
+      <h2 class="section-title">Semantic token rules of use</h2>
+    </div>
+    <hr class="section-hr">
+    <p>The token system has three tiers. Understanding which tier a token belongs to determines where it may be used.</p>
+
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Tier</th><th>Variable prefix</th><th>Who uses it</th><th>Example</th></tr></thead>
+        <tbody>
+          <tr><td><strong>1 — Primitives</strong></td><td><code>--ramp-*</code></td><td><code>tokens.css</code> only</td><td><code>--ramp-yellow-500</code></td></tr>
+          <tr><td><strong>2 — Semantics</strong></td><td><code>--feedback-*</code>, <code>--surface-*</code>, <code>--text-*</code>, <code>--interactive-*</code>, <code>--theme-*</code></td><td>Component tokens &amp; theme blocks in <code>tokens.css</code></td><td><code>--feedback-warning-solid</code></td></tr>
+          <tr><td><strong>3 — Tailwind utilities</strong></td><td><code>--color-*</code> (in <code>main.css @theme</code>)</td><td>Component JSX/HTML via Tailwind classes</td><td><code>bg-feedback-warning-solid</code></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="ap-grid" style="margin-top:1rem">
+      <div class="ap-box ap-dont">
+        <div class="ap-label">Never</div>
+        <p>Reference <code>--ramp-*</code> primitives directly in component files. <code>bg-[#FFC20E]</code> or <code>style="background:var(--ramp-yellow-500)"</code> in a component bypasses the token layer. Theme switching and dark mode breaks.</p>
+        <p>Use utility colors decoratively. A violet card border that doesn't mean "help" trains users to ignore Help banners.</p>
+        <p>Hard-code hex values in JSX for any color covered by the token system.</p>
+      </div>
+      <div class="ap-box ap-do">
+        <div class="ap-label">Always</div>
+        <p>Reference semantic tokens via Tailwind classes: <code>bg-feedback-danger</code>, <code>text-feedback-danger-text</code>, <code>border-feedback-danger-border</code>.</p>
+        <p>Use phase tokens via the <code>[data-phase]</code> attribute on a container rather than directly in component styles.</p>
+        <p>Change the <strong>token alias</strong> in <code>tokens.css</code> when a color decision changes — never refactor component files for a color update.</p>
+      </div>
+    </div>
+  </div>
+
+<!-- ════ 2H ════ -->
+  <div class="section" id="2h">
+    <div class="section-header">
+      <span class="section-id">2H</span>
+      <h2 class="section-title">Surface hierarchy</h2>
+    </div>
+    <hr class="section-hr">
+    <p>The surface system creates a three-level elevation hierarchy in both light and dark modes. All three themes share the same surface tokens — only accent colors change per theme.</p>
+
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Token</th><th>Light Mode</th><th>Dark Mode</th><th>Usage</th></tr></thead>
+        <tbody>
+          <tr><td><code>--surface-page</code></td><td class="contrast-cell">#FBFCFD (Neutral 25)</td><td class="contrast-cell">#07080B (Neutral 950)</td><td>App canvas — the base background</td></tr>
+          <tr><td><code>--surface-raised</code></td><td class="contrast-cell">#FFFFFF</td><td class="contrast-cell">#15171B (Neutral 900)</td><td>Cards, panels, dialogs — above page</td></tr>
+          <tr><td><code>--surface-sunken</code></td><td class="contrast-cell">#F5F7F9 (Neutral 50)</td><td class="contrast-cell">#07080B (Neutral 950)</td><td>Inset wells, table cells, code blocks</td></tr>
+          <tr><td><code>--surface-subtle</code></td><td class="contrast-cell">#EBEDF0 (Neutral 100)</td><td class="contrast-cell">#272A2F (Neutral 800)</td><td>Skeleton fills, zebra rows, chip backgrounds</td></tr>
+          <tr><td><code>--surface-overlay</code></td><td class="contrast-cell">rgba(28,27,30, 0.60)</td><td class="contrast-cell">rgba(12,12,14, 0.75)</td><td>Modal scrim, drawer backdrop</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+<!-- ════ 2I ════ -->
+  <div class="section" id="2i">
+    <div class="section-header">
+      <span class="section-id">2I</span>
+      <h2 class="section-title">Contrast &amp; accessibility</h2>
+    </div>
+    <hr class="section-hr">
+    <p>All text-bearing token assignments are verified against their actual application surface — not against white. The table below shows the key text token contrast ratios in light mode.</p>
+
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Token</th><th>Value</th><th>Surface</th><th>Ratio</th><th>Rating</th></tr></thead>
+        <tbody>
+          <tr><td><code>--text-primary</code></td><td class="contrast-cell">#15171B</td><td class="contrast-cell">surface-page #FBFCFD</td><td class="contrast-cell">14.5:1</td><td><span class="cb cb-aaa">AAA</span></td></tr>
+          <tr><td><code>--text-secondary</code></td><td class="contrast-cell">#3B3F45</td><td class="contrast-cell">surface-page #FBFCFD</td><td class="contrast-cell">7.2:1</td><td><span class="cb cb-aaa">AAA</span></td></tr>
+          <tr><td><code>--text-tertiary</code></td><td class="contrast-cell">#52575E</td><td class="contrast-cell">surface-page #FBFCFD</td><td class="contrast-cell">4.8:1</td><td><span class="cb cb-aa">AA</span> <span style="font-size:10px;color:var(--t3)">≥14px only</span></td></tr>
+          <tr><td><code>--text-link</code> (LM)</td><td class="contrast-cell">#1D4ED8</td><td class="contrast-cell">surface-raised #FFFFFF</td><td class="contrast-cell">7.1:1</td><td><span class="cb cb-aaa">AAA</span></td></tr>
+          <tr><td><code>--feedback-danger-text</code></td><td class="contrast-cell">#841400</td><td class="contrast-cell">danger surface #FFF0ED</td><td class="contrast-cell">7.5:1</td><td><span class="cb cb-aaa">AAA</span></td></tr>
+          <tr><td><code>--feedback-warning-text</code></td><td class="contrast-cell">#92400E</td><td class="contrast-cell">warning surface #FFFBEB</td><td class="contrast-cell">7.2:1</td><td><span class="cb cb-aaa">AAA</span></td></tr>
+          <tr><td><code>--feedback-success-text</code></td><td class="contrast-cell">#166534</td><td class="contrast-cell">success surface #F0FDF4</td><td class="contrast-cell">7.8:1</td><td><span class="cb cb-aaa">AAA</span></td></tr>
+          <tr><td><code>--feedback-info-text</code></td><td class="contrast-cell">#1E40AF</td><td class="contrast-cell">info surface #EFF6FF</td><td class="contrast-cell">8.1:1</td><td><span class="cb cb-aaa">AAA</span></td></tr>
+          <tr><td><code>--feedback-help-text</code></td><td class="contrast-cell">#5B21B6</td><td class="contrast-cell">help surface #F5F3FF</td><td class="contrast-cell">7.4:1</td><td><span class="cb cb-aaa">AAA</span></td></tr>
+          <tr><td><code>text on Yellow fill</code></td><td class="contrast-cell">#000000</td><td class="contrast-cell">Yellow 500 #FFC20E</td><td class="contrast-cell">12.5:1</td><td><span class="cb cb-aaa">AAA</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p style="margin-top:1rem">All semantic feedback states carry a non-color signal per <strong>WCAG 1.4.1 (Use of Color)</strong>: an icon (⚠ ✓ ℹ), a text label, or a border-left pattern. Color alone is never the only conveyor of meaning — especially critical for Phase 3/Danger and Phase 4/Help proximity cases noted in §2F.</p>
+  </div>
+
+<!-- ════ 2J ════ -->
+  <div class="section" id="2j">
+    <div class="section-header">
+      <span class="section-id">2J</span>
+      <h2 class="section-title">Data visualization palette</h2>
+    </div>
+    <hr class="section-hr">
+    <p>Eight categorical colors for charts, graphs, and data tables. Fixed order — never cycle differently. <strong>Canvas elements cannot resolve CSS variables</strong>; use the hex values below directly in chart library configs.</p>
+
+    <div class="viz-row">
+      <div class="viz-chip"><div class="viz-swatch" style="background:#2A78D6"></div><div class="viz-meta">viz-1<br>#2A78D6</div></div>
+      <div class="viz-chip"><div class="viz-swatch" style="background:#E8A000"></div><div class="viz-meta">viz-2<br>#E8A000</div></div>
+      <div class="viz-chip"><div class="viz-swatch" style="background:#1BAF7A"></div><div class="viz-meta">viz-3<br>#1BAF7A</div></div>
+      <div class="viz-chip"><div class="viz-swatch" style="background:#E34948"></div><div class="viz-meta">viz-4<br>#E34948</div></div>
+      <div class="viz-chip"><div class="viz-swatch" style="background:#7C3AED"></div><div class="viz-meta">viz-5<br>#7C3AED</div></div>
+      <div class="viz-chip"><div class="viz-swatch" style="background:#EB6834"></div><div class="viz-meta">viz-6<br>#EB6834</div></div>
+      <div class="viz-chip"><div class="viz-swatch" style="background:#E87BA4"></div><div class="viz-meta">viz-7<br>#E87BA4</div></div>
+      <div class="viz-chip"><div class="viz-swatch" style="background:#008300"></div><div class="viz-meta">viz-8<br>#008300</div></div>
+    </div>
+    <div class="viz-row" style="margin-top:8px">
+      <div class="viz-chip"><div class="viz-swatch" style="background:#16A34A"></div><div class="viz-meta">viz-positive<br>#16A34A</div></div>
+      <div class="viz-chip"><div class="viz-swatch" style="background:#C83520"></div><div class="viz-meta">viz-negative<br>#C83520</div></div>
+    </div>
+
+    <p style="margin-top:.75rem">viz-2 (#E8A000) is a slightly shifted amber rather than Brand Yellow (#FFC20E) — the shift improves legibility in chart contexts where Brand Yellow at full saturation can overwhelm adjacent values.</p>
+  </div>
+
+<!-- ════ 2K ════ -->
+  <div class="section" id="2k">
+    <div class="section-header">
+      <span class="section-id">2K</span>
+      <h2 class="section-title">Dark mode</h2>
+    </div>
+    <hr class="section-hr">
+    <p>Dark mode is applied via <code>[data-mode="dark"]</code> on the root element, or automatically respects <code>prefers-color-scheme: dark</code>. The primitive ramps (§1) are mode-invariant — only semantic tokens (§2) override in dark mode.</p>
+
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Principle</th><th>Light Mode</th><th>Dark Mode</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Surfaces</strong></td><td>Light stops (25–50) from Neutral</td><td>Deep stops (900–950) from Neutral</td></tr>
+          <tr><td><strong>Text</strong></td><td>Dark stops (700–900) — dark on light</td><td>Light stops (25–200) — light on dark</td></tr>
+          <tr><td><strong>Feedback surfaces</strong></td><td>Step 25 fills (near-white tints)</td><td>Step 950 fills (near-black deep tints)</td></tr>
+          <tr><td><strong>Feedback text</strong></td><td>Step 700 (dark, on light surface)</td><td>Step 200 (light, on dark surface)</td></tr>
+          <tr><td><strong>Feedback borders</strong></td><td>Step 400</td><td>Step 600 (brighter for DM visibility)</td></tr>
+          <tr><td><strong>Brand Yellow accent</strong></td><td>Step 500 — unchanged</td><td>Step 500 — unchanged (sufficient on DM surfaces)</td></tr>
+          <tr><td><strong>Focus ring</strong></td><td>Yellow 500</td><td>Yellow 500 — unchanged</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+<!-- ════ 2L ════ -->
+  <div class="section" id="2l">
+    <div class="section-header">
+      <span class="section-id">2L</span>
+      <h2 class="section-title">Anti-patterns</h2>
+    </div>
+    <hr class="section-hr">
+
+    <div class="ap-grid">
+      <div class="ap-box ap-dont">
+        <div class="ap-label">Using Yellow as Warning</div>
+        <p>Brand Yellow (#FFC20E) must never be used for Warning states even though it visually resembles a caution color. Its primary identity is the H2 Prime brand interactive color. Any yellow warning badge, alert, or state will read as "H2 Prime branded" — not "caution."</p>
+      </div>
+      <div class="ap-box ap-dont">
+        <div class="ap-label">Using utility colors decoratively</div>
+        <p>Never apply Danger red, Success green, Info blue, or Help violet as accent colors, card borders, or illustrative fills outside of their semantic context. Users learn to read these hues as signals — decorative use trains them to ignore real alerts.</p>
+      </div>
+      <div class="ap-box ap-dont">
+        <div class="ap-label">Hue-only phase or state distinction</div>
+        <p>Phase 3 (burnt orange) and Danger (red-orange) are 13° apart. Phase 4 (fuchsia) and Help (violet) are 12° apart. Never rely on hue alone to distinguish these. Always pair with a text label. Consider shape or icon cues for critical states.</p>
+      </div>
+      <div class="ap-box ap-dont">
+        <div class="ap-label">Using ramp primitives in components</div>
+        <p>Never reference <code>--ramp-yellow-500</code>, <code>bg-[#FFC20E]</code>, or any raw hex in component files. All components must consume semantic tokens only. If a semantic token doesn't exist for your use case, add one to <code>tokens.css</code>.</p>
+      </div>
+      <div class="ap-box ap-dont">
+        <div class="ap-label">Warning step 500 in client theme</div>
+        <p>In the client dashboard, the warning semantic tokens intentionally resolve to step 600 (H≈38°) — not step 500. Never override this back to step 500 in client-theme component styles. The one-stop shift is the collision-avoidance mechanism. See §2D.</p>
+      </div>
+      <div class="ap-box ap-dont">
+        <div class="ap-label">Admin violet for Help in admin view</div>
+        <p>The Admin accent (violet interactive) and Help utility (violet passive) share a hue family. Never style a Help banner using accent violet tokens, or style an interactive element using Help tokens. The distinction is role-based: interactive vs. passive feedback.</p>
+      </div>
+    </div>
+
+  </div>
+
+  <footer class="page-footer">
+    <div>Section 2 — Color System &nbsp;·&nbsp; H2 Prime Web Application Design System &nbsp;·&nbsp; v1.0 <br><a href="h2p-cover.html">← Back to index</a></div>
+    <div style="text-align:right">Last updated: 2026-07-13<br>LM = Light Mode &nbsp;·&nbsp; DM = Dark Mode</div>
+  </footer>
+
+</div>
+</body>
+</html>

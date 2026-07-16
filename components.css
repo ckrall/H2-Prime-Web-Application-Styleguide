@@ -1,0 +1,287 @@
+/* =============================================================================
+   components.css
+   H2 Prime Web Application Design System
+   Tier 3 — component-scoped overrides
+   Last updated: 2026-07-16
+
+   LOAD ORDER (see main.css header):
+     1. tokens.css      — CSS custom properties (primitives + semantic)
+     2. main.css        — Tailwind imports + @theme mappings (imports this file)
+     3. components.css  — this file
+
+   CONTENTS
+     §1  Typography base layer — applies the semantic type roles from
+         tokens.css §2.17b directly to real HTML elements, so plain,
+         correctly-used semantic markup (h1–h6, p, code) looks right with
+         zero utility classes. Utility classes (text-h1, font-display, etc.)
+         remain available in main.css for the rare case a role is needed on
+         a non-matching element.
+   ============================================================================= */
+
+
+@layer base {
+
+  /* ── Headings ── */
+  h1 {
+    font-family:    var(--type-h1-family);
+    font-weight:    var(--type-h1-weight);
+    font-size:      var(--type-h1-size);
+    line-height:    var(--type-h1-leading);
+    letter-spacing: var(--type-h1-tracking);
+  }
+
+  h2 {
+    font-family:    var(--type-h2-family);
+    font-weight:    var(--type-h2-weight);
+    font-size:      var(--type-h2-size);
+    line-height:    var(--type-h2-leading);
+    letter-spacing: var(--type-h2-tracking);
+  }
+
+  h3 {
+    font-family:    var(--type-h3-family);
+    font-weight:    var(--type-h3-weight);
+    font-size:      var(--type-h3-size);
+    line-height:    var(--type-h3-leading);
+    letter-spacing: var(--type-h3-tracking);
+  }
+
+  h4 {
+    font-family:    var(--type-h4-family);
+    font-weight:    var(--type-h4-weight);
+    font-size:      var(--type-h4-size);
+    line-height:    var(--type-h4-leading);
+    letter-spacing: var(--type-h4-tracking);
+  }
+
+  /* h6 has no dedicated role in the locked scale — it shares H5's role.
+     If a future gap review finds a real need for a 6th tier, add
+     --type-h6-* to tokens.css §2.17b rather than improvising a size here. */
+  h5, h6 {
+    font-family:    var(--type-h5-family);
+    font-weight:    var(--type-h5-weight);
+    font-size:      var(--type-h5-size);
+    line-height:    var(--type-h5-leading);
+    letter-spacing: var(--type-h5-tracking);
+  }
+
+  /* ── Body text ── */
+  body {
+    font-family:    var(--type-body-family);
+    font-weight:    var(--type-body-weight);
+    font-size:      var(--type-body-size);
+    line-height:    var(--type-body-leading);
+    letter-spacing: var(--type-body-tracking);
+  }
+
+  small {
+    font-size:      var(--type-caption-size);
+    line-height:    var(--type-caption-leading);
+    letter-spacing: var(--type-caption-tracking);
+  }
+
+  /* ── Monospace ── */
+  code, kbd, samp, pre {
+    font-family: var(--type-mono-family);
+    font-weight: var(--type-mono-weight);
+  }
+
+  /* ── Form elements inherit body defaults rather than the browser's UI font ── */
+  input, select, textarea, button {
+    font-family: var(--type-body-family);
+  }
+
+  /* ── Label — every real <label> element gets the Label role automatically.
+     See tokens.css §2.17b for why this is separate from Overline. ── */
+  label {
+    font-family:    var(--type-label-family);
+    font-weight:    var(--type-label-weight);
+    font-size:      var(--type-label-size);
+    line-height:    var(--type-label-leading);
+    letter-spacing: var(--type-label-tracking);
+  }
+}
+
+
+@layer components {
+
+  /* ── Display — cover / marketing hero only, rarely used inside the app.
+     Not bound to an element selector: apply explicitly where a true hero
+     moment is needed (often on a <p> or <span>, not necessarily an <h1>). ── */
+  .text-display {
+    font-family:    var(--type-display-family);
+    font-weight:    var(--type-display-weight);
+    font-size:      var(--type-display-size);
+    line-height:    var(--type-display-leading);
+    letter-spacing: var(--type-display-tracking);
+  }
+
+  /* ── Overline / eyebrow label — table column headers, form section labels ── */
+  .text-overline {
+    font-family:    var(--type-overline-family);
+    font-weight:    var(--type-overline-weight);
+    font-size:      var(--type-overline-size);
+    line-height:    var(--type-overline-leading);
+    letter-spacing: var(--type-overline-tracking);
+    text-transform: var(--type-overline-transform);
+  }
+
+  /* ── Body variants ── */
+  .text-body-lg {
+    font-family:    var(--type-body-lg-family);
+    font-weight:    var(--type-body-lg-weight);
+    font-size:      var(--type-body-lg-size);
+    line-height:    var(--type-body-lg-leading);
+    letter-spacing: var(--type-body-lg-tracking);
+  }
+
+  .text-body-sm {
+    font-family:    var(--type-body-sm-family);
+    font-weight:    var(--type-body-sm-weight);
+    font-size:      var(--type-body-sm-size);
+    line-height:    var(--type-body-sm-leading);
+    letter-spacing: var(--type-body-sm-tracking);
+  }
+
+  .text-caption {
+    font-family:    var(--type-caption-family);
+    font-weight:    var(--type-caption-weight);
+    font-size:      var(--type-caption-size);
+    line-height:    var(--type-caption-leading);
+    letter-spacing: var(--type-caption-tracking);
+  }
+
+  .text-legal {
+    font-family:    var(--type-legal-family);
+    font-weight:    var(--type-legal-weight);
+    font-size:      var(--type-legal-size);
+    line-height:    var(--type-legal-leading);
+    letter-spacing: var(--type-legal-tracking);
+  }
+
+  /* ── Mono variants (for inline use where font-mono + text-* utilities
+     aren't convenient to chain) ── */
+  .text-mono {
+    font-family:    var(--type-mono-family);
+    font-weight:    var(--type-mono-weight);
+    font-size:      var(--type-mono-size);
+    line-height:    var(--type-mono-leading);
+    letter-spacing: var(--type-mono-tracking);
+  }
+
+  .text-mono-sm {
+    font-family:    var(--type-mono-sm-family);
+    font-weight:    var(--type-mono-sm-weight);
+    font-size:      var(--type-mono-sm-size);
+    line-height:    var(--type-mono-sm-leading);
+    letter-spacing: var(--type-mono-sm-tracking);
+  }
+
+  /* ── Label — for non-<label> contexts that need the same role: button
+     text, the active item in a menu/tab list, a table's default column
+     header if Overline reads too shouty for a given screen. ── */
+  .text-label {
+    font-family:    var(--type-label-family);
+    font-weight:    var(--type-label-weight);
+    font-size:      var(--type-label-size);
+    line-height:    var(--type-label-leading);
+    letter-spacing: var(--type-label-tracking);
+  }
+
+  /* ── Metric — large standalone numeric values (KPI cards, stat tiles).
+     Always pair with the stock Tailwind `tabular-nums` utility. ── */
+  .text-metric {
+    font-family:         var(--type-metric-family);
+    font-weight:         var(--type-metric-weight);
+    font-size:           var(--type-metric-size);
+    line-height:         var(--type-metric-leading);
+    letter-spacing:      var(--type-metric-tracking);
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* ── Modal title — apply to whichever real heading element sits inside
+     the dialog (usually h2, per the WAI-ARIA APG dialog pattern, but not
+     assumed here since heading level depends on document position). Not
+     bound to a selector, same reasoning as .text-display. ── */
+  .text-modal-title {
+    font-family:    var(--type-modal-title-family);
+    font-weight:    var(--type-modal-title-weight);
+    font-size:      var(--type-modal-title-size);
+    line-height:    var(--type-modal-title-leading);
+    letter-spacing: var(--type-modal-title-tracking);
+  }
+
+  /* ── Empty state ── */
+  .text-empty-state-heading {
+    font-family:    var(--type-empty-state-heading-family);
+    font-weight:    var(--type-empty-state-heading-weight);
+    font-size:      var(--type-empty-state-heading-size);
+    line-height:    var(--type-empty-state-heading-leading);
+    letter-spacing: var(--type-empty-state-heading-tracking);
+  }
+
+  .text-empty-state-body {
+    font-family:    var(--type-empty-state-body-family);
+    font-weight:    var(--type-empty-state-body-weight);
+    font-size:      var(--type-empty-state-body-size);
+    line-height:    var(--type-empty-state-body-leading);
+    letter-spacing: var(--type-empty-state-body-tracking);
+  }
+
+  /* ── Toast ── */
+  .text-toast-heading {
+    font-family:    var(--type-toast-heading-family);
+    font-weight:    var(--type-toast-heading-weight);
+    font-size:      var(--type-toast-heading-size);
+    line-height:    var(--type-toast-heading-leading);
+    letter-spacing: var(--type-toast-heading-tracking);
+  }
+
+  .text-toast-body {
+    font-family:    var(--type-toast-body-family);
+    font-weight:    var(--type-toast-body-weight);
+    font-size:      var(--type-toast-body-size);
+    line-height:    var(--type-toast-body-leading);
+    letter-spacing: var(--type-toast-body-tracking);
+  }
+
+  /* ── Pagination / result-count label — remember to also add the stock
+     `tabular-nums` utility on the element itself. ── */
+  .text-pagination-label {
+    font-family:    var(--type-pagination-label-family);
+    font-weight:    var(--type-pagination-label-weight);
+    font-size:      var(--type-pagination-label-size);
+    line-height:    var(--type-pagination-label-leading);
+    letter-spacing: var(--type-pagination-label-tracking);
+  }
+
+  /* ── Disabled input text — pair with the text-text-disabled color
+     utility; this class only carries the (unchanged) type values. ── */
+  .text-input-disabled {
+    font-family:    var(--type-input-disabled-family);
+    font-weight:    var(--type-input-disabled-weight);
+    font-size:      var(--type-input-disabled-size);
+    line-height:    var(--type-input-disabled-leading);
+    letter-spacing: var(--type-input-disabled-tracking);
+  }
+
+  /* ── Currency emphasis — billing summary/dashboard line totals, wage-rate
+     cells in contract-detail tables. Remember to also add `tabular-nums`. ── */
+  .text-currency-emphasis {
+    font-family:    var(--type-currency-emphasis-family);
+    font-weight:    var(--type-currency-emphasis-weight);
+    font-size:      var(--type-currency-emphasis-size);
+    line-height:    var(--type-currency-emphasis-leading);
+    letter-spacing: var(--type-currency-emphasis-tracking);
+  }
+
+  /* ── Tooltip text — pair with its own elevated surface token; never a
+     substitute for aria-label on icon-only controls (see §5). ── */
+  .text-tooltip {
+    font-family:    var(--type-tooltip-family);
+    font-weight:    var(--type-tooltip-weight);
+    font-size:      var(--type-tooltip-size);
+    line-height:    var(--type-tooltip-leading);
+    letter-spacing: var(--type-tooltip-tracking);
+  }
+}

@@ -1,0 +1,1460 @@
+/* =============================================================================
+   tokens.css
+   H2 Prime Web Application Design System
+   Authoritative runtime token source — framework-agnostic CSS custom properties
+   Last updated: 2026-07-16
+
+   THREE-TIER HIERARCHY
+     Tier 1 · Primitives   — raw ramp values, never used in components directly
+     Tier 2 · Semantics    — role-named aliases pointing to primitives
+     Tier 3 · Components   — component-scoped overrides (in component CSS files)
+
+   RAMP METHODOLOGY
+     All ramps use OKLCH perceptual color space with uniform lightness intervals.
+     Steps: 25 · 50 · 100 · 200 · 300 · 400 · 500 · 600 · 700 · 800 · 900 · 950
+     Step 25 = ~97% L (lightest tint) · Step 950 = ~14% L (deepest shade)
+
+   BRAND COLORS — REVISED 2026-07-13
+     Brand is now Yellow + Brown (Violet exploration retired from brand role,
+     recovered instead as the Admin dashboard accent — see §1.10).
+       Yellow  #FFC20E  — unchanged. Interactive-only, never a feedback/status fill.
+       Brown   #984616  — new. Identity color: headers, illustration, brand marks,
+                           badges. NOT the primary action color — see decision below.
+     Mid Gray and Dark Gray are retired as separate brand anchors. Both are now
+     sourced from a single cool Neutral ramp (§1.3) recomputed in OKLCH at H≈258°
+     (pushed cooler than the old H≈265–271° warm-leaning grays) so Yellow and
+     Brown have a calm, unambiguous surface to sit on. --ramp-gray-mid-* and
+     --ramp-gray-dark-* remain defined as aliases onto --ramp-neutral-* so every
+     existing component-layer reference keeps resolving without a rename pass.
+
+   PRIMARY ACTION COLOR DECISION (documented 2026-07-13)
+     --interactive-primary-* resolves to the Neutral ramp (near-black on light
+     surfaces, near-white on dark surfaces), NOT to Brand Yellow, Brown, or the
+     per-theme dashboard accent. Rationale:
+       - Zero hue overlap with any utility ramp (Danger/Warning/Success/Info/
+         Help), in either mode, permanently. Brown was evaluated and rejected
+         for this role: at H≈46.5° it sits only ~13.5° from the (now uniform)
+         Warning amber — a standing collision risk on the single most-repeated
+         interactive surface in the product, for an audience that skews older
+         and often views the app outdoors.
+       - Neutral clears AAA contrast at step 600+ in light mode and has no
+         "muddy at 500" failure mode in dark mode the way Brown does — inverted
+         neutral (light-on-dark) works cleanly at any step.
+       - Cleanly separates "who we are" (Yellow + Brown — identity) from
+         "what you can click" (Neutral — interactive), which is a more legible
+         model for a non-technical audience than reusing brand hue for both.
+       - Keeps interactive-primary on a system-locked ramp rather than a
+         per-tenant brand ramp, which lowers blast radius for future white-label
+         theming (§4 dashboard theme layer still applies theme-accent for nav
+         highlights and secondary accents — only the primary CTA fill changed).
+     Brown remains fully available for identity use: headers, illustration,
+     brand marks. See h2p-section-02-color-system.html §2E for the full
+     comparison and rejected alternatives.
+
+   DASHBOARD THEMES
+     Three theme contexts applied via [data-theme] on a root or layout element:
+       [data-theme="client"]  — theme-accent: Brand Yellow  (default if no attr)
+       [data-theme="filer"]   — theme-accent: Sky Blue
+       [data-theme="admin"]   — theme-accent: Violet
+     NOTE: theme-accent still drives nav highlights, active-tab indicators, and
+     secondary accents per theme. It no longer drives the primary CTA fill (see
+     decision above). Per-theme identity treatment (how Brown/Yellow show up
+     differently across Client/Filer/Admin) is intentionally NOT finalized here —
+     parked pending a dedicated review pass. Do not treat the existing
+     [data-theme] blocks below as settled; they predate the Brown/Neutral
+     revision and are flagged inline where they're now stale.
+
+   CONTRACT PHASE TOKENS
+     Applied via [data-phase="1"] … [data-phase="5"] on phase container elements.
+     NOTE: parked pending review of a possible approach change — see
+     h2prime-ramps-v2.html. Not revalidated against Brown/Neutral. Do not treat
+     as settled.
+
+   WARNING ANCHOR DECISION — REVISED 2026-07-13
+     Warning reverted to a single conventional amber ramp (H≈55–65°, step 500
+     anchor) used identically across Client, Filer, and Admin — the prior
+     per-theme step-600 override (added to dodge Brand Yellow at step 500) is
+     removed. Familiarity beats hue-purity here, and removing the override also
+     removes a per-theme conditional that components had to branch on. Warning
+     now sits ~25° from Yellow and ~13.5° from Brown — tighter to Brown than to
+     Yellow, which is exactly why Brown was rejected as the primary interactive
+     color (see decision above) rather than Warning being pushed again. The
+     gap holds in practice on lightness/chroma (Warning-500 is bright and
+     saturated; Brown-500 is muted and dark), managed by usage governance
+     (Yellow and Brown both stay out of status/feedback roles) rather than by
+     hunting for more hue separation.
+
+   LOAD ORDER (main entry point):
+     1. tokens.css      ← this file
+     2. main.css        ← framework @theme mappings (Tailwind / shadcn bridge)
+     3. components.css  ← component-scoped overrides
+   ============================================================================= */
+
+
+/* ═════════════════════════════════════════════════════════════════════════════
+   §1  PRIMITIVE LAYER — COLOR RAMPS
+   Never reference these directly in components. Use semantic tokens instead.
+   ═════════════════════════════════════════════════════════════════════════════ */
+
+:root {
+
+  /* ─────────────────────────────────────────────────────────────────────────
+     §1.1  BRAND — YELLOW
+     Anchor: #FFC20E at step 500 · OKLCH ~78% C0.18 H85°
+     Primary brand color. Client dashboard accent.
+     Interactive surfaces only — never use as a feedback/utility fill.
+     ───────────────────────────────────────────────────────────────────────── */
+  --ramp-yellow-25:  #FFFBEB;
+  --ramp-yellow-50:  #FFF3C4;
+  --ramp-yellow-100: #FFEA96;
+  --ramp-yellow-200: #FFE063;
+  --ramp-yellow-300: #FFD32E;
+  --ramp-yellow-400: #FFC90E; /* near-anchor warm */
+  --ramp-yellow-500: #FFC20E; /* ● brand anchor — #FFC20E exact */
+  --ramp-yellow-600: #D9A000; /* step down — hover state */
+  --ramp-yellow-700: #A87B00;
+  --ramp-yellow-800: #7A5900;
+  --ramp-yellow-900: #593F00;
+  --ramp-yellow-950: #3D2A00;
+
+
+  /* ─────────────────────────────────────────────────────────────────────────
+     §1.2  BRAND — BROWN
+     Anchor: #984616 at step 500 · OKLCH ~49% C0.124 H46.5° (muted terracotta)
+     New brand primary (2026-07-13), paired with Yellow. Identity color only —
+     headers, illustration, brand marks, badges. NOT the primary action color;
+     see the primary-action decision in the file header and §2.4 below.
+     13.5° from Warning amber (H≈55–65°) — closer than any other pairing in
+     the palette, which is why Brown was rejected for interactive/CTA use.
+     ───────────────────────────────────────────────────────────────────────── */
+  --ramp-brown-25:  #FFF8F3;
+  --ramp-brown-50:  #FFEFE7;
+  --ramp-brown-100: #FEE1D3;
+  --ramp-brown-200: #F5C7B2;
+  --ramp-brown-300: #E7AB8E;
+  --ramp-brown-400: #D68B66;
+  --ramp-brown-500: #984616; /* ● brand anchor — #984616 exact · 6.52:1 on white */
+  --ramp-brown-600: #782900; /* 9.93:1 on white — AAA */
+  --ramp-brown-700: #5A1100;
+  --ramp-brown-800: #3F0000;
+  --ramp-brown-900: #280000;
+  --ramp-brown-950: #230000;
+
+
+  /* ─────────────────────────────────────────────────────────────────────────
+     §1.3  NEUTRAL (cool)
+     Anchor: recomputed 2026-07-13 · OKLCH H≈258°, replacing the separate
+     Mid Gray (H≈265°) / Dark Gray (H≈271°) brand anchors with one 12-step
+     system ramp, pushed slightly cooler so two warm brand colors (Yellow,
+     Brown) have a calm, unambiguous surface to sit on. This is the ramp that
+     drives --interactive-primary-* (see §2.4) — it is a system-locked ramp,
+     not a brand/identity ramp.
+     A warm neutral (H≈58°) was evaluated and rejected: only 11.5° from
+     Brown, which would make it read as a washed-out brand tint rather than
+     a true neutral, and would give the palette three warm colors instead of
+     two with nothing left to anchor visual calm against.
+     --ramp-gray-mid-* and --ramp-gray-dark-* below are retained as aliases
+     onto this ramp for backward compatibility with existing component-layer
+     references — do not add new references to gray-mid/gray-dark; use
+     --ramp-neutral-* or the --neutral-* semantic aliases in §3 instead.
+     ───────────────────────────────────────────────────────────────────────── */
+  --ramp-neutral-25:  #FBFCFD;
+  --ramp-neutral-50:  #F5F7F9;
+  --ramp-neutral-100: #EBEDF0;
+  --ramp-neutral-200: #D6D9DE;
+  --ramp-neutral-300: #BABEC4;
+  --ramp-neutral-400: #959AA1;
+  --ramp-neutral-500: #6D7279; /* 4.85:1 on white */
+  --ramp-neutral-600: #52575E; /* 7.28:1 on white — AAA */
+  --ramp-neutral-700: #3B3F45; /* 10.59:1 on white — AAA */
+  --ramp-neutral-800: #272A2F;
+  --ramp-neutral-900: #15171B;
+  --ramp-neutral-950: #07080B;
+
+  /* Legacy aliases — retired as independent brand anchors, kept resolvable */
+  --ramp-gray-mid-25:  var(--ramp-neutral-25);
+  --ramp-gray-mid-50:  var(--ramp-neutral-50);
+  --ramp-gray-mid-100: var(--ramp-neutral-100);
+  --ramp-gray-mid-200: var(--ramp-neutral-200);
+  --ramp-gray-mid-300: var(--ramp-neutral-300);
+  --ramp-gray-mid-400: var(--ramp-neutral-400);
+  --ramp-gray-mid-500: var(--ramp-neutral-500);
+  --ramp-gray-mid-600: var(--ramp-neutral-600);
+  --ramp-gray-mid-700: var(--ramp-neutral-700);
+  --ramp-gray-mid-800: var(--ramp-neutral-800);
+  --ramp-gray-mid-900: var(--ramp-neutral-900);
+  --ramp-gray-mid-950: var(--ramp-neutral-950);
+
+  --ramp-gray-dark-25:  var(--ramp-neutral-25);
+  --ramp-gray-dark-50:  var(--ramp-neutral-50);
+  --ramp-gray-dark-100: var(--ramp-neutral-100);
+  --ramp-gray-dark-200: var(--ramp-neutral-200);
+  --ramp-gray-dark-300: var(--ramp-neutral-300);
+  --ramp-gray-dark-400: var(--ramp-neutral-400);
+  --ramp-gray-dark-500: var(--ramp-neutral-500);
+  --ramp-gray-dark-600: var(--ramp-neutral-600);
+  --ramp-gray-dark-700: var(--ramp-neutral-700);
+  --ramp-gray-dark-800: var(--ramp-neutral-800);
+  --ramp-gray-dark-900: var(--ramp-neutral-900);
+  --ramp-gray-dark-950: var(--ramp-neutral-950);
+
+
+  /* ─────────────────────────────────────────────────────────────────────────
+     §1.4  UTILITY — DANGER / ERROR
+     H≈15° (red-orange) · Anchor step 500
+     45° from Warning (step 600 anchor H≈38°) · clear separation maintained.
+     Token assignments: surface=25 · border=400 · text=700 · solid=500
+     ───────────────────────────────────────────────────────────────────────── */
+  --ramp-danger-25:  #FFF0ED;
+  --ramp-danger-50:  #FFE0D9;
+  --ramp-danger-100: #FFC5B8;
+  --ramp-danger-200: #FF9E8A;
+  --ramp-danger-300: #F47560;
+  --ramp-danger-400: #E04E36;
+  --ramp-danger-500: #C83520; /* ● anchor */
+  --ramp-danger-600: #A62010;
+  --ramp-danger-700: #841400;
+  --ramp-danger-800: #5E0E00;
+  --ramp-danger-900: #3E0800;
+  --ramp-danger-950: #260400;
+
+
+  /* ─────────────────────────────────────────────────────────────────────────
+     §1.5  UTILITY — WARNING — REVISED 2026-07-13
+     H≈55–65° (amber) · Full ramp anchor at step 500 · uniform across all
+     three dashboard themes (per-theme step-600 override removed — see
+     Warning Anchor Decision in the file header).
+     13.5° from Brown (H≈46.5°) — separation held by lightness/chroma, not
+     hue; managed by keeping Brown and Yellow both out of status roles.
+     Token assignments: surface=25 · border=500 · text=700 · solid=500
+     ───────────────────────────────────────────────────────────────────────── */
+  --ramp-warning-25:  #FFFBEB;
+  --ramp-warning-50:  #FEF3C7;
+  --ramp-warning-100: #FDE68A;
+  --ramp-warning-200: #FCD34D;
+  --ramp-warning-300: #FBBF24;
+  --ramp-warning-400: #F59E0B;
+  --ramp-warning-500: #D97706; /* ● anchor — yellow-amber H≈55° — used in all themes */
+  --ramp-warning-600: #B45309; /* retained for hover/active states, no longer theme-conditional */
+  --ramp-warning-700: #92400E;
+  --ramp-warning-800: #6B2F09;
+  --ramp-warning-900: #451E04;
+  --ramp-warning-950: #2C1002;
+
+
+  /* ─────────────────────────────────────────────────────────────────────────
+     §1.6  UTILITY — SUCCESS
+     H≈142° (forest green) · Anchor step 500
+     18° from Warning teal baseline; distinct at all anchor stops used in practice.
+     Token assignments: surface=25 · border=400 · text=700 · solid=500
+     ───────────────────────────────────────────────────────────────────────── */
+  --ramp-success-25:  #F0FDF4;
+  --ramp-success-50:  #DCFCE7;
+  --ramp-success-100: #BBF7D0;
+  --ramp-success-200: #86EFAC;
+  --ramp-success-300: #4ADE80;
+  --ramp-success-400: #22C55E;
+  --ramp-success-500: #16A34A; /* ● anchor */
+  --ramp-success-600: #15803D;
+  --ramp-success-700: #166534;
+  --ramp-success-800: #14532D;
+  --ramp-success-900: #052E16;
+  --ramp-success-950: #021D0D;
+
+
+  /* ─────────────────────────────────────────────────────────────────────────
+     §1.7  UTILITY — INFO
+     H≈220° (clear blue) · Anchor step 500
+     Informational / neutral-positive. Interactive links use this hue family.
+     Token assignments: surface=25 · border=400 · text=700 · solid=500
+     ───────────────────────────────────────────────────────────────────────── */
+  --ramp-info-25:  #EFF6FF;
+  --ramp-info-50:  #DBEAFE;
+  --ramp-info-100: #BFDBFE;
+  --ramp-info-200: #93C5FD;
+  --ramp-info-300: #60A5FA;
+  --ramp-info-400: #3B82F6;
+  --ramp-info-500: #2563EB; /* ● anchor */
+  --ramp-info-600: #1D4ED8;
+  --ramp-info-700: #1E40AF;
+  --ramp-info-800: #1E3A8A;
+  --ramp-info-900: #172554;
+  --ramp-info-950: #0F1A3A;
+
+
+  /* ─────────────────────────────────────────────────────────────────────────
+     §1.8  UTILITY — HELP
+     H≈280° (violet) · Anchor step 500
+     Support / guidance / assistance contexts. Distinct from Admin accent (same
+     hue family) — Help is a utility semantic; Admin violet is an interactive
+     accent. They must not appear together without a clear role label.
+     Token assignments: surface=25 · border=400 · text=700 · solid=500
+     ───────────────────────────────────────────────────────────────────────── */
+  --ramp-help-25:  #F5F3FF;
+  --ramp-help-50:  #EDE9FE;
+  --ramp-help-100: #DDD6FE;
+  --ramp-help-200: #C4B5FD;
+  --ramp-help-300: #A78BFA;
+  --ramp-help-400: #8B5CF6;
+  --ramp-help-500: #7C3AED; /* ● anchor */
+  --ramp-help-600: #6D28D9;
+  --ramp-help-700: #5B21B6;
+  --ramp-help-800: #4C1D95;
+  --ramp-help-900: #2E1065;
+  --ramp-help-950: #1C0940;
+
+
+  /* ─────────────────────────────────────────────────────────────────────────
+     §1.9  DASHBOARD — FILER ACCENT (Sky Blue)
+     H≈200° · Anchor step 500
+     Filer dashboard interactive accent. 115° from Brand Yellow, 80° from Violet.
+     ───────────────────────────────────────────────────────────────────────── */
+  --ramp-sky-25:  #F0F9FF;
+  --ramp-sky-50:  #E0F2FE;
+  --ramp-sky-100: #BAE6FD;
+  --ramp-sky-200: #7DD3FC;
+  --ramp-sky-300: #38BDF8;
+  --ramp-sky-400: #0EA5E9;
+  --ramp-sky-500: #0284C7; /* ● anchor */
+  --ramp-sky-600: #0369A1;
+  --ramp-sky-700: #075985;
+  --ramp-sky-800: #0C4A6E;
+  --ramp-sky-900: #082F4A;
+  --ramp-sky-950: #041C2E;
+
+
+  /* ─────────────────────────────────────────────────────────────────────────
+     §1.10  DASHBOARD — ADMIN ACCENT (Violet)
+     H≈280° · Anchor step 500
+     Admin dashboard interactive accent. 195° from Brand Yellow, 80° from Sky.
+     Note: shares hue family with Help utility. Distinguish by context —
+     Admin violet appears on interactive surfaces (buttons, nav); Help violet
+     appears on passive feedback surfaces (banners, badges).
+     ───────────────────────────────────────────────────────────────────────── */
+  --ramp-violet-25:  #F5F3FF;
+  --ramp-violet-50:  #EDE9FE;
+  --ramp-violet-100: #DDD6FE;
+  --ramp-violet-200: #C4B5FD;
+  --ramp-violet-300: #A78BFA;
+  --ramp-violet-400: #8B5CF6;
+  --ramp-violet-500: #7C3AED; /* ● anchor */
+  --ramp-violet-600: #6D28D9;
+  --ramp-violet-700: #5B21B6;
+  --ramp-violet-800: #4C1D95;
+  --ramp-violet-900: #2E1065;
+  --ramp-violet-950: #1C0940;
+
+
+  /* ─────────────────────────────────────────────────────────────────────────
+     §1.11  CONTRACT PHASES
+     Five distinct hue families; each carries a 5-stop micro-ramp.
+     Phase 5 intentionally matches Filer accent (Sky H≈200°) — "closed = filed."
+     Avoid using Phase 2 Emerald near Warning teal; 2° of separation — always
+     label, never rely on hue alone (WCAG 1.4.1).
+     ───────────────────────────────────────────────────────────────────────── */
+
+  /* Phase 1 — Initiation · Slate Blue H≈225° */
+  --ramp-phase1-surface: #EFF6FF;
+  --ramp-phase1-border:  #93C5FD;
+  --ramp-phase1-solid:   #3B82F6;
+  --ramp-phase1-text:    #1D4ED8;
+  --ramp-phase1-deep:    #1E3A8A;
+
+  /* Phase 2 — Negotiation · Emerald H≈162° */
+  --ramp-phase2-surface: #ECFDF5;
+  --ramp-phase2-border:  #6EE7B7;
+  --ramp-phase2-solid:   #10B981;
+  --ramp-phase2-text:    #065F46;
+  --ramp-phase2-deep:    #022C22;
+
+  /* Phase 3 — Execution · Burnt Orange H≈28°
+     NOTE: 13° from Danger (H≈15°). Both must always appear with a text label.
+     Never rely on hue alone to distinguish Phase 3 from a Danger state. */
+  --ramp-phase3-surface: #FFF7ED;
+  --ramp-phase3-border:  #FED7AA;
+  --ramp-phase3-solid:   #F97316;
+  --ramp-phase3-text:    #C2410C;
+  --ramp-phase3-deep:    #7C2D12;
+
+  /* Phase 4 — Review · Fuchsia H≈292°
+     NOTE: 12° from Help violet (H≈280°). Always label; never hue-only. */
+  --ramp-phase4-surface: #FDF4FF;
+  --ramp-phase4-border:  #E9D5FF;
+  --ramp-phase4-solid:   #A855F7;
+  --ramp-phase4-text:    #7E22CE;
+  --ramp-phase4-deep:    #3B0764;
+
+  /* Phase 5 — Closed · Sky / Steel H≈200°
+     Intentionally echoes Filer accent — "resolved = filed." */
+  --ramp-phase5-surface: #F0F9FF;
+  --ramp-phase5-border:  #BAE6FD;
+  --ramp-phase5-solid:   #0EA5E9;
+  --ramp-phase5-text:    #0369A1;
+  --ramp-phase5-deep:    #0C4A6E;
+
+}
+
+
+/* ═════════════════════════════════════════════════════════════════════════════
+   §2  SEMANTIC LAYER — LIGHT MODE (default)
+   Role-named aliases. These are what components consume.
+   All values point at Tier 1 primitives above.
+   ═════════════════════════════════════════════════════════════════════════════ */
+
+:root {
+
+  /* ─────────────────────────────────────────────────────────────────────────
+     §2.1  SURFACES
+     Page hierarchy: page < raised < overlay. Sunken sits below page.
+     ───────────────────────────────────────────────────────────────────────── */
+  --surface-page:    var(--ramp-gray-dark-25);   /* #FBFCFD — app canvas (neutral-25) */
+  --surface-raised:  #FFFFFF;                     /* cards, panels above page */
+  --surface-sunken:  var(--ramp-gray-dark-50);   /* #ECEAED — inset wells, table rows */
+  --surface-subtle:  var(--ramp-gray-dark-100);  /* #D8D6DA — dividers, skeleton */
+  --surface-overlay: rgba(28, 27, 30, 0.60);     /* modal scrim */
+
+
+  /* ─────────────────────────────────────────────────────────────────────────
+     §2.2  BORDERS
+     ───────────────────────────────────────────────────────────────────────── */
+  --border-subtle:  var(--ramp-gray-dark-100);   /* #D8D6DA — table rules, dividers */
+  --border-default: var(--ramp-gray-dark-200);   /* #B9B6BC — card outlines */
+  --border-strong:  var(--ramp-gray-dark-400);   /* #7A7680 — emphasized borders */
+  --border-focus:   var(--ramp-yellow-500);      /* #FFC20E — focus ring (all themes) */
+
+
+  /* ─────────────────────────────────────────────────────────────────────────
+     §2.3  TEXT
+     ───────────────────────────────────────────────────────────────────────── */
+  --text-primary:      var(--ramp-gray-dark-900); /* #2E2D30 · ~14.5:1 on surface-page */
+  --text-secondary:    var(--ramp-gray-mid-700);  /* #55565A · ~7.2:1 on surface-page  */
+  --text-tertiary:     var(--ramp-gray-mid-600);  /* #52575E (neutral-600) · 7.28:1 — AAA */
+  --text-disabled:     var(--ramp-gray-mid-400);  /* #9292A0 · not contrast-rated (disabled) */
+  --text-placeholder:  var(--ramp-gray-mid-400);  /* #9292A0 */
+  --text-link:         var(--ramp-info-600);      /* #1D4ED8 · 7.1:1 on white · AAA */
+  --text-link-visited: var(--ramp-help-700);      /* #5B21B6 */
+  --text-on-primary:   #000000;                   /* text on Brand Yellow fills */
+  --text-on-accent:    #000000;                   /* text on theme accent fills (LM) */
+  --text-on-danger:    #FFFFFF;                   /* text on danger solid fills */
+  --text-on-success:   #FFFFFF;                   /* text on success solid fills */
+  --text-on-warning:   #000000;                   /* text on warning solid fills */
+  --text-on-info:      #FFFFFF;                   /* text on info solid fills */
+  --text-on-help:      #FFFFFF;                   /* text on help solid fills */
+  --text-inverse:      #FFFFFF;                   /* text on dark surfaces */
+
+
+  /* ─────────────────────────────────────────────────────────────────────────
+     §2.4  INTERACTIVE — PRIMARY (filled CTA button, active tab indicator)
+     REVISED 2026-07-13 — resolves to the Neutral ramp, not theme-accent.
+     See the primary-action decision in the file header. theme-accent-* still
+     drives nav highlights and secondary per-theme accents (§4) — it no
+     longer drives the primary CTA fill.
+     ───────────────────────────────────────────────────────────────────────── */
+  --interactive-primary-bg:        var(--ramp-neutral-800);  /* #272A2F · 14.4:1 w/ white text */
+  --interactive-primary-bg-hover:  var(--ramp-neutral-900);  /* #15171B */
+  --interactive-primary-bg-active: var(--ramp-neutral-950);  /* #07080B */
+  --interactive-primary-text:      #FFFFFF;
+  --interactive-primary-border:    transparent;
+
+  /* Secondary — outlined */
+  --interactive-secondary-bg:       transparent;
+  --interactive-secondary-bg-hover: var(--ramp-gray-dark-50);
+  --interactive-secondary-border:   var(--ramp-gray-dark-300);
+  --interactive-secondary-text:     var(--text-primary);
+
+  /* Ghost — text-only */
+  --interactive-ghost-bg-hover: var(--ramp-gray-dark-50);
+  --interactive-ghost-text:     var(--text-secondary);
+
+  /* Disabled */
+  --interactive-disabled-bg:     var(--ramp-gray-dark-100);
+  --interactive-disabled-text:   var(--ramp-gray-mid-400);
+  --interactive-disabled-border: var(--ramp-gray-dark-200);
+
+
+  /* ─────────────────────────────────────────────────────────────────────────
+     §2.5  INPUT STATES
+     ───────────────────────────────────────────────────────────────────────── */
+  --input-bg:           #FFFFFF;
+  --input-bg-focus:     #FFFFFF;
+  --input-border:       var(--ramp-gray-dark-300);  /* #9A969E */
+  --input-border-hover: var(--ramp-gray-dark-500);  /* #5C5860 */
+  --input-border-focus: var(--theme-accent-500);
+  --input-border-error: var(--ramp-danger-500);
+  --input-text:         var(--text-primary);
+  --input-placeholder:  var(--text-placeholder);
+
+
+  /* ─────────────────────────────────────────────────────────────────────────
+     §2.6  FEEDBACK — DANGER
+     ───────────────────────────────────────────────────────────────────────── */
+  --feedback-danger-surface: var(--ramp-danger-25);   /* #FFF0ED */
+  --feedback-danger-border:  var(--ramp-danger-400);  /* #E04E36 */
+  --feedback-danger-text:    var(--ramp-danger-700);  /* #841400 · 7.5:1 on surface · AAA */
+  --feedback-danger-icon:    var(--ramp-danger-500);  /* #C83520 */
+  --feedback-danger-solid:   var(--ramp-danger-500);  /* filled badge/button */
+  --feedback-danger-on-solid: var(--text-on-danger);  /* #FFFFFF */
+
+
+  /* ─────────────────────────────────────────────────────────────────────────
+     §2.7  FEEDBACK — WARNING — REVISED 2026-07-13
+     Uniform across all three dashboard themes — no per-theme resolution.
+     Theme blocks below (§4) no longer override these; if you still see a
+     warning override inside a [data-theme] block, it's stale — remove it.
+     ───────────────────────────────────────────────────────────────────────── */
+  --feedback-warning-surface: var(--ramp-warning-25);  /* #FFFBEB */
+  --feedback-warning-text:    var(--ramp-warning-700); /* #92400E · 7.2:1 on surface · AAA */
+  --feedback-warning-border:  var(--ramp-warning-500); /* #D97706 */
+  --feedback-warning-icon:    var(--ramp-warning-500);
+  --feedback-warning-solid:   var(--ramp-warning-500);
+  --feedback-warning-on-solid: #000000;
+
+
+  /* ─────────────────────────────────────────────────────────────────────────
+     §2.8  FEEDBACK — SUCCESS
+     ───────────────────────────────────────────────────────────────────────── */
+  --feedback-success-surface:  var(--ramp-success-25);  /* #F0FDF4 */
+  --feedback-success-border:   var(--ramp-success-400); /* #22C55E */
+  --feedback-success-text:     var(--ramp-success-700); /* #166534 · 7.8:1 on surface · AAA */
+  --feedback-success-icon:     var(--ramp-success-500); /* #16A34A */
+  --feedback-success-solid:    var(--ramp-success-500);
+  --feedback-success-on-solid: var(--text-on-success);  /* #FFFFFF */
+
+
+  /* ─────────────────────────────────────────────────────────────────────────
+     §2.9  FEEDBACK — INFO
+     ───────────────────────────────────────────────────────────────────────── */
+  --feedback-info-surface:  var(--ramp-info-25);   /* #EFF6FF */
+  --feedback-info-border:   var(--ramp-info-400);  /* #3B82F6 */
+  --feedback-info-text:     var(--ramp-info-700);  /* #1E40AF · 8.1:1 on surface · AAA */
+  --feedback-info-icon:     var(--ramp-info-500);  /* #2563EB */
+  --feedback-info-solid:    var(--ramp-info-500);
+  --feedback-info-on-solid: var(--text-on-info);   /* #FFFFFF */
+
+
+  /* ─────────────────────────────────────────────────────────────────────────
+     §2.10  FEEDBACK — HELP
+     ───────────────────────────────────────────────────────────────────────── */
+  --feedback-help-surface:  var(--ramp-help-25);   /* #F5F3FF */
+  --feedback-help-border:   var(--ramp-help-400);  /* #8B5CF6 */
+  --feedback-help-text:     var(--ramp-help-700);  /* #5B21B6 · 7.4:1 on surface · AAA */
+  --feedback-help-icon:     var(--ramp-help-500);  /* #7C3AED */
+  --feedback-help-solid:    var(--ramp-help-500);
+  --feedback-help-on-solid: var(--text-on-help);   /* #FFFFFF */
+
+
+  /* ─────────────────────────────────────────────────────────────────────────
+     §2.11  NAVIGATION
+     ───────────────────────────────────────────────────────────────────────── */
+  --nav-bg:              var(--ramp-gray-dark-800); /* #272A2F — sidebar/topbar (neutral-800) */
+  --nav-border:          var(--ramp-gray-dark-700);
+  --nav-text:            var(--ramp-gray-dark-100);
+  --nav-text-active:     var(--theme-accent-500);
+  --nav-item-bg-hover:   rgba(255, 255, 255, 0.07);
+  --nav-item-bg-active:  rgba(255, 194, 14, 0.12); /* yellow tint — overridden per theme */
+  --nav-item-indicator:  var(--theme-accent-500);
+
+
+  /* ─────────────────────────────────────────────────────────────────────────
+     §2.12  DATA VISUALIZATION SERIES
+     Categorical palette — fixed order, never cycled differently.
+     Canvas cannot resolve CSS vars; use hex values directly in chart libs.
+     ───────────────────────────────────────────────────────────────────────── */
+  --viz-1:            #2A78D6; /* blue       */
+  --viz-2:            #E8A000; /* golden     — shifted from brand yellow for viz context */
+  --viz-3:            #1BAF7A; /* aqua-green */
+  --viz-4:            #E34948; /* red        */
+  --viz-5:            #7C3AED; /* violet     */
+  --viz-6:            #EB6834; /* orange     */
+  --viz-7:            #E87BA4; /* pink       */
+  --viz-8:            #008300; /* green      */
+  --viz-positive:     #16A34A; /* success green */
+  --viz-negative:     #C83520; /* danger red    */
+  --viz-neutral-line: var(--ramp-gray-mid-400);
+  --viz-grid-line:    var(--ramp-gray-dark-200);
+  --viz-axis-text:    var(--text-tertiary);
+  --viz-tooltip-bg:   var(--ramp-gray-dark-900);
+  --viz-tooltip-text: var(--ramp-gray-dark-25);
+
+
+  /* ─────────────────────────────────────────────────────────────────────────
+     §2.13  CONTRACT PHASE SEMANTIC ALIASES
+     Applied when [data-phase="N"] is present on a container.
+     Components read these; primitives in §1.11 are the source.
+     ───────────────────────────────────────────────────────────────────────── */
+  --phase-surface:  var(--ramp-phase1-surface); /* overridden by data-phase */
+  --phase-border:   var(--ramp-phase1-border);
+  --phase-solid:    var(--ramp-phase1-solid);
+  --phase-text:     var(--ramp-phase1-text);
+  --phase-deep:     var(--ramp-phase1-deep);
+  --phase-on-solid: #FFFFFF;
+
+
+  /* ─────────────────────────────────────────────────────────────────────────
+     §2.14  ELEVATION / SHADOWS (light mode)
+     ───────────────────────────────────────────────────────────────────────── */
+  --shadow-none:     none;
+  --shadow-xs:       0 1px 2px rgba(28, 27, 30, 0.05);
+  --shadow-sm:       0 1px 3px rgba(28, 27, 30, 0.10), 0 1px 2px rgba(28, 27, 30, 0.06);
+  --shadow-md:       0 4px 6px rgba(28, 27, 30, 0.07), 0 2px 4px rgba(28, 27, 30, 0.06);
+  --shadow-lg:       0 10px 15px rgba(28, 27, 30, 0.10), 0 4px 6px rgba(28, 27, 30, 0.05);
+  --shadow-xl:       0 20px 25px rgba(28, 27, 30, 0.10), 0 8px 10px rgba(28, 27, 30, 0.04);
+
+  --elevation-card:     var(--shadow-sm);
+  --elevation-input:    var(--shadow-xs);
+  --elevation-dropdown: var(--shadow-lg);
+  --elevation-modal:    var(--shadow-xl);
+  --elevation-toast:    var(--shadow-lg);
+  --elevation-tooltip:  var(--shadow-md);
+
+
+  /* ─────────────────────────────────────────────────────────────────────────
+     §2.15  BORDER RADIUS
+     ───────────────────────────────────────────────────────────────────────── */
+  --radius-none: 0px;
+  --radius-xs:   2px;
+  --radius-sm:   4px;
+  --radius-md:   6px;
+  --radius-lg:   8px;
+  --radius-xl:   12px;
+  --radius-2xl:  16px;
+  --radius-3xl:  24px;
+  --radius-full: 9999px;
+
+  /* Component role aliases */
+  --radius-btn:     var(--radius-md);   /* 6px  */
+  --radius-input:   var(--radius-md);   /* 6px  */
+  --radius-card:    var(--radius-lg);   /* 8px  */
+  --radius-badge:   var(--radius-full); /* pill */
+  --radius-chip:    var(--radius-full); /* pill */
+  --radius-dialog:  var(--radius-xl);   /* 12px */
+  --radius-tooltip: var(--radius-sm);   /* 4px  */
+  --radius-menu:    var(--radius-lg);   /* 8px  */
+
+
+  /* ─────────────────────────────────────────────────────────────────────────
+     §2.16  SPACING (4px grid)
+     ───────────────────────────────────────────────────────────────────────── */
+  --space-0:   0px;
+  --space-0-5: 2px;
+  --space-1:   4px;
+  --space-1-5: 6px;
+  --space-2:   8px;
+  --space-2-5: 10px;
+  --space-3:   12px;
+  --space-4:   16px;
+  --space-5:   20px;
+  --space-6:   24px;
+  --space-8:   32px;
+  --space-10:  40px;
+  --space-12:  48px;
+  --space-16:  64px;
+  --space-20:  80px;
+  --space-24:  96px;
+
+
+  /* ─────────────────────────────────────────────────────────────────────────
+     §2.17  TYPOGRAPHY
+     Locked 2026-07-10 v1. Full rationale and architectural decision records
+     (base-size deviation, condensed/light weight policy, H3 family switch,
+     Display-vs-H1 sizing) live in h2p-section-03-typography.html §3B–§3E.
+     Revisit as gaps are found — this is a formalized start, not a final word.
+     ───────────────────────────────────────────────────────────────────────── */
+
+  /* Font stacks.
+     PRODUCTION NOTE: self-host these as subsetted variable woff2 with
+     font-display: swap. Do not depend on a font CDN at request time — part
+     of the audience works on unreliable rural connectivity. (The doc site
+     you are reading this on is a different, lower-stakes context and may
+     load fonts from Google Fonts — see h2p-shared.css.) */
+  --font-body:    'Inter', system-ui, -apple-system, sans-serif;
+  --font-display: 'Barlow Semi Condensed', system-ui, sans-serif;
+  --font-mono:    'JetBrains Mono', 'Fira Code', ui-monospace, monospace;
+
+  /* Raw size scale — Tailwind utility slots (text-xs … text-5xl).
+     ADR: base is 18px, not Tailwind's stock 16px — audience skews older
+     and the base was deliberately raised. --text-size-md (16px) exists to
+     hold a step for secondary/dense text below the new base. Do not revert
+     base to 16px without re-reading §3D of the typography page first. */
+  --text-size-xs:   0.75rem;   /* 12px */
+  --text-size-sm:   0.875rem;  /* 14px */
+  --text-size-base: 1.125rem;  /* 18px — H2Prime base, intentionally not Tailwind's 16px default */
+  --text-size-md:   1rem;      /* 16px — secondary/dense text, sits below base */
+  --text-size-lg:   1.25rem;   /* 20px */
+  --text-size-xl:   1.375rem;  /* 22px */
+  --text-size-2xl:  1.75rem;   /* 28px */
+  --text-size-3xl:  2.125rem;  /* 34px — matches existing Figma H1 usage */
+  --text-size-4xl:  2.5rem;    /* 40px — Display ceiling, do not exceed without a new ADR */
+  --text-size-5xl:  2.5rem;    /* reserved, equals 4xl — no role bigger than Display exists yet */
+
+  /* Fluid clamps — Display and H1 only. Everything H2 and below stays fixed;
+     the gap between fixed sizes is small enough not to need fluid scaling. */
+  --text-size-3xl-fluid: clamp(1.625rem, 3vw + 1rem, 2.125rem); /* H1: 26px → 34px */
+  --text-size-4xl-fluid: clamp(1.75rem, 4vw + 1rem, 2.5rem);    /* Display: 28px → 40px */
+
+  /* Generic line-heights, paired to the raw scale above for ad hoc Tailwind
+     text-* utility use ONLY (e.g. text-lg in one-off markup). Semantic type
+     roles below define their OWN line-height per role — two roles can share
+     a size (H4 and Body-large are both 20px) while needing different
+     leading, so do not assume these generic pairings apply to a role. */
+  --text-size-xs--line-height:   1.4;
+  --text-size-sm--line-height:   1.45;
+  --text-size-base--line-height: 1.6;
+  --text-size-md--line-height:   1.5;
+  --text-size-lg--line-height:   1.5;
+  --text-size-xl--line-height:   1.4;
+  --text-size-2xl--line-height:  1.3;
+  --text-size-3xl--line-height:  1.2;
+  --text-size-4xl--line-height:  1.15;
+  --text-size-5xl--line-height:  1.15;
+
+  /* Font weights */
+  --font-weight-light:    300;
+  --font-weight-normal:   400;
+  --font-weight-medium:   500;
+  --font-weight-semibold: 600;
+  --font-weight-bold:     700;
+
+  --leading-tight:   1.25;
+  --leading-snug:    1.375;
+  --leading-normal:  1.5;
+  --leading-relaxed: 1.625;
+  --leading-loose:   2;
+
+  --tracking-tight:   -0.025em;
+  --tracking-normal:   0em;
+  --tracking-wide:     0.025em;
+  --tracking-wider:    0.05em;
+  --tracking-widest:   0.1em;
+
+
+  /* ─────────────────────────────────────────────────────────────────────────
+     §2.17b  SEMANTIC TYPE ROLES
+     Component code should reference these, never the raw scale above.
+     Each role bundles family + weight + size + line-height + tracking as one
+     decision. Family switches from --font-display to --font-body at H3 —
+     condensed/light geometry is reserved for sizes large enough that
+     narrowing and thin strokes don't cost legibility (Display/H1/H2 only).
+     Functional UI text (buttons, nav, labels, table cells) must never use
+     --type-display-* or --type-h1-*/--type-h2-* families directly.
+
+     ACCESSIBILITY POLICY: every role using --font-weight-light must hold
+     4.5:1 contrast minimum regardless of size — do not rely on WCAG's
+     large-text 3:1 exception for these roles. Thin strokes lose effective
+     contrast faster than the ratio number suggests, and this audience
+     skews older with a meaningful outdoor-mobile-glare use case.
+     ───────────────────────────────────────────────────────────────────────── */
+  --type-display-family:    var(--font-display);
+  --type-display-weight:    var(--font-weight-light);
+  --type-display-size:      var(--text-size-4xl-fluid);
+  --type-display-leading:   1.15;
+  --type-display-tracking: -0.005em;
+
+  --type-h1-family:    var(--font-display);
+  --type-h1-weight:    var(--font-weight-light);
+  --type-h1-size:      var(--text-size-3xl-fluid);
+  --type-h1-leading:   1.2;
+  --type-h1-tracking:  normal;
+
+  --type-h2-family:    var(--font-display);
+  --type-h2-weight:    var(--font-weight-light);
+  --type-h2-size:      var(--text-size-2xl);
+  --type-h2-leading:   1.25;
+  --type-h2-tracking:  normal;
+
+  /* ── family switch: Inter takes over from here down ── */
+
+  --type-h3-family:    var(--font-body);
+  --type-h3-weight:    var(--font-weight-semibold);
+  --type-h3-size:      var(--text-size-xl);
+  --type-h3-leading:   1.3;
+  --type-h3-tracking:  normal;
+
+  --type-h4-family:    var(--font-body);
+  --type-h4-weight:    var(--font-weight-semibold);
+  --type-h4-size:      var(--text-size-lg);
+  --type-h4-leading:   1.35;
+  --type-h4-tracking:  normal;
+
+  --type-h5-family:    var(--font-body);
+  --type-h5-weight:    var(--font-weight-semibold);
+  --type-h5-size:      var(--text-size-base);
+  --type-h5-leading:   1.4;
+  --type-h5-tracking:  normal;
+
+  --type-overline-family:    var(--font-body);
+  --type-overline-weight:    var(--font-weight-semibold);
+  --type-overline-size:      var(--text-size-sm);
+  --type-overline-leading:   1.3;
+  --type-overline-tracking:  0.04em;
+  --type-overline-transform: uppercase;
+
+  --type-body-lg-family:   var(--font-body);
+  --type-body-lg-weight:   var(--font-weight-normal);
+  --type-body-lg-size:     var(--text-size-lg);
+  --type-body-lg-leading:  1.6;
+  --type-body-lg-tracking: normal;
+
+  --type-body-family:    var(--font-body);
+  --type-body-weight:    var(--font-weight-normal);
+  --type-body-size:      var(--text-size-base);
+  --type-body-leading:   1.6;
+  --type-body-tracking:  normal;
+
+  --type-body-sm-family:   var(--font-body);
+  --type-body-sm-weight:   var(--font-weight-normal);
+  --type-body-sm-size:     var(--text-size-md);
+  --type-body-sm-leading:  1.5;
+  --type-body-sm-tracking: normal;
+
+  --type-caption-family:   var(--font-body);
+  --type-caption-weight:   var(--font-weight-normal);
+  --type-caption-size:     var(--text-size-sm);
+  --type-caption-leading:  1.45;
+  --type-caption-tracking: normal;
+
+  --type-legal-family:   var(--font-body);
+  --type-legal-weight:   var(--font-weight-normal);
+  --type-legal-size:     var(--text-size-xs);
+  --type-legal-leading:  1.4;
+  --type-legal-tracking: normal;
+
+  --type-mono-family:   var(--font-mono);
+  --type-mono-weight:   var(--font-weight-normal);
+  --type-mono-size:     var(--text-size-md);
+  --type-mono-leading:  1.5;
+  --type-mono-tracking: normal;
+
+  --type-mono-sm-family:   var(--font-mono);
+  --type-mono-sm-weight:   var(--font-weight-normal);
+  --type-mono-sm-size:     var(--text-size-sm);
+  --type-mono-sm-leading:  1.45;
+  --type-mono-sm-tracking: normal;
+
+  /* ── Label — added for §3K component-role mapping (h2p-section-03-typography.html).
+     Distinct from Overline: Overline is an uppercase/tracked "eyebrow" for
+     GROUP-level labeling (table column headers, fieldset legends, KPI labels).
+     Label is sentence-case and reserved for text labeling a SINGLE control or
+     scannable target — <label> elements, button text, active menu/tab items.
+     Bound directly to the <label> element in components.css §1. ── */
+  --type-label-family:   var(--font-body);
+  --type-label-weight:   var(--font-weight-semibold);
+  --type-label-size:     var(--text-size-md);
+  --type-label-leading:  1.4;
+  --type-label-tracking: normal;
+
+  /* ── Metric — added for §3K component-role mapping. For large standalone
+     numeric values (KPI cards, dashboard stat tiles) — NOT a heading role.
+     Deliberately uses --font-body (Inter) at bold weight rather than
+     --font-display (Barlow Semi Condensed light): a KPI number needs to read
+     as strong and unambiguous at a glance, and light-weight condensed digits
+     lose the crispness numerals need, especially in outdoor glare. Always
+     pair with the `tabular-nums` Tailwind utility so multi-digit values
+     don't shift width as they update. ── */
+  --type-metric-family:   var(--font-body);
+  --type-metric-weight:   var(--font-weight-bold);
+  --type-metric-size:     var(--text-size-3xl);
+  --type-metric-leading:  1.15;
+  --type-metric-tracking: -0.01em;
+
+  /* ── Modal title — added 2026-07-16 for §3K. Deliberately distinct from
+     both H1 and H2, not a reuse: a dialog is a transient, self-contained
+     surface and shouldn't borrow the page's own heading voice. Still
+     --font-display (Barlow Semi Condensed) for family cohesion with the
+     rest of the heading system, but at --font-weight-normal (400) instead
+     of --font-weight-light (300) — the extra stroke weight buys back the
+     legibility that condensed geometry costs, which is what makes a
+     smaller-than-H2 size viable here without violating the §3C
+     family-switch ADR in spirit. Size is a deliberate one-off (26px) that
+     doesn't reuse any raw scale slot — sits between H2 (28px) and H3
+     (22px) on purpose, so a modal title is never visually confused with
+     either. Not bound to a specific heading element (a dialog's heading
+     level depends on where it sits in document order) — apply via
+     .text-modal-title in components.css wherever the real heading tag is.
+     ACCESSIBILITY: held to the same 4.5:1 minimum as the font-light roles
+     even though weight 400 at 26px would qualify for WCAG's 3:1 large-text
+     exception — modals are often action-critical (confirm/cancel, delete)
+     and this audience shouldn't need to work to read one. ── */
+  --type-modal-title-family:   var(--font-display);
+  --type-modal-title-weight:   var(--font-weight-normal);
+  --type-modal-title-size:     1.625rem; /* 26px */
+  --type-modal-title-leading:  1.25;
+  --type-modal-title-tracking: normal;
+
+
+  /* ─────────────────────────────────────────────────────────────────────────
+     §2.17c  COMPONENT-SCOPED TYPE ALIASES
+     Added 2026-07-16 alongside §3K's component-role mapping. These are NOT
+     new roles — each aliases straight through to one of the seventeen roles
+     above (§2.17b) and does not add to that count. They exist so component
+     code can reference the component's own name (e.g. --type-toast-body-*)
+     instead of every contributor needing to already know that a toast body
+     happens to be Body small — the same reasoning as the --radius-btn /
+     --shadow-card aliases in §2.14–§2.15. Where a component needs something
+     the aliased role doesn't carry (a color token, tabular-nums, a weight
+     override), that's called out inline rather than baked into a new role.
+     ───────────────────────────────────────────────────────────────────────── */
+
+  /* Empty state — no-results / empty-table messaging. Heading aliases H5,
+     body aliases Body small. Body typically pairs with text-secondary. */
+  --type-empty-state-heading-family:   var(--type-h5-family);
+  --type-empty-state-heading-weight:   var(--type-h5-weight);
+  --type-empty-state-heading-size:     var(--type-h5-size);
+  --type-empty-state-heading-leading:  var(--type-h5-leading);
+  --type-empty-state-heading-tracking: var(--type-h5-tracking);
+
+  --type-empty-state-body-family:   var(--type-body-sm-family);
+  --type-empty-state-body-weight:   var(--type-body-sm-weight);
+  --type-empty-state-body-size:     var(--type-body-sm-size);
+  --type-empty-state-body-leading:  var(--type-body-sm-leading);
+  --type-empty-state-body-tracking: var(--type-body-sm-tracking);
+
+  /* Toast — transient notification. Heading aliases Label (same pairing as
+     Alert's compact form), body aliases Body small. */
+  --type-toast-heading-family:   var(--type-label-family);
+  --type-toast-heading-weight:   var(--type-label-weight);
+  --type-toast-heading-size:     var(--type-label-size);
+  --type-toast-heading-leading:  var(--type-label-leading);
+  --type-toast-heading-tracking: var(--type-label-tracking);
+
+  --type-toast-body-family:   var(--type-body-sm-family);
+  --type-toast-body-weight:   var(--type-body-sm-weight);
+  --type-toast-body-size:     var(--type-body-sm-size);
+  --type-toast-body-leading:  var(--type-body-sm-leading);
+  --type-toast-body-tracking: var(--type-body-sm-tracking);
+
+  /* Pagination / result-count label ("Page 3 of 12"). Aliases Caption —
+     always pair with the stock `tabular-nums` Tailwind utility. */
+  --type-pagination-label-family:   var(--type-caption-family);
+  --type-pagination-label-weight:   var(--type-caption-weight);
+  --type-pagination-label-size:     var(--type-caption-size);
+  --type-pagination-label-leading:  var(--type-caption-leading);
+  --type-pagination-label-tracking: var(--type-caption-tracking);
+
+  /* Disabled input text. Aliases Body exactly — same size as an active
+     input, on purpose, so disabling a field never reflows its layout.
+     The only change is color: pair with --color-text-disabled (Tailwind
+     `text-text-disabled`). Per §2.3's own note, --text-disabled is
+     intentionally NOT contrast-rated — WCAG exempts disabled-control text
+     from the contrast requirement, and this design system follows that
+     exemption rather than overriding it. */
+  --type-input-disabled-family:   var(--type-body-family);
+  --type-input-disabled-weight:   var(--type-body-weight);
+  --type-input-disabled-size:     var(--type-body-size);
+  --type-input-disabled-leading:  var(--type-body-leading);
+  --type-input-disabled-tracking: var(--type-body-tracking);
+
+  /* Currency emphasis — added 2026-07-16. Aliases Body small at raised
+     weight 600 (vs Body small's normal 400), always with tabular-nums.
+     Deliberately NOT Metric: Metric (700 weight, 34px) is for a single
+     standalone KPI value, not a figure sitting inline in a table row or a
+     billing line item. Confirmed usage: billing summary and billing
+     dashboard line totals, and worker wage-rate cells in contract-detail
+     tables. One role serves both — if a screen needs more visual weight
+     than this buys, that's a layout/spacing decision, not a cue to bump
+     the font size (see §3J anti-patterns). */
+  --type-currency-emphasis-family:   var(--type-body-sm-family);
+  --type-currency-emphasis-weight:   var(--font-weight-semibold);
+  --type-currency-emphasis-size:     var(--type-body-sm-size);
+  --type-currency-emphasis-leading:  var(--type-body-sm-leading);
+  --type-currency-emphasis-tracking: var(--type-body-sm-tracking);
+
+  /* Tooltip text — added 2026-07-16, resolving the last open §3K gap.
+     Aliases Caption's 14px size (Legal/micro's 12px was ruled out — it's
+     documented as "fine print only, never anything actionable," and a
+     tooltip on an icon-only button is functionally the visible half of
+     that button's meaning for sighted users), with weight raised to
+     --font-weight-medium (500) instead of Caption's normal 400 — the same
+     "raise the weight instead of dropping the size" move used for
+     Currency emphasis and Modal title. Pair with its own elevated surface
+     token for contrast; per §5, a tooltip is never a substitute for
+     aria-label. */
+  --type-tooltip-family:   var(--type-caption-family);
+  --type-tooltip-weight:   var(--font-weight-medium);
+  --type-tooltip-size:     var(--type-caption-size);
+  --type-tooltip-leading:  var(--type-caption-leading);
+  --type-tooltip-tracking: var(--type-caption-tracking);
+
+
+  /* ─────────────────────────────────────────────────────────────────────────
+     §2.18  Z-INDEX SCALE
+     ───────────────────────────────────────────────────────────────────────── */
+  --z-base:     0;
+  --z-raised:   1;
+  --z-dropdown: 100;
+  --z-sticky:   200;
+  --z-overlay:  300;
+  --z-modal:    400;
+  --z-toast:    500;
+  --z-tooltip:  600;
+
+
+  /* ─────────────────────────────────────────────────────────────────────────
+     §2.19  MOTION
+     ───────────────────────────────────────────────────────────────────────── */
+  --duration-instant:  0ms;
+  --duration-fast:     100ms;
+  --duration-base:     200ms;
+  --duration-slow:     300ms;
+  --duration-slower:   500ms;
+
+  --ease-default: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-in:      cubic-bezier(0.4, 0, 1, 1);
+  --ease-out:     cubic-bezier(0, 0, 0.2, 1);
+  --ease-spring:  cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  @media (prefers-reduced-motion: reduce) {
+    --duration-fast:   0ms;
+    --duration-base:   0ms;
+    --duration-slow:   0ms;
+    --duration-slower: 0ms;
+  }
+
+}
+
+
+/* ═════════════════════════════════════════════════════════════════════════════
+   §3  DARK MODE OVERRIDES
+   Surfaces invert; ramp usage flips to deep stops for surfaces and
+   light stops for text. Primitives (§1) are mode-invariant; only
+   semantic tokens (§2) are overridden here.
+   ═════════════════════════════════════════════════════════════════════════════ */
+
+[data-mode="dark"],
+@media (prefers-color-scheme: dark) {
+
+  :root {
+
+    /* Surfaces */
+    --surface-page:    var(--ramp-gray-dark-950); /* #1C1B1E — deepest canvas */
+    --surface-raised:  var(--ramp-gray-dark-900); /* #2E2D30 — cards */
+    --surface-sunken:  var(--ramp-gray-dark-950); /* #1C1B1E — inset wells */
+    --surface-subtle:  var(--ramp-gray-dark-800); /* #272A2F — subtle fill (neutral-800) */
+    --surface-overlay: rgba(12, 12, 14, 0.75);
+
+    /* Borders */
+    --border-subtle:  var(--ramp-gray-dark-700);  /* #464247 */
+    --border-default: var(--ramp-gray-dark-600);  /* #4D4950 */
+    --border-strong:  var(--ramp-gray-dark-500);  /* #5C5860 */
+    /* --border-focus stays Brand Yellow — unchanged */
+
+    /* Text */
+    --text-primary:     var(--ramp-gray-dark-25);  /* #FBFCFD (neutral-25) · ~20:1 on DM surface */
+    --text-secondary:   var(--ramp-gray-mid-200);  /* #C8C8D0 · ~9:1 */
+    --text-tertiary:    var(--ramp-gray-mid-400);  /* #9292A0 · ~4.6:1 AA */
+    --text-disabled:    var(--ramp-gray-mid-600);  /* #52575E (neutral-600) */
+    --text-placeholder: var(--ramp-gray-mid-500);  /* #7D7E87 */
+    --text-link:        var(--ramp-info-300);      /* #60A5FA · 5.9:1 on DM surface · AA */
+    --text-link-visited:var(--ramp-help-300);      /* #A78BFA */
+    --text-on-primary:  #000000;
+    --text-on-accent:   #000000;
+    --text-inverse:     var(--ramp-gray-dark-950);
+
+    /* Interactive */
+    /* Primary — inverted: neutral ramp reads light-on-dark, not the same
+       near-black fill used in light mode (that would vanish into the DM
+       page canvas). No muddiness risk at any step — see file header. */
+    --interactive-primary-bg:        var(--ramp-neutral-100); /* #EBEDF0 · 15.9:1 w/ near-black text */
+    --interactive-primary-bg-hover:  var(--ramp-neutral-25);  /* #FBFCFD */
+    --interactive-primary-bg-active: #FFFFFF;
+    --interactive-primary-text:      var(--ramp-neutral-950); /* #07080B */
+    --interactive-secondary-bg-hover: var(--ramp-gray-dark-800);
+    --interactive-secondary-border:   var(--ramp-gray-dark-600);
+    --interactive-secondary-text:     var(--text-primary);
+    --interactive-ghost-bg-hover:     var(--ramp-gray-dark-800);
+    --interactive-disabled-bg:        var(--ramp-gray-dark-800);
+    --interactive-disabled-text:      var(--ramp-gray-mid-600);
+    --interactive-disabled-border:    var(--ramp-gray-dark-700);
+
+    /* Inputs */
+    --input-bg:           var(--ramp-gray-dark-900);
+    --input-bg-focus:     var(--ramp-gray-dark-800);
+    --input-border:       var(--ramp-gray-dark-600);
+    --input-border-hover: var(--ramp-gray-dark-400);
+    --input-text:         var(--text-primary);
+    --input-placeholder:  var(--text-placeholder);
+
+    /* Feedback surfaces — DM variants */
+    /* Danger */
+    --feedback-danger-surface: var(--ramp-danger-950); /* deep fill */
+    --feedback-danger-border:  var(--ramp-danger-600);
+    --feedback-danger-text:    var(--ramp-danger-200); /* #FF9E8A · 6.2:1 on DM surface */
+    --feedback-danger-icon:    var(--ramp-danger-400);
+    --feedback-danger-solid:   var(--ramp-danger-400);
+
+    /* Warning — DM (uniform across themes — no per-theme override; see §1.5) */
+    --feedback-warning-surface: var(--ramp-warning-950);
+    --feedback-warning-text:    var(--ramp-warning-200); /* #FCD34D · 7.1:1 on DM surface */
+
+    /* Success */
+    --feedback-success-surface: var(--ramp-success-950);
+    --feedback-success-border:  var(--ramp-success-600);
+    --feedback-success-text:    var(--ramp-success-200); /* #86EFAC · 8.4:1 on DM surface */
+    --feedback-success-icon:    var(--ramp-success-400);
+    --feedback-success-solid:   var(--ramp-success-400);
+
+    /* Info */
+    --feedback-info-surface: var(--ramp-info-950);
+    --feedback-info-border:  var(--ramp-info-600);
+    --feedback-info-text:    var(--ramp-info-200); /* #93C5FD · 8.9:1 on DM surface */
+    --feedback-info-icon:    var(--ramp-info-400);
+    --feedback-info-solid:   var(--ramp-info-400);
+
+    /* Help */
+    --feedback-help-surface: var(--ramp-help-950);
+    --feedback-help-border:  var(--ramp-help-600);
+    --feedback-help-text:    var(--ramp-help-200); /* #C4B5FD · 9.1:1 on DM surface */
+    --feedback-help-icon:    var(--ramp-help-400);
+    --feedback-help-solid:   var(--ramp-help-400);
+
+    /* Nav */
+    --nav-bg:             var(--ramp-gray-dark-950);
+    --nav-border:         var(--ramp-gray-dark-800);
+    --nav-text:           var(--ramp-gray-mid-300);
+    --nav-item-bg-hover:  rgba(255, 255, 255, 0.05);
+
+    /* Elevation — DM (lighter shadows, more opacity) */
+    --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.30);
+    --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.40), 0 1px 2px rgba(0, 0, 0, 0.30);
+    --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.35), 0 2px 4px rgba(0, 0, 0, 0.25);
+    --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.40), 0 4px 6px rgba(0, 0, 0, 0.25);
+    --shadow-xl: 0 20px 25px rgba(0, 0, 0, 0.45), 0 8px 10px rgba(0, 0, 0, 0.20);
+
+    /* Viz */
+    --viz-1:          #3987E5;
+    --viz-2:          #C98500; /* darkened for DM legibility */
+    --viz-3:          #199E70;
+    --viz-4:          #E66767;
+    --viz-5:          #9085E9;
+    --viz-6:          #D95926;
+    --viz-7:          #D55181;
+    --viz-8:          #008300;
+    --viz-grid-line:  var(--ramp-gray-dark-700);
+    --viz-tooltip-bg: var(--ramp-gray-dark-800);
+
+  }
+
+}
+
+
+/* ═════════════════════════════════════════════════════════════════════════════
+   §4  DASHBOARD THEME LAYER
+   Applied via [data-theme] on the layout root or dashboard wrapper.
+   Injects --theme-accent-* variables that interactive tokens consume.
+   Includes Warning anchor override for client theme.
+   ═════════════════════════════════════════════════════════════════════════════ */
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   §4.1  CLIENT THEME (default — applied when no [data-theme] or [data-theme="client"])
+   Accent: Brand Yellow H≈85° — nav highlights & secondary accents only.
+   theme-accent no longer drives the primary CTA fill — see the primary-
+   action decision in the file header. STALE: this block predates that
+   revision and the Brown/Neutral rollout; treat as parked pending the
+   dashboard-theme review, not as settled.
+   Warning: uniform step 500 — no per-theme override (see §1.5 / §2.7).
+   ───────────────────────────────────────────────────────────────────────────── */
+:root,
+[data-theme="client"] {
+
+  /* Theme accent scale — nav/secondary use, NOT the primary CTA source */
+  --theme-accent-25:  var(--ramp-yellow-25);
+  --theme-accent-50:  var(--ramp-yellow-50);
+  --theme-accent-100: var(--ramp-yellow-100);
+  --theme-accent-200: var(--ramp-yellow-200);
+  --theme-accent-300: var(--ramp-yellow-300);
+  --theme-accent-400: var(--ramp-yellow-400);
+  --theme-accent-500: var(--ramp-yellow-500); /* #FFC20E — nav/secondary accent */
+  --theme-accent-600: var(--ramp-yellow-600); /* #D9A000 — hover */
+  --theme-accent-700: var(--ramp-yellow-700); /* #A87B00 — active/pressed */
+  --theme-accent-800: var(--ramp-yellow-800); /* #7A5900 — text on light */
+  --theme-accent-on:  #000000;               /* text on accent fills */
+
+  /* Interactive link color — Info blue (not yellow, too low contrast as text) */
+  --text-link:         var(--ramp-info-600);
+  --text-link-visited: var(--ramp-help-700);
+
+  /* Nav active tint — yellow-based */
+  --nav-text-active:    var(--ramp-yellow-400);
+  --nav-item-bg-active: rgba(255, 194, 14, 0.12);
+  --nav-item-indicator: var(--ramp-yellow-500);
+
+  /* Warning — no override; uses the uniform §2.7 tokens as-is */
+
+  /* Primary ramp alias (for utility classes bg-primary-N etc.) */
+  --primary-25:  var(--ramp-yellow-25);
+  --primary-50:  var(--ramp-yellow-50);
+  --primary-100: var(--ramp-yellow-100);
+  --primary-200: var(--ramp-yellow-200);
+  --primary-300: var(--ramp-yellow-300);
+  --primary-400: var(--ramp-yellow-400);
+  --primary-500: var(--ramp-yellow-500);
+  --primary-600: var(--ramp-yellow-600);
+  --primary-700: var(--ramp-yellow-700);
+  --primary-800: var(--ramp-yellow-800);
+  --primary-900: var(--ramp-yellow-900);
+  --primary-950: var(--ramp-yellow-950);
+
+  /* Neutral ramp alias */
+  --neutral-25:  var(--ramp-gray-dark-25);
+  --neutral-50:  var(--ramp-gray-dark-50);
+  --neutral-100: var(--ramp-gray-dark-100);
+  --neutral-200: var(--ramp-gray-dark-200);
+  --neutral-300: var(--ramp-gray-dark-300);
+  --neutral-400: var(--ramp-gray-dark-400);
+  --neutral-500: var(--ramp-gray-dark-500);
+  --neutral-600: var(--ramp-gray-dark-600);
+  --neutral-700: var(--ramp-gray-dark-700);
+  --neutral-800: var(--ramp-gray-dark-800);
+  --neutral-900: var(--ramp-gray-dark-900);
+  --neutral-950: var(--ramp-gray-dark-950);
+
+}
+
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   §4.2  FILER THEME
+   Accent: Sky Blue H≈200°
+   Warning anchor: step 500 (yellow-amber H≈55°) — no collision risk
+   ───────────────────────────────────────────────────────────────────────── */
+[data-theme="filer"] {
+
+  --theme-accent-25:  var(--ramp-sky-25);
+  --theme-accent-50:  var(--ramp-sky-50);
+  --theme-accent-100: var(--ramp-sky-100);
+  --theme-accent-200: var(--ramp-sky-200);
+  --theme-accent-300: var(--ramp-sky-300);
+  --theme-accent-400: var(--ramp-sky-400);
+  --theme-accent-500: var(--ramp-sky-400); /* #0EA5E9 — nav/secondary accent (step 400 = best LM contrast) */
+  --theme-accent-600: var(--ramp-sky-500); /* #0284C7 — hover */
+  --theme-accent-700: var(--ramp-sky-600); /* #0369A1 — active */
+  --theme-accent-800: var(--ramp-sky-700); /* #075985 — text on light */
+  --theme-accent-on:  #FFFFFF;
+
+  --text-link:         var(--ramp-sky-600);
+  --text-link-visited: var(--ramp-sky-800);
+
+  --nav-text-active:    var(--ramp-sky-300);
+  --nav-item-bg-active: rgba(14, 165, 233, 0.12);
+  --nav-item-indicator: var(--ramp-sky-400);
+
+  /* Warning — standard step 500 anchor (no collision) */
+  --feedback-warning-border:   var(--ramp-warning-500);
+  --feedback-warning-icon:     var(--ramp-warning-500);
+  --feedback-warning-solid:    var(--ramp-warning-500);
+  --feedback-warning-on-solid: #000000;
+
+  /* Brand Yellow repurposed as highlight/KPI accent — not interactive */
+  --theme-highlight:       var(--ramp-yellow-500);
+  --theme-highlight-text:  var(--ramp-yellow-800);
+  --theme-highlight-surface: var(--ramp-yellow-25);
+
+  /* Ramp aliases */
+  --primary-25:  var(--ramp-sky-25);
+  --primary-50:  var(--ramp-sky-50);
+  --primary-100: var(--ramp-sky-100);
+  --primary-200: var(--ramp-sky-200);
+  --primary-300: var(--ramp-sky-300);
+  --primary-400: var(--ramp-sky-400);
+  --primary-500: var(--ramp-sky-500);
+  --primary-600: var(--ramp-sky-600);
+  --primary-700: var(--ramp-sky-700);
+  --primary-800: var(--ramp-sky-800);
+  --primary-900: var(--ramp-sky-900);
+  --primary-950: var(--ramp-sky-950);
+
+  --neutral-25:  var(--ramp-gray-dark-25);
+  --neutral-50:  var(--ramp-gray-dark-50);
+  --neutral-100: var(--ramp-gray-dark-100);
+  --neutral-200: var(--ramp-gray-dark-200);
+  --neutral-300: var(--ramp-gray-dark-300);
+  --neutral-400: var(--ramp-gray-dark-400);
+  --neutral-500: var(--ramp-gray-dark-500);
+  --neutral-600: var(--ramp-gray-dark-600);
+  --neutral-700: var(--ramp-gray-dark-700);
+  --neutral-800: var(--ramp-gray-dark-800);
+  --neutral-900: var(--ramp-gray-dark-900);
+  --neutral-950: var(--ramp-gray-dark-950);
+
+}
+
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   §4.3  ADMIN THEME
+   Accent: Violet H≈280°
+   Warning anchor: step 500 (yellow-amber H≈55°) — no collision risk
+   Chrome uses deepest gray (950) for maximum authority differentiation.
+   ───────────────────────────────────────────────────────────────────────── */
+[data-theme="admin"] {
+
+  --theme-accent-25:  var(--ramp-violet-25);
+  --theme-accent-50:  var(--ramp-violet-50);
+  --theme-accent-100: var(--ramp-violet-100);
+  --theme-accent-200: var(--ramp-violet-200);
+  --theme-accent-300: var(--ramp-violet-300);
+  --theme-accent-400: var(--ramp-violet-400);
+  --theme-accent-500: var(--ramp-violet-400); /* #8B5CF6 — nav/secondary accent */
+  --theme-accent-600: var(--ramp-violet-500); /* #7C3AED — hover */
+  --theme-accent-700: var(--ramp-violet-600); /* #6D28D9 — active */
+  --theme-accent-800: var(--ramp-violet-700); /* #5B21B6 — text on light */
+  --theme-accent-on:  #FFFFFF;
+
+  --text-link:         var(--ramp-violet-500);
+  --text-link-visited: var(--ramp-violet-700);
+
+  /* Deeper nav chrome for admin authority */
+  --nav-bg:             var(--ramp-gray-dark-950);
+  --nav-border:         var(--ramp-gray-dark-900);
+  --nav-text-active:    var(--ramp-violet-300);
+  --nav-item-bg-active: rgba(139, 92, 246, 0.12);
+  --nav-item-indicator: var(--ramp-violet-400);
+
+  /* Warning — standard step 500 anchor (no collision) */
+  --feedback-warning-border:   var(--ramp-warning-500);
+  --feedback-warning-icon:     var(--ramp-warning-500);
+  --feedback-warning-solid:    var(--ramp-warning-500);
+  --feedback-warning-on-solid: #000000;
+
+  /* Brand Yellow as KPI highlight */
+  --theme-highlight:         var(--ramp-yellow-500);
+  --theme-highlight-text:    var(--ramp-yellow-800);
+  --theme-highlight-surface: var(--ramp-yellow-25);
+
+  /* Note: --ramp-violet-* and --ramp-help-* share the same hue family.
+     In Admin context, violet tokens drive interactive surfaces (buttons, nav).
+     Help utility tokens drive passive feedback surfaces (banners, badges).
+     Both may appear in the same viewport — always paired with a text label. */
+
+  /* Ramp aliases */
+  --primary-25:  var(--ramp-violet-25);
+  --primary-50:  var(--ramp-violet-50);
+  --primary-100: var(--ramp-violet-100);
+  --primary-200: var(--ramp-violet-200);
+  --primary-300: var(--ramp-violet-300);
+  --primary-400: var(--ramp-violet-400);
+  --primary-500: var(--ramp-violet-500);
+  --primary-600: var(--ramp-violet-600);
+  --primary-700: var(--ramp-violet-700);
+  --primary-800: var(--ramp-violet-800);
+  --primary-900: var(--ramp-violet-900);
+  --primary-950: var(--ramp-violet-950);
+
+  --neutral-25:  var(--ramp-gray-dark-25);
+  --neutral-50:  var(--ramp-gray-dark-50);
+  --neutral-100: var(--ramp-gray-dark-100);
+  --neutral-200: var(--ramp-gray-dark-200);
+  --neutral-300: var(--ramp-gray-dark-300);
+  --neutral-400: var(--ramp-gray-dark-400);
+  --neutral-500: var(--ramp-gray-dark-500);
+  --neutral-600: var(--ramp-gray-dark-600);
+  --neutral-700: var(--ramp-gray-dark-700);
+  --neutral-800: var(--ramp-gray-dark-800);
+  --neutral-900: var(--ramp-gray-dark-900);
+  --neutral-950: var(--ramp-gray-dark-950);
+
+}
+
+
+/* ═════════════════════════════════════════════════════════════════════════════
+   §5  CONTRACT PHASE CONTEXT
+   Applied via [data-phase="N"] on a phase container element.
+   Components inside the container read --phase-* tokens.
+   ═════════════════════════════════════════════════════════════════════════════ */
+
+[data-phase="1"] {
+  --phase-surface:  var(--ramp-phase1-surface); /* #EFF6FF */
+  --phase-border:   var(--ramp-phase1-border);  /* #93C5FD */
+  --phase-solid:    var(--ramp-phase1-solid);   /* #3B82F6 */
+  --phase-text:     var(--ramp-phase1-text);    /* #1D4ED8 */
+  --phase-deep:     var(--ramp-phase1-deep);    /* #1E3A8A */
+  --phase-on-solid: #FFFFFF;
+  --phase-label:    "Initiation";
+}
+
+[data-phase="2"] {
+  --phase-surface:  var(--ramp-phase2-surface); /* #ECFDF5 */
+  --phase-border:   var(--ramp-phase2-border);  /* #6EE7B7 */
+  --phase-solid:    var(--ramp-phase2-solid);   /* #10B981 */
+  --phase-text:     var(--ramp-phase2-text);    /* #065F46 */
+  --phase-deep:     var(--ramp-phase2-deep);    /* #022C22 */
+  --phase-on-solid: #FFFFFF;
+  --phase-label:    "Negotiation";
+}
+
+/* PHASE 3 — Execution · Burnt Orange H≈28°
+   WARNING: 13° from Danger (H≈15°). Always pair with a text label.
+   Never distinguish Phase 3 from a Danger state by hue alone (WCAG 1.4.1). */
+[data-phase="3"] {
+  --phase-surface:  var(--ramp-phase3-surface); /* #FFF7ED */
+  --phase-border:   var(--ramp-phase3-border);  /* #FED7AA */
+  --phase-solid:    var(--ramp-phase3-solid);   /* #F97316 */
+  --phase-text:     var(--ramp-phase3-text);    /* #C2410C */
+  --phase-deep:     var(--ramp-phase3-deep);    /* #7C2D12 */
+  --phase-on-solid: #FFFFFF;
+  --phase-label:    "Execution";
+}
+
+/* PHASE 4 — Review · Fuchsia H≈292°
+   NOTE: 12° from Help violet (H≈280°). Always label in the UI. */
+[data-phase="4"] {
+  --phase-surface:  var(--ramp-phase4-surface); /* #FDF4FF */
+  --phase-border:   var(--ramp-phase4-border);  /* #E9D5FF */
+  --phase-solid:    var(--ramp-phase4-solid);   /* #A855F7 */
+  --phase-text:     var(--ramp-phase4-text);    /* #7E22CE */
+  --phase-deep:     var(--ramp-phase4-deep);    /* #3B0764 */
+  --phase-on-solid: #FFFFFF;
+  --phase-label:    "Review";
+}
+
+[data-phase="5"] {
+  --phase-surface:  var(--ramp-phase5-surface); /* #F0F9FF */
+  --phase-border:   var(--ramp-phase5-border);  /* #BAE6FD */
+  --phase-solid:    var(--ramp-phase5-solid);   /* #0EA5E9 */
+  --phase-text:     var(--ramp-phase5-text);    /* #0369A1 */
+  --phase-deep:     var(--ramp-phase5-deep);    /* #0C4A6E */
+  --phase-on-solid: #FFFFFF;
+  --phase-label:    "Closed";
+}
+
+
+/* ═════════════════════════════════════════════════════════════════════════════
+   §6  SHADCN / RADIX BRIDGE
+   Maps H2 Prime semantic tokens onto the CSS variable names that
+   shadcn/ui components expect. Apply to :root after this file loads,
+   or override in your shadcn globals.css.
+
+   shadcn variable → H2 Prime token
+   ═════════════════════════════════════════════════════════════════════════════ */
+
+:root {
+
+  --background:       var(--surface-page);
+  --foreground:       var(--text-primary);
+
+  --card:             var(--surface-raised);
+  --card-foreground:  var(--text-primary);
+
+  --popover:          var(--surface-raised);
+  --popover-foreground: var(--text-primary);
+
+  --primary:          var(--theme-accent-500);
+  --primary-foreground: var(--theme-accent-on);
+
+  --secondary:        var(--surface-sunken);
+  --secondary-foreground: var(--text-secondary);
+
+  --muted:            var(--surface-subtle);
+  --muted-foreground: var(--text-tertiary);
+
+  --accent:           var(--theme-accent-100);
+  --accent-foreground: var(--theme-accent-800);
+
+  --destructive:      var(--ramp-danger-500);
+  --destructive-foreground: #FFFFFF;
+
+  --border:           var(--border-default);
+  --input:            var(--input-border);
+  --ring:             var(--border-focus);
+
+  --radius: var(--radius-md); /* 6px — shadcn uses this for its own radius calc */
+
+}

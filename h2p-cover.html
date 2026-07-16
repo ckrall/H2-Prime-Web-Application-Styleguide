@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>H2 Prime Design System — Index</title>
+  <link rel="stylesheet" href="h2p-shared.css">
+<style>
+.hero { padding: 3rem 0 2.5rem; border-bottom: 1px solid var(--b1); margin-bottom: 2.5rem; }
+.hero-kicker { font-size: 11px; font-weight: 500; letter-spacing: .12em; text-transform: uppercase; color: var(--a); margin-bottom: .75rem; }
+.hero-title { font-family: var(--fd); font-weight: 300; font-size: clamp(32px, 5vw, 52px); color: var(--t1); line-height: 1.1; margin-bottom: 1rem; }
+.hero-title strong { font-weight: 500; color: var(--a); }
+.hero-lead { font-size: 15px; color: var(--t2); max-width: 680px; line-height: 1.75; }
+
+.principles { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; margin: 1.5rem 0 3rem; }
+.principle { background: var(--s); border: 1px solid var(--b1); border-radius: 10px; padding: 16px 18px; }
+.principle-top { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 6px; }
+.principle-num { font-family: var(--fm); font-size: 11px; color: var(--a); }
+.principle-title { font-size: 14px; font-weight: 600; color: var(--t1); margin-bottom: 6px; }
+.principle-body { font-size: 12.5px; color: var(--t2); line-height: 1.6; }
+.principle.tbd { border-style: dashed; opacity: .82; }
+.principle.tbd .principle-num { color: var(--t3); }
+
+.section-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 14px; margin: 1rem 0 3rem; }
+.sec-card { background: var(--s); border: 1px solid var(--b1); border-radius: 10px; padding: 18px 20px; text-decoration: none; display: block; transition: border-color .15s; }
+.sec-card:hover { border-color: var(--ab); opacity: 1; }
+.sec-card-top { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 8px; }
+.sec-card-num { font-family: var(--fm); font-size: 11px; color: var(--a); }
+.sec-card-title { font-size: 15px; font-weight: 600; color: var(--t1); margin-bottom: 6px; }
+.sec-card-desc { font-size: 12.5px; color: var(--t2); line-height: 1.6; }
+.sec-card.disabled { opacity: .55; cursor: default; pointer-events: none; }
+
+.status-table th, .status-table td { font-size: 12.5px; }
+</style>
+</head>
+<body>
+
+<a class="skip-link" href="#main-content">Skip to content</a>
+
+<nav class="guide-nav" aria-label="Style guide navigation">
+  <div class="guide-nav-left">
+    <a href="h2p-cover.html" class="guide-nav-home">
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+        <path d="M1 7L7 1l6 6M2.5 5.5V13h3v-3h3v3h3V5.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      H2 Prime Design System
+    </a>
+  </div>
+  <div class="guide-nav-right">
+    <a href="h2p-section-02-color-system.html" class="guide-nav-btn primary">Start reading →</a>
+  </div>
+</nav>
+
+<div class="page-wrap">
+<main id="main-content">
+
+  <div class="hero">
+    <div class="hero-kicker">Design System &amp; Guidelines</div>
+    <h1 class="hero-title">H2 Prime <strong>Web Application</strong><br>Design System</h1>
+    <p class="hero-lead">A retroactively formalized design system for H2 Prime, an H-2A visa contract management platform serving lawyers, farmers, and local business owners — an audience that skews middle-aged to older, is often not tech-savvy, and works outdoors on a phone as often as at a desk. Built incrementally, one subsystem locked before the next begins, with the rationale for every decision documented alongside it rather than left implicit.</p>
+  </div>
+
+  <div class="principles">
+    <div class="principle">
+      <div class="principle-top"><span class="principle-num">01</span></div>
+      <div class="principle-title">Audience first, brand second</div>
+      <div class="principle-body">Every size, contrast, and density decision is checked against a non-technical, often outdoor, mobile-first user before it's checked against how it looks.</div>
+    </div>
+    <div class="principle">
+      <div class="principle-top"><span class="principle-num">02</span></div>
+      <div class="principle-title">Tokens, never raw values</div>
+      <div class="principle-body">Components consume semantic tokens only. A hardcoded hex, arbitrary pixel value, or ad-hoc shadow in component code is a bug, not a shortcut.</div>
+    </div>
+    <div class="principle">
+      <div class="principle-top"><span class="principle-num">03</span></div>
+      <div class="principle-title">Interactive vs. identity, kept separate</div>
+      <div class="principle-body">Brand colors (Yellow, Brown) mark who we are. The Neutral ramp marks what you can click. The two roles are never doubled up on the same element.</div>
+    </div>
+    <div class="principle">
+      <div class="principle-top"><span class="principle-num">04</span></div>
+      <div class="principle-title">Decisions are documented, not just made</div>
+      <div class="principle-body">Every non-obvious choice — a hue shift, a contrast override, a rejected alternative — is recorded as an ADR in the relevant section, not left for someone to reverse-engineer later.</div>
+    </div>
+    <div class="principle">
+      <div class="principle-top"><span class="principle-num">05</span></div>
+      <div class="principle-title">Semantic HTML, WCAG 2.2 AA minimum</div>
+      <div class="principle-body">Real elements over generic ones, AA contrast as the floor with AAA where feasible, and color paired with text or shape — never color alone.</div>
+    </div>
+    <div class="principle">
+      <div class="principle-top"><span class="principle-num">06</span></div>
+      <div class="principle-title">A start version beats a perfect one</div>
+      <div class="principle-body">Sections ship as soon as they're internally consistent. Gaps are flagged in anti-patterns sections and closed as real screens surface them.</div>
+    </div>
+    <div class="principle">
+      <div class="principle-top"><span class="principle-num">07</span></div>
+      <div class="principle-title">Accessibility is structural</div>
+      <div class="principle-body">Contrast ratios are verified and focus rings are part of the spec before a component ships — not audited in afterward. Documented alongside each pattern in Section 5, not held in a separate pass.</div>
+    </div>
+    <div class="principle">
+      <div class="principle-top"><span class="principle-num">08</span></div>
+      <div class="principle-title">Motion communicates</div>
+      <div class="principle-body">Transitions signal state and status changes, not decoration. Timing and easing respect an indoor/outdoor viewing environment and never compete with the interface for attention.</div>
+    </div>
+    <div class="principle tbd">
+      <div class="principle-top"><span class="principle-num">09</span><span class="badge b-planned">Planned</span></div>
+      <div class="principle-title">Writing for experts</div>
+      <div class="principle-body">Filers and attorneys are seasoned experts; part of the client audience is too, part is new to filing. Copy should sit close to the language clients already meet on government forms, with clear explainers where that gap is real. Balance not yet defined — see Section 12.</div>
+    </div>
+  </div>
+
+  <h2 style="font-size:13px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--t3);margin-bottom:.75rem">Sections</h2>
+  <div class="section-grid">
+    <a class="sec-card" href="h2p-section-02-color-system.html">
+      <div class="sec-card-top"><span class="sec-card-num">02</span><span class="badge b-complete">Complete</span></div>
+      <div class="sec-card-title">Color System</div>
+      <div class="sec-card-desc">Brand (Yellow + Brown), the consolidated cool Neutral ramp, five utility colors, the Warning anchor decision, and the Neutral-vs-Brown primary-action decision (§2D-2).</div>
+    </a>
+    <a class="sec-card" href="h2p-section-02b-ramp-reference.html">
+      <div class="sec-card-top"><span class="sec-card-num">02B</span><span class="badge b-complete">Complete</span></div>
+      <div class="sec-card-title">Ramp Reference</div>
+      <div class="sec-card-desc">Full 12-stop technical reference — hex, OKLCH, and contrast ratio — for every ramp in the system.</div>
+    </a>
+    <a class="sec-card" href="h2p-section-02c-ramp-table.html">
+      <div class="sec-card-top"><span class="sec-card-num">02C</span><span class="badge b-complete">Complete</span></div>
+      <div class="sec-card-title">Ramp Table</div>
+      <div class="sec-card-desc">Plain hex + OKLCH data table for every ramp, grouped by family — a faster secondary lookup alongside 2B's contrast-ratio reference.</div>
+    </a>
+    <a class="sec-card" href="h2p-section-03-typography.html">
+      <div class="sec-card-top"><span class="sec-card-num">03</span><span class="badge b-complete">Complete</span></div>
+      <div class="sec-card-title">Typography</div>
+      <div class="sec-card-desc">Barlow Semi Condensed + Inter + JetBrains Mono, 18px base, 14-role type scale, family-switch and contrast policy.</div>
+    </a>
+    <a class="sec-card" href="h2p-section-04-spacing-layout-elevation.html">
+      <div class="sec-card-top"><span class="sec-card-num">04</span><span class="badge b-complete">Complete</span></div>
+      <div class="sec-card-title">Spacing, Layout &amp; Elevation</div>
+      <div class="sec-card-desc">4px spacing grid, page/content widths and breakpoints, border radius, shadow, and z-index scales.</div>
+    </a>
+    <a class="sec-card" href="h2p-section-05-component-patterns.html">
+      <div class="sec-card-top"><span class="sec-card-num">05</span><span class="badge b-complete">Complete</span></div>
+      <div class="sec-card-title">Component Patterns</div>
+      <div class="sec-card-desc">Buttons, form fields, badges, cards, data tables, and feedback banners — real semantic markup, built on the Neutral-primary decision. Full state coverage now lives in Section 6; framework-native versions in Section 9.</div>
+    </a>
+    <a class="sec-card" href="h2p-section-06-interaction-state-design.html">
+      <div class="sec-card-top"><span class="sec-card-num">06</span><span class="badge b-complete">Complete</span></div>
+      <div class="sec-card-title">Interaction &amp; State Design</div>
+      <div class="sec-card-desc">Hover, focus, active, disabled, and error states as their own token layer, plus touch target size, selection, navigation, and loading states. Several sub-patterns are flagged as open decisions — see §6I.</div>
+    </a>
+    <a class="sec-card" href="h2p-section-07-motion-animation.html">
+      <div class="sec-card-top"><span class="sec-card-num">07</span><span class="badge b-complete">Complete</span></div>
+      <div class="sec-card-title">Motion &amp; Animation</div>
+      <div class="sec-card-desc">Timing and easing tokens, a reduced-motion policy for the outdoor/mobile audience, and transitions that signal state without competing with the interface. Toast/dropdown/modal timings and phase-transition motion are proposed, not settled — see §7H. See principle 08.</div>
+    </a>
+    <a class="sec-card" href="h2p-section-08-design-tokens.html">
+      <div class="sec-card-top"><span class="sec-card-num">08</span><span class="badge b-complete">Complete</span></div>
+      <div class="sec-card-title">Design Tokens</div>
+      <div class="sec-card-desc">What a token is, the three-tier primitive/semantic/component architecture, naming conventions, light/dark mode mapping, and file structure. Framework-specific mapping lives in Section 9 instead of being duplicated here.</div>
+    </a>
+    <a class="sec-card" href="h2p-section-09-framework-implementation.html">
+      <div class="sec-card-top"><span class="sec-card-num">09</span><span class="badge b-complete">Complete</span></div>
+      <div class="sec-card-title">Framework Implementation</div>
+      <div class="sec-card-desc">Tailwind CSS v4, shadcn/ui, shadcn-svelte, and Svelte — how tokens and Section 5's patterns map onto the real stack, so nobody hand-translates raw HTML into components.</div>
+    </a>
+    <div class="sec-card disabled">
+      <div class="sec-card-top"><span class="sec-card-num">10</span><span class="badge b-planned">Planned</span></div>
+      <div class="sec-card-title">Contract Phase System</div>
+      <div class="sec-card-desc">Parked pending a possible approach change — not yet revalidated against Brown/Neutral. See <code>h2prime-ramps-v2.html</code>.</div>
+    </div>
+    <div class="sec-card disabled">
+      <div class="sec-card-top"><span class="sec-card-num">11</span><span class="badge b-planned">Planned</span></div>
+      <div class="sec-card-title">Dashboard Themes — Client / Filer / Admin</div>
+      <div class="sec-card-desc">Parked pending a dedicated review pass on per-dashboard Brown/Yellow identity treatment, plus custom/white-label theming and light and dark mode variants for each dashboard. See §2E.</div>
+    </div>
+    <div class="sec-card disabled">
+      <div class="sec-card-top"><span class="sec-card-num">12</span><span class="badge b-planned">Planned</span></div>
+      <div class="sec-card-title">Writing &amp; UX Copy</div>
+      <div class="sec-card-desc">Filers are seasoned experts; the client audience splits between seasoned and first-time filers. Complements principle 09 — the balance between expert and plain-language copy is not yet defined.</div>
+    </div>
+    <div class="sec-card disabled">
+      <div class="sec-card-top"><span class="sec-card-num">13</span><span class="badge b-planned">Planned</span></div>
+      <div class="sec-card-title">Figma Variable Reference</div>
+      <div class="sec-card-desc">Light mode, dark mode, and per-dashboard theme variables mirrored into Figma. Blocked on the dashboard theme review (§11) and light/dark mode decisions landing first.</div>
+    </div>
+  </div>
+
+  <h2 style="font-size:13px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--t3);margin-bottom:.75rem">Document status</h2>
+  <div class="status-table tbl-wrap">
+    <table>
+      <caption class="sr-only">Status and last-updated date for each file in the design system</caption>
+      <thead><tr><th>File</th><th>Covers</th><th>Status</th><th>Last updated</th></tr></thead>
+      <tbody>
+        <tr><td><code>tokens.css</code></td><td>Authoritative token source — all three tiers</td><td><span class="badge b-complete">Current</span></td><td>2026-07-13</td></tr>
+        <tr><td><code>main.css</code></td><td>Tailwind v4 @theme mappings</td><td><span class="badge b-complete">Current</span></td><td>2026-06-28</td></tr>
+        <tr><td><code>components.css</code></td><td>Tier 3 component-scoped overrides</td><td><span class="badge b-complete">Current</span></td><td>2026-06-28</td></tr>
+        <tr><td><code>h2p-shared.css</code></td><td>Shared style guide stylesheet</td><td><span class="badge b-complete">Current</span></td><td>2026-07-13</td></tr>
+        <tr><td><code>h2p-section-02-color-system.html</code></td><td>Color system + primary-action decision</td><td><span class="badge b-complete">Current</span></td><td>2026-07-13</td></tr>
+        <tr><td><code>h2p-section-02b-ramp-reference.html</code></td><td>Full technical ramp reference</td><td><span class="badge b-complete">Current</span></td><td>2026-07-13</td></tr>
+        <tr><td><code>h2p-section-02c-ramp-table.html</code></td><td>Secondary plain-table ramp reference</td><td><span class="badge b-complete">Current</span></td><td>2026-07-13</td></tr>
+        <tr><td><code>h2p-section-03-typography.html</code></td><td>Type system</td><td><span class="badge b-complete">Current</span></td><td>2026-07-10</td></tr>
+        <tr><td><code>h2p-section-04-spacing-layout-elevation.html</code></td><td>Spacing, layout, elevation, radius, z-index</td><td><span class="badge b-complete">Current</span></td><td>2026-07-13</td></tr>
+        <tr><td><code>h2p-section-05-component-patterns.html</code></td><td>Buttons, forms, cards, tables, feedback</td><td><span class="badge b-complete">Current</span></td><td>2026-07-13</td></tr>
+        <tr><td><code>h2p-section-06-interaction-state-design.html</code></td><td>Interaction &amp; state token matrix, touch targets, selection, loading</td><td><span class="badge b-complete">Current</span></td><td>2026-07-16</td></tr>
+        <tr><td><code>h2p-section-07-motion-animation.html</code></td><td>Duration/easing tokens, reduced-motion policy, motion patterns</td><td><span class="badge b-complete">Current</span></td><td>2026-07-16</td></tr>
+        <tr><td><code>h2p-section-08-design-tokens.html</code></td><td>Token architecture, naming, mode mapping, file structure</td><td><span class="badge b-complete">Current</span></td><td>2026-07-16</td></tr>
+        <tr><td><code>h2p-section-09-framework-implementation.html</code></td><td>Tailwind v4, shadcn/ui + shadcn-svelte bridge, Svelte patterns</td><td><span class="badge b-complete">Current</span></td><td>2026-07-16</td></tr>
+        <tr><td>Section 10 — Contract Phase System</td><td>—</td><td><span class="badge b-planned">Planned</span></td><td>—</td></tr>
+        <tr><td>Section 11 — Dashboard themes — Client / Filer / Admin</td><td>—</td><td><span class="badge b-planned">Planned</span></td><td>—</td></tr>
+        <tr><td>Section 12 — Writing &amp; UX Copy</td><td>—</td><td><span class="badge b-planned">Planned</span></td><td>—</td></tr>
+        <tr><td>Section 13 — Figma Variable Reference</td><td>—</td><td><span class="badge b-planned">Planned</span></td><td>—</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+</main>
+  <footer class="page-footer">
+    <div>H2 Prime Web Application Design System &amp; Guidelines &nbsp;·&nbsp; v1.0 (start version)</div>
+    <div style="text-align:right">Last updated: 2026-07-16<br>Rebuilt — see chat for why</div>
+  </footer>
+
+</div>
+</body>
+</html>

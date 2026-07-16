@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Section 3 — Typography — H2 Prime Design System</title>
+  <link rel="stylesheet" href="h2p-shared.css">
+<style>
+.type-specimen-list { display: flex; flex-direction: column; gap: 10px; margin: 1rem 0; }
+.type-specimen { background: var(--s); border: 1px solid var(--b1); border-radius: 10px; padding: 16px 20px; }
+.type-specimen-head { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; flex-wrap: wrap; margin-bottom: 10px; }
+.type-specimen-tag { font-family: var(--fm); font-size: 10px; font-weight: 600; color: var(--a); background: var(--al); border-radius: 4px; padding: 2px 8px; }
+.type-specimen-spec { font-family: var(--fm); font-size: 10px; color: var(--t3); text-align: right; }
+.type-specimen-sample { color: var(--t1); }
+.type-specimen dd { margin: 0; }
+
+.switch-marker { display: flex; align-items: center; gap: 10px; margin: 1.25rem 0; }
+.switch-line { flex: 1; height: 1px; background: linear-gradient(to right, var(--b2), var(--a)); }
+.switch-label { font-family: var(--fm); font-size: 10px; font-weight: 600; color: var(--a); white-space: nowrap; }
+
+.remap-old { color: var(--t3); text-decoration: line-through; }
+.remap-new { color: var(--t1); font-weight: 500; }
+</style>
+</head>
+<body>
+
+<a class="skip-link" href="#main-content">Skip to content</a>
+
+<nav class="guide-nav" aria-label="Style guide navigation">
+  <div class="guide-nav-left">
+    <a href="h2p-cover.html" class="guide-nav-home">
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+        <path d="M1 7L7 1l6 6M2.5 5.5V13h3v-3h3v3h3V5.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      H2 Prime Design System
+    </a>
+    <div class="guide-nav-divider" aria-hidden="true"></div>
+    <span class="guide-nav-section">3 — Typography</span>
+  </div>
+  <div class="guide-nav-right">
+    <a href="h2p-section-02c-ramp-table.html" class="guide-nav-btn">← 2C — Ramp Table</a>
+    <a href="h2p-section-04-spacing-layout-elevation.html" class="guide-nav-btn primary">4 — Spacing, Layout &amp; Elevation →</a>
+  </div>
+</nav>
+
+<div class="page-wrap">
+<main id="main-content">
+
+  <!-- Header -->
+  <div class="doc-header">
+    <div class="doc-kicker">H2 Prime Web Application Design System &amp; Guidelines</div>
+    <h1 class="doc-title">Section 03 — <strong>Typography</strong></h1>
+    <p class="doc-lead">The type system for the H2 Prime web application platform. Built for an audience that skews middle-aged to older, is often not tech-savvy, and reads on mobile outdoors as often as at a desk indoors — lawyers, farmers, and local business owners reviewing contracts, permits, and cylinder records. Every size, weight, and family decision below is driven by that audience first, brand character second.</p>
+    <div class="doc-meta">
+      <div class="doc-meta-item"><strong>Display face</strong>Barlow Semi Condensed 300</div>
+      <div class="doc-meta-item"><strong>Body face</strong>Inter 400 / 600</div>
+      <div class="doc-meta-item"><strong>Mono face</strong>JetBrains Mono</div>
+      <div class="doc-meta-item"><strong>Base size</strong>18px (1.125rem)</div>
+      <div class="doc-meta-item"><strong>Scale</strong>17 semantic roles · 8 component-scoped aliases · 10 raw slots</div>
+      <div class="doc-meta-item"><strong>Compliance</strong>WCAG 2.2 AA minimum</div>
+      <div class="doc-meta-item"><strong>Last updated</strong>2026-07-16</div>
+    </div>
+  </div>
+
+  <!-- TOC -->
+  <nav class="toc" aria-label="Section contents">
+    <div class="toc-label">In this section</div>
+    <div class="toc-cols">
+      <ul class="toc-list">
+        <li><span class="toc-num">3A</span><a href="#3a">Type scale &amp; semantic roles</a></li>
+        <li><span class="toc-num">3B</span><a href="#3b">Font pairing decision</a></li>
+        <li><span class="toc-num">3C</span><a href="#3c">Family-switch decision</a></li>
+        <li><span class="toc-num">3D</span><a href="#3d">Base-size decision</a></li>
+      </ul>
+      <ul class="toc-list">
+        <li><span class="toc-num">3E</span><a href="#3e">Weight, condensed &amp; contrast rules</a></li>
+        <li><span class="toc-num">3F</span><a href="#3f">Live specimens</a></li>
+        <li><span class="toc-num">3G</span><a href="#3g">Fluid sizing</a></li>
+      </ul>
+      <ul class="toc-list">
+        <li><span class="toc-num">3H</span><a href="#3h">Font loading</a></li>
+        <li><span class="toc-num">3I</span><a href="#3i">Accessibility mapping</a></li>
+        <li><span class="toc-num">3J</span><a href="#3j">Anti-patterns</a></li>
+        <li><span class="toc-num">3K</span><a href="#3k">Component role mapping</a></li>
+        <li><span class="toc-num">3L</span><a href="#3l">Component-scoped aliases</a></li>
+      </ul>
+    </div>
+  </nav>
+
+<!-- ════ 3A ════ -->
+  <div class="section" id="3a">
+    <div class="section-header">
+      <span class="section-id">3A</span>
+      <h2 class="section-title">Type scale &amp; semantic roles</h2>
+    </div>
+    <hr class="section-hr">
+    <p>Seventeen semantic roles, each bundling family, weight, size, line-height, and letter-spacing as one decision. Component code should reference these roles (<code>--type-h1-*</code> in <code>tokens.css</code>, or the <code>text-h1</code> / <code>font-display</code> / <code>font-light</code> utilities in Tailwind) rather than raw sizes — the same governance rule already established for color in Section 2. <strong>Label</strong> and <strong>Metric</strong> were added alongside the component-role mapping in §3K to cover form/menu/button labels and large KPI values; <strong>Modal title</strong> was added in the same pass to give dialogs their own heading voice, distinct from H1/H2. A further eight names in §3L are component-scoped aliases onto these seventeen, not new roles in their own right.</p>
+
+    <div class="tbl-wrap">
+      <table>
+        <caption class="sr-only">Full type scale listing family, weight, size, line-height, letter-spacing, and intended use for each of the seventeen semantic roles.</caption>
+        <thead><tr><th>Tier</th><th>Family</th><th>Weight</th><th>Size</th><th>Line-height</th><th>Tracking</th><th>Use</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Display</strong></td><td>Barlow Semi Condensed</td><td class="contrast-cell">300</td><td class="contrast-cell">2.5rem / 40px</td><td class="contrast-cell">1.15</td><td class="contrast-cell">−0.005em</td><td>Cover / marketing hero, rarely in-app</td></tr>
+          <tr><td><strong>H1</strong></td><td>Barlow Semi Condensed</td><td class="contrast-cell">300</td><td class="contrast-cell">2.125rem / 34px</td><td class="contrast-cell">1.2</td><td class="contrast-cell">normal</td><td>Page titles — matches existing Figma usage</td></tr>
+          <tr><td><strong>H2</strong></td><td>Barlow Semi Condensed</td><td class="contrast-cell">300</td><td class="contrast-cell">1.75rem / 28px</td><td class="contrast-cell">1.25</td><td class="contrast-cell">normal</td><td>Section headers</td></tr>
+          <tr><td><strong>H3</strong></td><td>Inter</td><td class="contrast-cell">600</td><td class="contrast-cell">1.375rem / 22px</td><td class="contrast-cell">1.3</td><td class="contrast-cell">normal</td><td>Family switch — subsection headers</td></tr>
+          <tr><td><strong>H4</strong></td><td>Inter</td><td class="contrast-cell">600</td><td class="contrast-cell">1.25rem / 20px</td><td class="contrast-cell">1.35</td><td class="contrast-cell">normal</td><td>Card / panel titles</td></tr>
+          <tr><td><strong>H5</strong></td><td>Inter</td><td class="contrast-cell">600</td><td class="contrast-cell">1.125rem / 18px</td><td class="contrast-cell">1.4</td><td class="contrast-cell">normal</td><td>Minor headings — same size as body, weight-differentiated</td></tr>
+          <tr><td><strong>Overline</strong></td><td>Inter</td><td class="contrast-cell">600</td><td class="contrast-cell">0.875rem / 14px</td><td class="contrast-cell">1.3</td><td class="contrast-cell">+0.04em, uppercase</td><td>Eyebrows, table column headers, form section labels</td></tr>
+          <tr><td><strong>Body large</strong></td><td>Inter</td><td class="contrast-cell">400</td><td class="contrast-cell">1.25rem / 20px</td><td class="contrast-cell">1.6</td><td class="contrast-cell">normal</td><td>Lead paragraphs, key explanatory text</td></tr>
+          <tr><td><strong>Body (base)</strong></td><td>Inter</td><td class="contrast-cell">400</td><td class="contrast-cell">1.125rem / 18px</td><td class="contrast-cell">1.6</td><td class="contrast-cell">normal</td><td>Default paragraph, form fields, UI text</td></tr>
+          <tr><td><strong>Body small</strong></td><td>Inter</td><td class="contrast-cell">400</td><td class="contrast-cell">1rem / 16px</td><td class="contrast-cell">1.5</td><td class="contrast-cell">normal</td><td>Secondary text, dense table cells</td></tr>
+          <tr><td><strong>Caption</strong></td><td>Inter</td><td class="contrast-cell">400</td><td class="contrast-cell">0.875rem / 14px</td><td class="contrast-cell">1.45</td><td class="contrast-cell">normal</td><td>Helper text, field hints, timestamps</td></tr>
+          <tr><td><strong>Legal / micro</strong></td><td>Inter</td><td class="contrast-cell">400</td><td class="contrast-cell">0.75rem / 12px</td><td class="contrast-cell">1.4</td><td class="contrast-cell">normal</td><td>Fine print only — never anything actionable</td></tr>
+          <tr><td><strong>Mono</strong></td><td>JetBrains Mono</td><td class="contrast-cell">400</td><td class="contrast-cell">1rem / 16px</td><td class="contrast-cell">1.5</td><td class="contrast-cell">normal</td><td>Inline codes, permit / cylinder IDs</td></tr>
+          <tr><td><strong>Mono small</strong></td><td>JetBrains Mono</td><td class="contrast-cell">400</td><td class="contrast-cell">0.875rem / 14px</td><td class="contrast-cell">1.45</td><td class="contrast-cell">normal</td><td>Dense data tables</td></tr>
+          <tr><td><strong>Label</strong></td><td>Inter</td><td class="contrast-cell">600</td><td class="contrast-cell">1rem / 16px</td><td class="contrast-cell">1.4</td><td class="contrast-cell">normal</td><td>Bound to <code>&lt;label&gt;</code> — also used for button text and active menu/tab items</td></tr>
+          <tr><td><strong>Metric</strong></td><td>Inter</td><td class="contrast-cell">700</td><td class="contrast-cell">2.125rem / 34px</td><td class="contrast-cell">1.15</td><td class="contrast-cell">−0.01em</td><td>KPI / stat-tile values — pair with <code>tabular-nums</code></td></tr>
+          <tr><td><strong>Modal title</strong></td><td>Barlow Semi Condensed</td><td class="contrast-cell">400</td><td class="contrast-cell">1.625rem / 26px</td><td class="contrast-cell">1.25</td><td class="contrast-cell">normal</td><td>Dialog headings only — not bound to a specific heading level</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="margin-top:.75rem"><strong>Label</strong> is deliberately not Overline: Overline is uppercase and tracked for group-level "eyebrow" labeling (table column headers, fieldset legends), while Label is sentence-case and sized for legibility on a single control's own text. <strong>Metric</strong> intentionally uses Inter bold rather than Barlow Semi Condensed light — a KPI number needs to read as strong and unambiguous at a glance, and light-weight condensed digits lose crispness in outdoor glare. <strong>Modal title</strong> keeps the Barlow Semi Condensed family for cohesion with the rest of the heading system but switches to weight 400 (never 300) at a one-off 26px that isn't drawn from the raw scale — sitting deliberately between H2's 28px and H3's 22px so a dialog is never mistaken for a page heading. Held to the same 4.5:1 contrast minimum as the font-light roles, even though 400-weight text at this size would qualify for WCAG's 3:1 large-text exception — dialogs are often action-critical (confirm, delete) and this audience shouldn't have to work to read one. See §3K for the component-role mapping that motivated all three additions, and §3L for the aliases layered on top.</p>
+  </div>
+
+<!-- ════ 3B ════ -->
+  <div class="section" id="3b">
+    <div class="section-header">
+      <span class="section-id">3B</span>
+      <h2 class="section-title">Font pairing decision — documented</h2>
+    </div>
+    <hr class="section-hr">
+
+    <div class="callout brand">
+      <div class="callout-label">Architectural decision record — type pairing</div>
+      <p>Three condensed/display candidates and three body candidates were considered. The winning pairing spends character where it's safe to spend it (large display sizes, where narrowing doesn't cost legibility) and spends safety where the audience needs it most (the much larger surface area of forms, tables, and dense contract data).</p>
+    </div>
+
+    <div class="tbl-wrap">
+      <table>
+        <caption class="sr-only">Comparison of three considered font pairings against character, legibility, cohesion, and accessibility criteria.</caption>
+        <thead><tr><th>Pairing</th><th>Character</th><th>Outdoor / mobile legibility</th><th>Family cohesion</th><th>Accessibility track record</th><th>Verdict</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><strong>Barlow Semi Condensed + Inter</strong></td>
+            <td>High — moderate narrowing keeps warmth</td>
+            <td>Very good — Inter engineered for small on-screen text</td>
+            <td>Related, not a true superfamily</td>
+            <td>Strong — Inter is UI-legibility-tested at scale</td>
+            <td><span class="badge b-complete">Selected</span></td>
+          </tr>
+          <tr>
+            <td>Roboto Condensed + Roboto</td>
+            <td>Lower — utilitarian, Android-associated</td>
+            <td>Excellent — built for outdoor mobile reading</td>
+            <td>Full superfamily match</td>
+            <td>Very strong — Google's own legibility research</td>
+            <td><span class="badge b-planned">Fallback option</span></td>
+          </tr>
+          <tr>
+            <td>Barlow Condensed + Barlow</td>
+            <td>Highest — most editorial presence</td>
+            <td>Good at display sizes, weaker below ~24px</td>
+            <td>Full superfamily match</td>
+            <td>Good, less small-size UI testing than Inter</td>
+            <td><span class="badge b-planned">Rejected — see 3C</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout brand" style="margin-top:1rem">
+      <div class="callout-label">Implementation note</div>
+      <p>This is locked at <code>--font-display</code> and <code>--font-body</code> in <code>tokens.css</code> §2.17. JetBrains Mono was accepted without a comparison pass — it draws a dotted zero and gives 1/l/I distinct shapes, which directly reduces transcription errors on cylinder and permit IDs.</p>
+    </div>
+  </div>
+
+<!-- ════ 3C ════ -->
+  <div class="section" id="3c">
+    <div class="section-header">
+      <span class="section-id">3C</span>
+      <h2 class="section-title">Family-switch decision — documented</h2>
+    </div>
+    <hr class="section-hr">
+
+    <div class="callout brand">
+      <div class="callout-label">Architectural decision record — where condensed/light stops</div>
+      <p>Condensed geometry narrows letterforms, and 300-weight strokes carry less effective contrast than the ratio number suggests — both compound for an older audience reading outdoors. Rather than let weight alone carry the hierarchy at every size, the display family is retired at a fixed threshold and Inter takes over.</p>
+    </div>
+
+    <p>Barlow Semi Condensed carries <strong>Display, H1, and H2 only</strong> — the sizes large enough that narrowing and thin strokes don't cost legibility. H3 and below switch to Inter at 600 weight, which restores full letterform width and a heavier stroke exactly where text gets smaller and reading load goes up.</p>
+
+    <div class="switch-marker" aria-hidden="true">
+      <span class="switch-label">H2 · 28px</span>
+      <div class="switch-line"></div>
+      <span class="switch-label">family switch</span>
+      <div class="switch-line" style="background:linear-gradient(to right, var(--a), var(--b2))"></div>
+      <span class="switch-label">H3 · 22px</span>
+    </div>
+
+    <div class="ap-grid">
+      <div class="ap-box ap-dont">
+        <div class="ap-label">Don't — condensed/light in functional UI</div>
+        <p>Buttons, nav items, form labels, and table cells never use <code>font-display</code> or <code>font-light</code>, regardless of size. These are high-frequency-read, functional elements where legibility always outranks character.</p>
+      </div>
+      <div class="ap-box ap-do">
+        <div class="ap-label">Do — condensed/light only at Display/H1/H2</div>
+        <p>Reserve <code>font-display font-light</code> for the three largest heading roles. Everything H3 and smaller — including minor headings — uses Inter at 600 weight for both width and stroke presence.</p>
+      </div>
+    </div>
+  </div>
+
+<!-- ════ 3D ════ -->
+  <div class="section" id="3d">
+    <div class="section-header">
+      <span class="section-id">3D</span>
+      <h2 class="section-title">Base-size decision — documented</h2>
+    </div>
+    <hr class="section-hr">
+
+    <div class="callout brand">
+      <div class="callout-label">Architectural decision record — base size</div>
+      <p>Tailwind's stock <code>text-base</code> is 16px. H2 Prime's <code>--text-base</code> is deliberately raised to <strong>18px</strong> to match an audience that skews older, and every other slot in the generic scale was re-derived from real semantic roles rather than left at Tailwind's defaults.</p>
+    </div>
+
+    <p>This is a token-level override, not a one-off style. Any component using the stock <code>text-base</code> utility inherits the larger size automatically. <code>--text-size-md</code> (16px) was added below the new base to keep a step available for secondary and dense text — it did not exist as a distinct role before.</p>
+
+    <div class="tbl-wrap">
+      <table>
+        <caption class="sr-only">Tailwind utility slot remapping showing the original placeholder value, the new locked value, and the semantic role each slot now carries.</caption>
+        <thead><tr><th>Slot</th><th>Placeholder value</th><th>Locked value</th><th>Primary role</th></tr></thead>
+        <tbody>
+          <tr><td><code>text-xs</code></td><td class="remap-old">10px</td><td class="remap-new">12px</td><td>Legal / micro</td></tr>
+          <tr><td><code>text-sm</code></td><td class="remap-old">12px</td><td class="remap-new">14px</td><td>Caption / Overline</td></tr>
+          <tr><td><code>text-base</code></td><td class="remap-old">14px</td><td class="remap-new">18px</td><td>Body (default) — not Tailwind's 16px</td></tr>
+          <tr><td><code>text-md</code></td><td class="remap-old">16px</td><td class="remap-new">16px</td><td>Body small (new role, same value)</td></tr>
+          <tr><td><code>text-lg</code></td><td class="remap-old">18px</td><td class="remap-new">20px</td><td>Body large / H4</td></tr>
+          <tr><td><code>text-xl</code></td><td class="remap-old">20px</td><td class="remap-new">22px</td><td>H3</td></tr>
+          <tr><td><code>text-2xl</code></td><td class="remap-old">24px</td><td class="remap-new">28px</td><td>H2</td></tr>
+          <tr><td><code>text-3xl</code></td><td class="remap-old">30px</td><td class="remap-new">34px, fluid 26–34px</td><td>H1 — matches existing Figma</td></tr>
+          <tr><td><code>text-4xl</code></td><td class="remap-old">36px</td><td class="remap-new">40px, fluid 28–40px</td><td>Display</td></tr>
+          <tr><td><code>text-5xl</code></td><td class="remap-old">48px</td><td class="remap-new">40px, reserved</td><td>None yet — equals Display until a larger role is needed</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout warn" style="margin-top:1rem">
+      <div class="callout-label">Do not revert without reading this</div>
+      <p>If a future contributor "fixes" <code>text-base</code> back to 16px because it looks like a stock Tailwind deviation, they will silently undo an audience-accessibility decision. This note exists so that doesn't happen quietly.</p>
+    </div>
+  </div>
+
+<!-- ════ 3E ════ -->
+  <div class="section" id="3e">
+    <div class="section-header">
+      <span class="section-id">3E</span>
+      <h2 class="section-title">Weight, condensed &amp; contrast rules</h2>
+    </div>
+    <hr class="section-hr">
+    <p>Three rules govern every use of the display face, on top of the family-switch boundary in §3C:</p>
+
+    <div class="ap-grid">
+      <div class="ap-box ap-dont">
+        <div class="ap-label">Don't rely on the large-text contrast exception</div>
+        <p>WCAG permits 3:1 contrast for large-scale text. Every <code>font-light</code> role holds <strong>4.5:1 minimum regardless of size</strong> — thin strokes lose effective contrast faster than the ratio number suggests, especially in outdoor glare.</p>
+      </div>
+      <div class="ap-box ap-do">
+        <div class="ap-label">Do treat weight-300 as a large-size-only tool</div>
+        <p>300 weight never appears below the H2 threshold (28px). If a design calls for a light-weight treatment at a smaller size, that's a signal to reconsider the design, not to add a new light-weight role.</p>
+      </div>
+    </div>
+
+    <div class="ap-grid">
+      <div class="ap-box ap-dont">
+        <div class="ap-label">Don't use Display outside a true hero moment</div>
+        <p>Display exists for cover pages and marketing surfaces. It is not bound to any in-app element by default — using it for an ordinary page title inflates the hierarchy and competes with H1.</p>
+      </div>
+      <div class="ap-box ap-do">
+        <div class="ap-label">Do use fluid sizing on Display and H1</div>
+        <p>Both roles clamp between a mobile-safe minimum and their fixed desktop maximum — see §3G. H2 and below stay fixed; the gap between fixed sizes is already small enough not to need it.</p>
+      </div>
+    </div>
+  </div>
+
+<!-- ════ 3F ════ -->
+  <div class="section" id="3f">
+    <div class="section-header">
+      <span class="section-id">3F</span>
+      <h2 class="section-title">Live specimens</h2>
+    </div>
+    <hr class="section-hr">
+    <p>Rendered at actual size and weight, using representative H2 Prime content — contract, permit, and cylinder-tracking copy rather than lorem ipsum, so the specimens read the way real screens will.</p>
+
+    <dl class="type-specimen-list">
+
+      <div class="type-specimen">
+        <div class="type-specimen-head">
+          <dt><span class="type-specimen-tag">Display</span></dt>
+          <dd class="type-specimen-spec">Barlow Semi Condensed 300 · 40px / 1.15 · −0.005em</dd>
+        </div>
+        <dd class="type-specimen-sample" style="font-family:var(--fd); font-weight:300; font-size:40px; line-height:1.15; letter-spacing:-0.005em;">Fueling the hydrogen economy</dd>
+      </div>
+
+      <div class="type-specimen">
+        <div class="type-specimen-head">
+          <dt><span class="type-specimen-tag">H1</span></dt>
+          <dd class="type-specimen-spec">Barlow Semi Condensed 300 · 34px / 1.2</dd>
+        </div>
+        <dd class="type-specimen-sample" style="font-family:var(--fd); font-weight:300; font-size:34px; line-height:1.2;">Cylinder Transfer Agreement</dd>
+      </div>
+
+      <div class="type-specimen">
+        <div class="type-specimen-head">
+          <dt><span class="type-specimen-tag">H2</span></dt>
+          <dd class="type-specimen-spec">Barlow Semi Condensed 300 · 28px / 1.25</dd>
+        </div>
+        <dd class="type-specimen-sample" style="font-family:var(--fd); font-weight:300; font-size:28px; line-height:1.25;">Contract phase 3 — execution</dd>
+      </div>
+
+      <div class="type-specimen">
+        <div class="type-specimen-head">
+          <dt><span class="type-specimen-tag">H3</span></dt>
+          <dd class="type-specimen-spec">Inter 600 · 22px / 1.3 — family switch</dd>
+        </div>
+        <dd class="type-specimen-sample" style="font-family:var(--fu); font-weight:600; font-size:22px; line-height:1.3;">Filer account permissions</dd>
+      </div>
+
+      <div class="type-specimen">
+        <div class="type-specimen-head">
+          <dt><span class="type-specimen-tag">H4</span></dt>
+          <dd class="type-specimen-spec">Inter 600 · 20px / 1.35</dd>
+        </div>
+        <dd class="type-specimen-sample" style="font-family:var(--fu); font-weight:600; font-size:20px; line-height:1.35;">Upcoming renewal</dd>
+      </div>
+
+      <div class="type-specimen">
+        <div class="type-specimen-head">
+          <dt><span class="type-specimen-tag">H5</span></dt>
+          <dd class="type-specimen-spec">Inter 600 · 18px / 1.4</dd>
+        </div>
+        <dd class="type-specimen-sample" style="font-family:var(--fu); font-weight:600; font-size:18px; line-height:1.4;">Attachments (3)</dd>
+      </div>
+
+      <div class="type-specimen">
+        <div class="type-specimen-head">
+          <dt><span class="type-specimen-tag">Overline</span></dt>
+          <dd class="type-specimen-spec">Inter 600 · 14px / 1.3 · +0.04em · uppercase</dd>
+        </div>
+        <dd class="type-specimen-sample" style="font-family:var(--fu); font-weight:600; font-size:14px; line-height:1.3; letter-spacing:0.04em; text-transform:uppercase;">Permit status</dd>
+      </div>
+
+      <div class="type-specimen">
+        <div class="type-specimen-head">
+          <dt><span class="type-specimen-tag">Body large</span></dt>
+          <dd class="type-specimen-spec">Inter 400 · 20px / 1.6</dd>
+        </div>
+        <dd class="type-specimen-sample" style="font-family:var(--fu); font-weight:400; font-size:20px; line-height:1.6;">Your fueling station's hydrogen supply agreement is now in the execution phase. Review the attached cylinder manifest before the scheduled delivery window.</dd>
+      </div>
+
+      <div class="type-specimen">
+        <div class="type-specimen-head">
+          <dt><span class="type-specimen-tag">Body (base)</span></dt>
+          <dd class="type-specimen-spec">Inter 400 · 18px / 1.6</dd>
+        </div>
+        <dd class="type-specimen-sample" style="font-family:var(--fu); font-weight:400; font-size:18px; line-height:1.6;">This agreement governs the transfer of compressed hydrogen cylinders between H2 Prime and the licensed filer account listed below.</dd>
+      </div>
+
+      <div class="type-specimen">
+        <div class="type-specimen-head">
+          <dt><span class="type-specimen-tag">Body small</span></dt>
+          <dd class="type-specimen-spec">Inter 400 · 16px / 1.5</dd>
+        </div>
+        <dd class="type-specimen-sample" style="font-family:var(--fu); font-weight:400; font-size:16px; line-height:1.5;">Cylinder ID HX-4471-B was inspected on June 3, 2026 and cleared for transfer.</dd>
+      </div>
+
+      <div class="type-specimen">
+        <div class="type-specimen-head">
+          <dt><span class="type-specimen-tag">Caption</span></dt>
+          <dd class="type-specimen-spec">Inter 400 · 14px / 1.45</dd>
+        </div>
+        <dd class="type-specimen-sample" style="font-family:var(--fu); font-weight:400; font-size:14px; line-height:1.45; color:var(--t2);">Last updated 2 hours ago by J. Ramirez</dd>
+      </div>
+
+      <div class="type-specimen">
+        <div class="type-specimen-head">
+          <dt><span class="type-specimen-tag">Legal</span></dt>
+          <dd class="type-specimen-spec">Inter 400 · 12px / 1.4</dd>
+        </div>
+        <dd class="type-specimen-sample" style="font-family:var(--fu); font-weight:400; font-size:12px; line-height:1.4; color:var(--t3);">This document is provided for informational purposes and does not constitute a binding agreement until countersigned by both parties.</dd>
+      </div>
+
+      <div class="type-specimen">
+        <div class="type-specimen-head">
+          <dt><span class="type-specimen-tag">Mono</span></dt>
+          <dd class="type-specimen-spec">JetBrains Mono 400 · 16px / 1.5</dd>
+        </div>
+        <dd class="type-specimen-sample" style="font-family:var(--fm); font-weight:400; font-size:16px; line-height:1.5;">PERMIT-2026-004471</dd>
+      </div>
+
+      <div class="type-specimen">
+        <div class="type-specimen-head">
+          <dt><span class="type-specimen-tag">Mono small</span></dt>
+          <dd class="type-specimen-spec">JetBrains Mono 400 · 14px / 1.45</dd>
+        </div>
+        <dd class="type-specimen-sample" style="font-family:var(--fm); font-weight:400; font-size:14px; line-height:1.45; color:var(--t2);">CYL-HX-4471-B · LOT-08812</dd>
+      </div>
+
+    </dl>
+  </div>
+
+<!-- ════ 3G ════ -->
+  <div class="section" id="3g">
+    <div class="section-header">
+      <span class="section-id">3G</span>
+      <h2 class="section-title">Fluid sizing</h2>
+    </div>
+    <hr class="section-hr">
+    <p>Display and H1 are the only two roles that scale with viewport width — both are large enough to feel oversized on a narrow phone screen if left fixed at their desktop size. H2 and everything below stays fixed; the steps are already modest enough not to need it.</p>
+
+    <div class="tbl-wrap">
+      <table>
+        <caption class="sr-only">Fluid clamp expressions for Display and H1, showing the mobile minimum and desktop maximum each resolves to.</caption>
+        <thead><tr><th>Role</th><th>Clamp expression</th><th>Resolves to</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Display</strong></td><td><code>clamp(1.75rem, 4vw + 1rem, 2.5rem)</code></td><td>28px on narrow mobile → 40px on desktop</td></tr>
+          <tr><td><strong>H1</strong></td><td><code>clamp(1.625rem, 3vw + 1rem, 2.125rem)</code></td><td>26px on narrow mobile → 34px on desktop</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>Treat both expressions as starting points, not final numbers — tune the viewport-width coefficient against real devices once the type system is in the app, and record any change here rather than silently editing <code>tokens.css</code>.</p>
+  </div>
+
+<!-- ════ 3H ════ -->
+  <div class="section" id="3h">
+    <div class="section-header">
+      <span class="section-id">3H</span>
+      <h2 class="section-title">Font loading</h2>
+    </div>
+    <hr class="section-hr">
+
+    <div class="ap-grid">
+      <div class="ap-box ap-dont">
+        <div class="ap-label">Production app — don't use a font CDN at request time</div>
+        <p>Part of the audience works with unreliable rural connectivity. A stalled Google Fonts request on a weak signal delays first render for exactly the users who can least afford it.</p>
+      </div>
+      <div class="ap-box ap-do">
+        <div class="ap-label">Production app — self-host subsetted variable woff2</div>
+        <p>Self-host Barlow Semi Condensed, Inter, and JetBrains Mono as variable woff2, subsetted to Latin plus the character set the forms actually need, with <code>font-display: swap</code>.</p>
+      </div>
+    </div>
+
+    <p style="margin-top:1rem">This documentation site is a different, lower-stakes context — it loads fonts from Google Fonts for convenience (see the <code>@import</code> at the top of <code>h2p-shared.css</code>). Do not treat that as the production pattern.</p>
+  </div>
+
+<!-- ════ 3I ════ -->
+  <div class="section" id="3i">
+    <div class="section-header">
+      <span class="section-id">3I</span>
+      <h2 class="section-title">Accessibility mapping</h2>
+    </div>
+    <hr class="section-hr">
+
+    <div class="tbl-wrap">
+      <table>
+        <caption class="sr-only">Mapping of type system decisions to the specific WCAG success criteria they support.</caption>
+        <thead><tr><th>Decision</th><th>WCAG reference</th><th>How this system meets it</th></tr></thead>
+        <tbody>
+          <tr><td>18px base, rem throughout</td><td>1.4.4 Resize Text (AA)</td><td>Every size is defined in <code>rem</code>, never <code>px</code>, so the whole scale respects browser zoom up to 200% without loss of content.</td></tr>
+          <tr><td>Generous line-height (1.4–1.6 on reading roles)</td><td>1.4.8 Visual Presentation (AAA)</td><td>Body roles hold 1.5–1.6; the tightest role (Display) still holds 1.15, above the 1.0 floor.</td></tr>
+          <tr><td>4.5:1 minimum on all font-light roles</td><td>1.4.3 Contrast (Minimum) (AA)</td><td>Applied as a policy stricter than the letter of the large-text exception — see §3E.</td></tr>
+          <tr><td>Family switch at H3</td><td>1.4.8 Visual Presentation (AAA) — general legibility guidance</td><td>Condensed geometry retired before it reaches sizes where narrowing meaningfully affects reading speed.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+<!-- ════ 3J ════ -->
+  <div class="section" id="3j">
+    <div class="section-header">
+      <span class="section-id">3J</span>
+      <h2 class="section-title">Anti-patterns</h2>
+    </div>
+    <hr class="section-hr">
+
+    <div class="ap-grid">
+      <div class="ap-box ap-dont">
+        <div class="ap-label">Don't chain four utilities for a heading</div>
+        <p>A bare <code>&lt;h1&gt;</code>–<code>&lt;h5&gt;</code> already gets the correct family, weight, size, line-height, and tracking from <code>components.css</code>. Reach for <code>text-h1 font-display font-light</code> only when the role is needed on an element that isn't a real heading.</p>
+      </div>
+      <div class="ap-box ap-do">
+        <div class="ap-label">Do use real heading levels in document order</div>
+        <p>One <code>&lt;h1&gt;</code> per page, no skipped levels. The visual size of a heading is a styling decision — it should never be used to fake the document's actual structure for screen-reader users.</p>
+      </div>
+    </div>
+
+    <div class="ap-grid">
+      <div class="ap-box ap-dont">
+        <div class="ap-label">Don't invent a new light-weight role at a smaller size</div>
+        <p>If a design wants a delicate, editorial feel below 28px, that's a cue to revisit the design against §3C and §3E — not to add a seventeenth role that quietly breaks the contrast policy.</p>
+      </div>
+      <div class="ap-box ap-do">
+        <div class="ap-label">Do flag gaps here instead of improvising silently</div>
+        <p>This is a start version by design (see the header note in <code>tokens.css</code> §2.17). If a real screen needs a role that doesn't exist yet — a 6th heading level, a new mono role — add it to the token file and this page together, rather than hand-styling a one-off.</p>
+      </div>
+    </div>
+  </div>
+
+<!-- ════ 3K ════ -->
+  <div class="section" id="3k">
+    <div class="section-header">
+      <span class="section-id">3K</span>
+      <h2 class="section-title">Component role mapping</h2>
+    </div>
+    <hr class="section-hr">
+    <p>The original fourteen roles in §3A were named for generic document structure (headings, body, caption). Real screens ask for the same decisions at the level of a table cell, a form field, a KPI tile — this section maps those component-level names onto the base scale so nobody re-derives a size from scratch. Three roles didn't exist yet to receive that mapping cleanly, so they were added: <strong>Label</strong> (sentence-case, semibold, for text that labels a single control), <strong>Metric</strong> (large, bold, tabular, for standalone KPI values), and <strong>Modal title</strong> (condensed at a moderate weight, for dialog headings). All three are documented in §3A and live in <code>tokens.css</code> §2.17b. §3L below layers seven more component-scoped names on top — pure aliases, not new roles.</p>
+
+    <div class="callout brand">
+      <div class="callout-label">How to read these tables</div>
+      <p>"Maps to" always names one of the seventeen roles in §3A — never a raw size. Where a role needs a modifier the base role doesn't carry (a color token, <code>tabular-nums</code>), the Notes column says so explicitly. Nothing here is a new size; it's a locked pairing of an existing role to a component context.</p>
+    </div>
+
+    <h3>Table</h3>
+    <div class="tbl-wrap">
+      <table>
+        <caption class="sr-only">Mapping of table sub-roles — cell text, cell number, column header, title, summary, caption, footer — to semantic type roles.</caption>
+        <thead><tr><th>Role</th><th>Element</th><th>Maps to</th><th>Notes</th></tr></thead>
+        <tbody>
+          <tr><td>Cell text</td><td><code>&lt;td&gt;</code></td><td>Body small</td><td>Matches the existing "dense table cells" use note on Body small.</td></tr>
+          <tr><td>Cell number</td><td><code>&lt;td&gt;</code>, numeric column</td><td>Mono small + <code>tabular-nums</code></td><td>Use plain Body small + <code>tabular-nums</code> instead for currency columns where full mono reads too technical — a per-table call, not a rule.</td></tr>
+          <tr><td>Column header</td><td><code>&lt;th&gt;</code></td><td>Overline</td><td>Already documented in §3A — no change.</td></tr>
+          <tr><td>Title</td><td><code>&lt;h3&gt;</code>/<code>&lt;h4&gt;</code> above the table</td><td>H4 (H3 if the table is the section's primary content)</td><td>Heading level follows document position, not a fixed rule.</td></tr>
+          <tr><td>Summary</td><td>Text under the title, or the target of <code>aria-describedby</code></td><td>Body small</td><td>Drop to Caption only under real space pressure.</td></tr>
+          <tr><td>Caption</td><td>native <code>&lt;caption&gt;</code></td><td>Caption</td><td>Frequently visually hidden (<code>class="sr-only"</code>) while staying programmatically associated — see every table in this design system's own docs.</td></tr>
+          <tr><td>Footer</td><td><code>&lt;tfoot&gt;</code> row</td><td>Caption</td><td>Numeric totals in the footer add weight-600 + <code>tabular-nums</code> to stand apart from ordinary footer text.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>Form</h3>
+    <div class="tbl-wrap">
+      <table>
+        <caption class="sr-only">Mapping of form sub-roles to semantic type roles, including field label, placeholder text and number, help text, input text and number, radio label, and validation error.</caption>
+        <thead><tr><th>Role</th><th>Element</th><th>Maps to</th><th>Notes</th></tr></thead>
+        <tbody>
+          <tr><td>Field label</td><td>native <code>&lt;label&gt;</code></td><td>Label</td><td>Applied automatically — see §3A.</td></tr>
+          <tr><td>Placeholder text</td><td><code>placeholder</code> attribute</td><td>Body</td><td>Matches input size. Color <code>text-placeholder</code>, held to 4.5:1 as policy even though placeholders aren't always treated as "text" under a literal WCAG reading — never a label substitute (see §5).</td></tr>
+          <tr><td>Placeholder number</td><td>numeric/formatted placeholder ("MM/DD/YYYY", "$0.00")</td><td>Body + <code>tabular-nums</code></td><td>Same color token as placeholder text.</td></tr>
+          <tr><td>Help</td><td>hint text below a field</td><td>Caption</td><td>Color <code>text-secondary</code>, linked via <code>aria-describedby</code>.</td></tr>
+          <tr><td>Input text</td><td>typed value in a text input</td><td>Body</td><td>Already documented in §3A ("form fields").</td></tr>
+          <tr><td>Input number</td><td>typed value in a numeric input</td><td>Body + <code>tabular-nums</code></td><td>Switch to Mono for identifier-style numeric fields (SSN, EIN, cylinder/permit numbers) where 0/O and 1/l need to stay visually distinct.</td></tr>
+          <tr><td>Radio label</td><td>text beside a radio/checkbox <code>&lt;input&gt;</code></td><td>Body small</td><td>Deliberately lighter than Field label (400 vs 600) — this is reading content, not a control label; the group's own label is the <code>&lt;legend&gt;</code>, styled Overline.</td></tr>
+          <tr><td>Validation error</td><td>inline error message</td><td>Caption, weight 600</td><td>Weight bumped from Help's 400 for scannability. Color <code>feedback-danger-text</code>, always paired with an icon — never color alone (WCAG 1.4.1). Linked via <code>aria-describedby</code> with <code>aria-invalid="true"</code> on the field.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>Button</h3>
+    <div class="tbl-wrap">
+      <table>
+        <caption class="sr-only">Mapping of button label size variants to semantic type roles.</caption>
+        <thead><tr><th>Role</th><th>Maps to</th><th>Notes</th></tr></thead>
+        <tbody>
+          <tr><td>Label (default)</td><td>Label</td><td>16px / 600.</td></tr>
+          <tr><td>Label small</td><td>Caption, weight 600</td><td>14px — compact and icon-adjacent buttons, dense toolbars.</td></tr>
+          <tr><td>Label large</td><td>Body, weight 600</td><td>18px — primary CTA and large mobile touch targets.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="margin-top:.5rem">All three carry weight 600 regardless of size — a button never inherits the browser's default 400 weight. This mapping is the type decision; the actual <code>.btn-*</code> classes that apply it belong in Section 5 (Component patterns), not here.</p>
+
+    <h3>Alert</h3>
+    <div class="tbl-wrap">
+      <table>
+        <caption class="sr-only">Mapping of alert heading and body text to semantic type roles.</caption>
+        <thead><tr><th>Role</th><th>Maps to</th><th>Notes</th></tr></thead>
+        <tbody>
+          <tr><td>Heading</td><td>H5 (inline/contextual) or H4 (full-width page banner)</td><td>Choice depends on the alert's prominence, not a fixed rule.</td></tr>
+          <tr><td>Body</td><td>Body small (compact) or Body (critical/actionable legal text)</td><td>Default to Body small; step up to Body when the copy needs maximum legibility.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>Menu</h3>
+    <div class="tbl-wrap">
+      <table>
+        <caption class="sr-only">Mapping of menu, navigation, breadcrumb, and tab sub-roles to semantic type roles.</caption>
+        <thead><tr><th>Role</th><th>Maps to</th><th>Notes</th></tr></thead>
+        <tbody>
+          <tr><td>Main item</td><td>Label</td><td>Top-level nav.</td></tr>
+          <tr><td>Sub item</td><td>Body small</td><td>Nested/secondary nav — lighter weight than a main item.</td></tr>
+          <tr><td>Dropdown item</td><td>Body small</td><td>400 weight.</td></tr>
+          <tr><td>Breadcrumb item</td><td>Caption</td><td>Color <code>text-tertiary</code>; separators are decorative and hidden from assistive tech.</td></tr>
+          <tr><td>Tab label</td><td>Label (active) / Body small (inactive)</td><td>Weight change plus an underline or indicator — active state is never color alone.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>KPI</h3>
+    <div class="tbl-wrap">
+      <table>
+        <caption class="sr-only">Mapping of KPI tile sub-roles — label, value, unit suffix, delta — to semantic type roles.</caption>
+        <thead><tr><th>Role</th><th>Maps to</th><th>Notes</th></tr></thead>
+        <tbody>
+          <tr><td>Label</td><td>Overline</td><td>Extends Overline's existing "eyebrow" use — a KPI label ("TOTAL CONTRACTS") is structurally the same job as a table column header.</td></tr>
+          <tr><td>Value</td><td>Metric</td><td>34px / 700, <code>tabular-nums</code>. See §3A for why this isn't a heading role.</td></tr>
+          <tr><td>Unit suffix</td><td>Body small</td><td>Color <code>text-secondary</code>, sits adjacent to the value ("$128,400<span style="opacity:.7">/mo</span>").</td></tr>
+          <tr><td>Delta</td><td>Caption, weight 600 + <code>tabular-nums</code></td><td>Color <code>feedback-success-text</code> / <code>feedback-danger-text</code>, always paired with a text or icon direction cue carrying its own <code>aria-label</code> — never color alone (WCAG 1.4.1).</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>Data</h3>
+    <div class="tbl-wrap">
+      <table>
+        <caption class="sr-only">Mapping of data sub-roles — datestamp, timestamp, code, id — to semantic type roles.</caption>
+        <thead><tr><th>Role</th><th>Maps to</th><th>Notes</th></tr></thead>
+        <tbody>
+          <tr><td>Datestamp</td><td>Caption</td><td>Color <code>text-secondary</code>; not mono — a date reads as mixed text and numerals, not a code-like token.</td></tr>
+          <tr><td>Timestamp — relative</td><td>Caption</td><td>"2 hours ago" style.</td></tr>
+          <tr><td>Timestamp — precise/log</td><td>Mono small + <code>tabular-nums</code></td><td>"14:32:07 UTC" style, where exact digit alignment matters in an audit trail.</td></tr>
+          <tr><td>Code</td><td>Mono</td><td>Already documented in §3A.</td></tr>
+          <tr><td>Id</td><td>Mono small</td><td>Already documented in §3A — cylinder/permit IDs.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="margin-top:.5rem"><em>Token</em> was in the original request list but is scrapped — it was carried over from an unrelated medical-records style guide (11–12px / 400 weight, with an accent color, for documentation markup) and doesn't have a use case on H2 Prime.</p>
+
+    <div class="callout warn" style="margin-top:1.25rem">
+      <div class="callout-label">Roles not in the original list — status</div>
+      <p>These came up while working through the mapping above. All seven were locked by 2026-07-16 — see §3L for the resulting tokens and utility classes.</p>
+      <ul style="margin:.5rem 0 0; padding-left:1.25rem; line-height:1.7;">
+        <li><span class="badge b-complete" style="margin-right:.4em">Locked</span><strong>Empty-state heading / body</strong> — §3L.</li>
+        <li><span class="badge b-complete" style="margin-right:.4em">Locked</span><strong>Tooltip text</strong> — §3L. Caption's 14px size, weight raised to 500.</li>
+        <li><span class="badge b-complete" style="margin-right:.4em">Locked</span><strong>Toast / notification heading &amp; body</strong> — §3L.</li>
+        <li><span class="badge b-complete" style="margin-right:.4em">Locked</span><strong>Modal / dialog title</strong> — resolved as its own role (not a reuse of H3) — see §3A and §3L.</li>
+        <li><span class="badge b-complete" style="margin-right:.4em">Locked</span><strong>Pagination / result-count label</strong> — §3L.</li>
+        <li><span class="badge b-complete" style="margin-right:.4em">Locked</span><strong>Disabled input text</strong> — §3L.</li>
+        <li><span class="badge b-complete" style="margin-right:.4em">Locked</span><strong>Currency/amount emphasis</strong> — §3L.</li>
+      </ul>
+    </div>
+  </div>
+
+<!-- ════ 3L ════ -->
+  <div class="section" id="3l">
+    <div class="section-header">
+      <span class="section-id">3L</span>
+      <h2 class="section-title">Component-scoped type aliases — added 2026-07-16</h2>
+    </div>
+    <hr class="section-hr">
+    <p>All seven gaps flagged in §3K are resolved below. Each is a pure alias onto one of the seventeen roles in §3A, with a weight override in two cases — none of them add to that seventeen count. They live in <code>tokens.css</code> §2.17c as their own named custom properties (e.g. <code>--type-toast-body-*</code>), and as <code>.text-*</code> utility classes in <code>components.css</code>, so component code can reference the component's own name instead of every contributor needing to already know which base role it happens to be — the same reasoning already applied to the <code>--radius-btn</code> / <code>--shadow-card</code> aliases in §2.14–§2.15.</p>
+
+    <div class="tbl-wrap">
+      <table>
+        <caption class="sr-only">Component-scoped type aliases: empty state, toast, pagination label, disabled input text, currency emphasis, and tooltip text, showing what each aliases to and the utility class that applies it.</caption>
+        <thead><tr><th>Role</th><th>Aliases</th><th>Utility class</th><th>Notes</th></tr></thead>
+        <tbody>
+          <tr><td>Empty-state heading</td><td>H5</td><td><code>.text-empty-state-heading</code></td><td>No-results / empty-table messaging.</td></tr>
+          <tr><td>Empty-state body</td><td>Body small</td><td><code>.text-empty-state-body</code></td><td>Typically paired with <code>text-text-secondary</code>.</td></tr>
+          <tr><td>Toast heading</td><td>Label</td><td><code>.text-toast-heading</code></td><td>Same pairing as Alert's compact form.</td></tr>
+          <tr><td>Toast body</td><td>Body small</td><td><code>.text-toast-body</code></td><td>Transient rather than persistent — same size logic as Alert body.</td></tr>
+          <tr><td>Pagination / result-count label</td><td>Caption</td><td><code>.text-pagination-label</code></td><td>Always add the stock <code>tabular-nums</code> utility alongside it.</td></tr>
+          <tr><td>Disabled input text</td><td>Body</td><td><code>.text-input-disabled</code></td><td>Identical size to an active input on purpose, so disabling a field never reflows layout. Color is the only change — pair with <code>text-text-disabled</code>. That color is intentionally not contrast-rated (§2.3): WCAG exempts disabled-control text from the contrast requirement, and this system follows that exemption rather than overriding it.</td></tr>
+          <tr><td>Currency emphasis</td><td>Body small, weight raised to 600</td><td><code>.text-currency-emphasis</code></td><td>Weight 600 instead of Body small's normal 400. Always add <code>tabular-nums</code>. Confirmed usage: billing summary and billing dashboard line totals, and worker wage-rate cells in contract-detail tables.</td></tr>
+          <tr><td>Tooltip text</td><td>Caption, weight raised to 500</td><td><code>.text-tooltip</code></td><td>14px, not Legal/micro's 12px — that role is documented "fine print only, never anything actionable," and a tooltip on an icon-only button is functionally the visible half of that button's meaning for sighted users. Weight 500 (not Caption's normal 400) buys back the compact, on-a-dark-popup feel without dropping below the 14px floor. Pair with its own elevated surface token for contrast.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout brand" style="margin-top:1rem">
+      <div class="callout-label">Why Currency emphasis isn't Metric</div>
+      <p>Metric (§3A) is 700-weight, 34px, and reserved for a single standalone KPI value — a stat tile's headline number. Currency emphasis sits inline, inside a table row or a billing line item, next to other text at the same scale; it needs to stand out from a plain number without competing with the page's actual KPI values for visual weight. One alias covers both the billing dashboard and the wage-rate table cells deliberately — if a specific screen later needs more prominence than 600-weight Body small buys, that's a layout or spacing decision, not a cue to bump the font size (§3J).</p>
+    </div>
+
+    <div class="callout warn" style="margin-top:1rem">
+      <div class="callout-label">Modal title — why it isn't an alias</div>
+      <p>Modal title is deliberately <em>not</em> in the table above, because it isn't an alias — it's documented as its own role in §3A. A dialog needing "definitely distinct from H1/H2" ruled out reusing H3 (Inter, 600, 22px — indistinguishable from any other subsection heading on the page behind it). It kept the Barlow Semi Condensed family for cohesion with the rest of the heading system, but moved to weight 400 — not the 300 used everywhere else Barlow appears — because the extra stroke weight is what makes a smaller, non-fluid 26px size viable without the legibility cost the §3C family-switch ADR warns about. That combination (Barlow + 400 + 26px) exists nowhere else in the scale, which is exactly the point.</p>
+    </div>
+  </div>
+
+</main>
+  <footer class="page-footer">
+    <div>Section 3 — Typography &nbsp;·&nbsp; H2 Prime Web Application Design System &nbsp;·&nbsp; v1.0 (start version) <br><a href="h2p-section-02c-ramp-table.html">← Section 2C — Ramp Table</a> &nbsp;·&nbsp; <a href="h2p-section-04-spacing-layout-elevation.html">Section 4 — Spacing, Layout &amp; Elevation →</a> &nbsp;·&nbsp; <a href="h2p-cover.html">Cover</a></div>
+    <div style="text-align:right">Last updated: 2026-07-16<br>Barlow Semi Condensed · Inter · JetBrains Mono</div>
+  </footer>
+
+</div>
+</body>
+</html>
