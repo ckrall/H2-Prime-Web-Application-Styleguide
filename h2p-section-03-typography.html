@@ -58,7 +58,7 @@
       <div class="doc-meta-item"><strong>Base size</strong>18px (1.125rem)</div>
       <div class="doc-meta-item"><strong>Scale</strong>17 semantic roles · 8 component-scoped aliases · 10 raw slots</div>
       <div class="doc-meta-item"><strong>Compliance</strong>WCAG 2.2 AA minimum</div>
-      <div class="doc-meta-item"><strong>Last updated</strong>2026-07-16</div>
+      <div class="doc-meta-item"><strong>Last updated</strong>2026-07-17</div>
     </div>
   </div>
 
@@ -83,6 +83,7 @@
         <li><span class="toc-num">3J</span><a href="#3j">Anti-patterns</a></li>
         <li><span class="toc-num">3K</span><a href="#3k">Component role mapping</a></li>
         <li><span class="toc-num">3L</span><a href="#3l">Component-scoped aliases</a></li>
+        <li><span class="toc-num">3M</span><a href="#3m">Tracking &amp; leading scale</a></li>
       </ul>
     </div>
   </nav>
@@ -678,10 +679,55 @@
     </div>
   </div>
 
+<!-- ════ 3M ════ -->
+  <div class="section" id="3m">
+    <div class="section-header">
+      <span class="section-id">3M</span>
+      <h2 class="section-title">Generic tracking &amp; leading scale — added 2026-07-17</h2>
+    </div>
+    <hr class="section-hr">
+    <p>Separate from the seventeen semantic roles in §3A, which each pair a fixed line-height and letter-spacing to one specific role, this is the raw generic scale — for ad hoc Tailwind <code>tracking-*</code> / <code>leading-*</code> utility use on elements that aren't one of those seventeen roles. Same relationship the raw spacing and radius scales have to their component-role aliases in Section 4.</p>
+
+    <div class="tbl-wrap">
+      <table>
+        <caption class="sr-only">Generic tracking scale: five named letter-spacing stops with their em values.</caption>
+        <thead><tr><th>Token</th><th>Value</th><th>Typical use</th></tr></thead>
+        <tbody>
+          <tr><td><code>--tracking-tight</code></td><td class="contrast-cell">−0.025em</td><td>Large display numerals, condensed headings that read loose by default</td></tr>
+          <tr><td><code>--tracking-normal</code></td><td class="contrast-cell">0em</td><td>Default — nearly everything</td></tr>
+          <tr><td><code>--tracking-wide</code></td><td class="contrast-cell">0.025em</td><td>Small uppercase labels needing a touch of air (short runs only — see Overline in §3A, which uses a hand-tuned +0.04em instead)</td></tr>
+          <tr><td><code>--tracking-wider</code></td><td class="contrast-cell">0.05em</td><td>Rare — badges, very short all-caps tags</td></tr>
+          <tr><td><code>--tracking-widest</code></td><td class="contrast-cell">0.1em</td><td>Reserve for single-word eyebrow labels only; unreadable past a few characters</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="tbl-wrap" style="margin-top:1rem">
+      <caption class="sr-only">Generic leading scale: five named line-height stops with their unitless multiplier values.</caption>
+      <table>
+        <thead><tr><th>Token</th><th>Value</th><th>Typical use</th></tr></thead>
+        <tbody>
+          <tr><td><code>--leading-tight</code></td><td class="contrast-cell">1.25</td><td>Headings, short label runs — matches most §3A heading roles</td></tr>
+          <tr><td><code>--leading-snug</code></td><td class="contrast-cell">1.375</td><td>Dense card titles, compact list items</td></tr>
+          <tr><td><code>--leading-normal</code></td><td class="contrast-cell">1.5</td><td>Default paragraph and UI text — matches most §3A body roles</td></tr>
+          <tr><td><code>--leading-relaxed</code></td><td class="contrast-cell">1.625</td><td>Longer-form reading blocks — help articles, contract text</td></tr>
+          <tr><td><code>--leading-loose</code></td><td class="contrast-cell">1.75</td><td>Rare — maximum comfortable spacing for this product; reach for layout/spacing instead of going looser</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout warn" style="margin-top:1rem">
+      <div class="callout-label">Leading scale smoothed 2026-07-17 — <code>--leading-loose</code> changed from 2 to 1.75</div>
+      <p>The scale originally stepped tight → snug → normal → relaxed at a consistent +0.125, then jumped +0.375 from relaxed to loose — an inherited Tailwind default (2.0) rather than a deliberate H2 Prime value. Lowering loose to 1.75 holds the +0.125 interval across all five stops, the same predictable-progression standard already applied to the spacing and radius scales in Section 4. A dense, professional dashboard product has little real use for true double-spaced text; 1.75 still reads as clearly open relative to normal (1.5) while keeping the scale mathematically consistent. Per-role line-heights in §3A are unaffected — they're independently tuned per role, not sourced from this generic scale.</p>
+    </div>
+
+    <p style="margin-top:.75rem">Both scales are also now available as Figma variables in <strong>H2 Prime Design Kit → H2 Prime Typography</strong> (<code>tracking/*</code>, <code>leading/*</code>), each with WEB code syntax pointing back to the matching CSS custom property above, so a Figma-side text style and its shipped CSS never drift silently out of sync.</p>
+  </div>
+
 </main>
   <footer class="page-footer">
     <div>Section 3 — Typography &nbsp;·&nbsp; H2 Prime Web Application Design System &nbsp;·&nbsp; v1.0 (start version) <br><a href="h2p-section-02c-ramp-table.html">← Section 2C — Ramp Table</a> &nbsp;·&nbsp; <a href="h2p-section-04-spacing-layout-elevation.html">Section 4 — Spacing, Layout &amp; Elevation →</a> &nbsp;·&nbsp; <a href="h2p-cover.html">Cover</a></div>
-    <div style="text-align:right">Last updated: 2026-07-16<br>Barlow Semi Condensed · Inter · JetBrains Mono</div>
+    <div style="text-align:right">Last updated: 2026-07-17<br>Barlow Semi Condensed · Inter · JetBrains Mono</div>
   </footer>
 
 </div>
