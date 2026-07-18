@@ -2,7 +2,11 @@
    tokens.css
    H2 Prime Web Application Design System
    Authoritative runtime token source — framework-agnostic CSS custom properties
-   Last updated: 2026-07-17
+   Last updated: 2026-07-18 — cleanup pass: corrected ~20 stale hex/contrast
+   comments left over from the pre-consolidation warm-gray ramp (surfaces,
+   borders, text tokens in both light and dark mode). No computed values
+   changed — only documentation comments that had drifted from what the
+   aliases actually resolve to post-Neutral-consolidation. See chat for detail.
 
    THREE-TIER HIERARCHY
      Tier 1 · Primitives   — raw ramp values, never used in components directly
@@ -420,28 +424,28 @@
      ───────────────────────────────────────────────────────────────────────── */
   --surface-page:    var(--ramp-gray-dark-25);   /* #FBFCFD — app canvas (neutral-25) */
   --surface-raised:  #FFFFFF;                     /* cards, panels above page */
-  --surface-sunken:  var(--ramp-gray-dark-50);   /* #ECEAED — inset wells, table rows */
-  --surface-subtle:  var(--ramp-gray-dark-100);  /* #D8D6DA — dividers, skeleton */
+  --surface-sunken:  var(--ramp-gray-dark-50);   /* #F5F7F9 — inset wells, table rows (neutral-50) */
+  --surface-subtle:  var(--ramp-gray-dark-100);  /* #EBEDF0 — dividers, skeleton (neutral-100) */
   --surface-overlay: rgba(28, 27, 30, 0.60);     /* modal scrim */
 
 
   /* ─────────────────────────────────────────────────────────────────────────
      §2.2  BORDERS
      ───────────────────────────────────────────────────────────────────────── */
-  --border-subtle:  var(--ramp-gray-dark-100);   /* #D8D6DA — table rules, dividers */
-  --border-default: var(--ramp-gray-dark-200);   /* #B9B6BC — card outlines */
-  --border-strong:  var(--ramp-gray-dark-400);   /* #7A7680 — emphasized borders */
+  --border-subtle:  var(--ramp-gray-dark-100);   /* #EBEDF0 — table rules, dividers (neutral-100) */
+  --border-default: var(--ramp-gray-dark-200);   /* #D6D9DE — card outlines (neutral-200) */
+  --border-strong:  var(--ramp-gray-dark-400);   /* #959AA1 — emphasized borders (neutral-400) */
   --border-focus:   var(--ramp-yellow-500);      /* #FFC20E — focus ring (all themes) */
 
 
   /* ─────────────────────────────────────────────────────────────────────────
      §2.3  TEXT
      ───────────────────────────────────────────────────────────────────────── */
-  --text-primary:      var(--ramp-gray-dark-900); /* #2E2D30 · ~14.5:1 on surface-page */
-  --text-secondary:    var(--ramp-gray-mid-700);  /* #55565A · ~7.2:1 on surface-page  */
-  --text-tertiary:     var(--ramp-gray-mid-600);  /* #52575E (neutral-600) · 7.28:1 — AAA */
-  --text-disabled:     var(--ramp-gray-mid-400);  /* #9292A0 · not contrast-rated (disabled) */
-  --text-placeholder:  var(--ramp-gray-mid-400);  /* #9292A0 */
+  --text-primary:      var(--ramp-gray-dark-900); /* #15171B (neutral-900) · 17.47:1 on surface-page — AAA */
+  --text-secondary:    var(--ramp-gray-mid-700);  /* #3B3F45 (neutral-700) · 10.31:1 on surface-page — AAA */
+  --text-tertiary:     var(--ramp-gray-mid-600);  /* #52575E (neutral-600) · 7.09:1 on surface-page — AAA */
+  --text-disabled:     var(--ramp-gray-mid-400);  /* #959AA1 (neutral-400) · not contrast-rated (disabled) */
+  --text-placeholder:  var(--ramp-gray-mid-400);  /* #959AA1 (neutral-400) */
   --text-link:         var(--ramp-info-600);      /* #1D4ED8 · 7.1:1 on white · AAA */
   --text-link-visited: var(--ramp-help-700);      /* #5B21B6 */
   --text-on-primary:   #000000;                   /* text on Brand Yellow fills */
@@ -488,8 +492,8 @@
      ───────────────────────────────────────────────────────────────────────── */
   --input-bg:           #FFFFFF;
   --input-bg-focus:     #FFFFFF;
-  --input-border:       var(--ramp-gray-dark-300);  /* #9A969E */
-  --input-border-hover: var(--ramp-gray-dark-500);  /* #5C5860 */
+  --input-border:       var(--ramp-gray-dark-300);  /* #BABEC4 (neutral-300) */
+  --input-border-hover: var(--ramp-gray-dark-500);  /* #6D7279 (neutral-500) */
   --input-border-focus: var(--theme-accent-500);
   --input-border-error: var(--ramp-danger-500);
   --input-text:         var(--text-primary);
@@ -1047,24 +1051,24 @@
   :root {
 
     /* Surfaces */
-    --surface-page:    var(--ramp-gray-dark-950); /* #1C1B1E — deepest canvas */
-    --surface-raised:  var(--ramp-gray-dark-900); /* #2E2D30 — cards */
-    --surface-sunken:  var(--ramp-gray-dark-950); /* #1C1B1E — inset wells */
+    --surface-page:    var(--ramp-gray-dark-950); /* #07080B (neutral-950) — deepest canvas */
+    --surface-raised:  var(--ramp-gray-dark-900); /* #15171B (neutral-900) — cards */
+    --surface-sunken:  var(--ramp-gray-dark-950); /* #07080B (neutral-950) — inset wells */
     --surface-subtle:  var(--ramp-gray-dark-800); /* #272A2F — subtle fill (neutral-800) */
     --surface-overlay: rgba(12, 12, 14, 0.75);
 
     /* Borders */
-    --border-subtle:  var(--ramp-gray-dark-700);  /* #464247 */
-    --border-default: var(--ramp-gray-dark-600);  /* #4D4950 */
-    --border-strong:  var(--ramp-gray-dark-500);  /* #5C5860 */
+    --border-subtle:  var(--ramp-gray-dark-700);  /* #3B3F45 (neutral-700) */
+    --border-default: var(--ramp-gray-dark-600);  /* #52575E (neutral-600) */
+    --border-strong:  var(--ramp-gray-dark-500);  /* #6D7279 (neutral-500) */
     /* --border-focus stays Brand Yellow — unchanged */
 
     /* Text */
-    --text-primary:     var(--ramp-gray-dark-25);  /* #FBFCFD (neutral-25) · ~20:1 on DM surface */
-    --text-secondary:   var(--ramp-gray-mid-200);  /* #C8C8D0 · ~9:1 */
-    --text-tertiary:    var(--ramp-gray-mid-400);  /* #9292A0 · ~4.6:1 AA */
+    --text-primary:     var(--ramp-gray-dark-25);  /* #FBFCFD (neutral-25) · 19.50:1 on DM surface — AAA */
+    --text-secondary:   var(--ramp-gray-mid-200);  /* #D6D9DE (neutral-200) · 14.15:1 on DM surface — AAA */
+    --text-tertiary:    var(--ramp-gray-mid-400);  /* #959AA1 (neutral-400) · 7.07:1 on DM surface — AAA */
     --text-disabled:    var(--ramp-gray-mid-600);  /* #52575E (neutral-600) */
-    --text-placeholder: var(--ramp-gray-mid-500);  /* #7D7E87 */
+    --text-placeholder: var(--ramp-gray-mid-500);  /* #6D7279 (neutral-500) */
     --text-link:        var(--ramp-info-300);      /* #60A5FA · 5.9:1 on DM surface · AA */
     --text-link-visited:var(--ramp-help-300);      /* #A78BFA */
     --text-on-primary:  #000000;
@@ -1162,7 +1166,8 @@
    §4  DASHBOARD THEME LAYER
    Applied via [data-theme] on the layout root or dashboard wrapper.
    Injects --theme-accent-* variables that interactive tokens consume.
-   Includes Warning anchor override for client theme.
+   Warning is uniform step 500 across all themes — no per-theme override
+   here (removed when Warning was unified; see §1.5 / §2.7).
    ═════════════════════════════════════════════════════════════════════════════ */
 
 /* ─────────────────────────────────────────────────────────────────────────────

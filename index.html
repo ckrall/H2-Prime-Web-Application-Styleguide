@@ -140,16 +140,16 @@
       <div class="sec-card-title">Component Patterns</div>
       <div class="sec-card-desc">Buttons, form fields, badges, cards, data tables, and feedback banners — real semantic markup, built on the Neutral-primary decision. Expansion planned: see §5's note on state coverage, form validation, and framework-native versions.</div>
     </a>
-    <div class="sec-card disabled">
-      <div class="sec-card-top"><span class="sec-card-num">06</span><span class="badge b-planned">Planned</span></div>
+    <a class="sec-card" href="h2p-section-06-interaction-state-design.html">
+      <div class="sec-card-top"><span class="sec-card-num">06</span><span class="badge b-complete">Complete</span></div>
       <div class="sec-card-title">Interaction &amp; State Design</div>
-      <div class="sec-card-desc">Hover, focus, active, disabled, and error states as their own token layer, replacing the one-off values currently living inside Section 5's component CSS.</div>
-    </div>
-    <div class="sec-card disabled">
-      <div class="sec-card-top"><span class="sec-card-num">07</span><span class="badge b-planned">Planned</span></div>
+      <div class="sec-card-desc">Hover, focus, active, disabled, and error states as their own layer: the state model, focus visibility, touch target size, full button and form-field state matrices, selection controls, navigation/tabs, and loading/busy states. A few states (read-only inputs, row selection, loading) are flagged as proposed starting points rather than settled — see §6I.</div>
+    </a>
+    <a class="sec-card" href="h2p-section-07-motion-animation.html">
+      <div class="sec-card-top"><span class="sec-card-num">07</span><span class="badge b-complete">Complete</span></div>
       <div class="sec-card-title">Motion &amp; Animation</div>
-      <div class="sec-card-desc">Timing and easing tokens, a reduced-motion policy for the outdoor/mobile audience, and transitions that signal state without competing with the interface. See principle 08.</div>
-    </div>
+      <div class="sec-card-desc">Motion principles, duration and easing tokens, a reduced-motion policy for the outdoor/mobile audience, state-change motion, enter/exit patterns, and anti-patterns. Enter/exit and phase-transition motion are flagged as proposed, not settled — see §7H. See principle 08.</div>
+    </a>
     <a class="sec-card" href="h2p-section-08-design-tokens.html">
       <div class="sec-card-top"><span class="sec-card-num">08</span><span class="badge b-complete">Complete</span></div>
       <div class="sec-card-title">Design Tokens</div>
@@ -175,10 +175,15 @@
       <div class="sec-card-title">Writing &amp; UX Copy</div>
       <div class="sec-card-desc">Filers are seasoned experts; the client audience splits between seasoned and first-time filers. Complements principle 09 — the balance between expert and plain-language copy is not yet defined.</div>
     </div>
+    <a class="sec-card" href="h2p-section-13a-figma-variables.html">
+      <div class="sec-card-top"><span class="sec-card-num">13A</span><span class="badge b-complete">Complete</span></div>
+      <div class="sec-card-title">Figma Variable Reference — Global Tokens</div>
+      <div class="sec-card-desc">Primitives, light/dark semantics, typography, spacing, radius, and elevation mirrored into Figma variable collections, with Code Syntax bindings back to <code>tokens.css</code>. Scoped deliberately to tokens that don't depend on the dashboard theme decision — see §13A-A.</div>
+    </a>
     <div class="sec-card disabled">
-      <div class="sec-card-top"><span class="sec-card-num">13</span><span class="badge b-planned">Planned</span></div>
-      <div class="sec-card-title">Figma Variable Reference</div>
-      <div class="sec-card-desc">Light mode, dark mode, and per-dashboard theme variables mirrored into Figma. Blocked on the dashboard theme review (§11) and light/dark mode decisions landing first.</div>
+      <div class="sec-card-top"><span class="sec-card-num">13B</span><span class="badge b-planned">Planned</span></div>
+      <div class="sec-card-title">Figma Variable Reference — Dashboard Themes</div>
+      <div class="sec-card-desc">Theme-accent, themed navigation, and the still-unresolved color-set picker, mirrored into Figma once Section 11 lands. Depends on §11 — the 13A global mapping doesn't depend on this.</div>
     </div>
   </div>
 
@@ -188,7 +193,7 @@
       <caption class="sr-only">Status and last-updated date for each file in the design system</caption>
       <thead><tr><th>File</th><th>Covers</th><th>Status</th><th>Last updated</th></tr></thead>
       <tbody>
-        <tr><td><code>tokens.css</code></td><td>Authoritative token source — all three tiers</td><td><span class="badge b-complete">Current</span></td><td>2026-07-17</td></tr>
+        <tr><td><code>tokens.css</code></td><td>Authoritative token source — all three tiers</td><td><span class="badge b-complete">Current</span></td><td>2026-07-18</td></tr>
         <tr><td><code>main.css</code></td><td>Tailwind v4 @theme mappings</td><td><span class="badge b-complete">Current</span></td><td>2026-06-28</td></tr>
         <tr><td><code>components.css</code></td><td>Tier 3 component-scoped overrides</td><td><span class="badge b-complete">Current</span></td><td>2026-06-28</td></tr>
         <tr><td><code>h2p-shared.css</code></td><td>Shared style guide stylesheet</td><td><span class="badge b-complete">Current</span></td><td>2026-07-13</td></tr>
@@ -198,14 +203,15 @@
         <tr><td><code>h2p-section-03-typography.html</code></td><td>Type system</td><td><span class="badge b-complete">Current</span></td><td>2026-07-17</td></tr>
         <tr><td><code>h2p-section-04-spacing-layout-elevation.html</code></td><td>Spacing, layout, elevation, radius, z-index</td><td><span class="badge b-complete">Current</span></td><td>2026-07-13</td></tr>
         <tr><td><code>h2p-section-05-component-patterns.html</code></td><td>Buttons, forms, cards, tables, feedback</td><td><span class="badge b-complete">Current</span></td><td>2026-07-13</td></tr>
-        <tr><td>Section 6 — Interaction &amp; State Design</td><td>—</td><td><span class="badge b-planned">Planned</span></td><td>—</td></tr>
-        <tr><td>Section 7 — Motion &amp; Animation</td><td>—</td><td><span class="badge b-planned">Planned</span></td><td>—</td></tr>
+        <tr><td><code>h2p-section-06-interaction-state-design.html</code></td><td>State model, focus, touch targets, button/form state matrices, selection, nav/tabs, loading</td><td><span class="badge b-complete">Current</span></td><td>2026-07-16</td></tr>
+        <tr><td><code>h2p-section-07-motion-animation.html</code></td><td>Motion principles, duration/easing tokens, reduced-motion policy, state-change &amp; enter/exit motion</td><td><span class="badge b-complete">Current</span></td><td>2026-07-16</td></tr>
         <tr><td><code>h2p-section-08-design-tokens.html</code></td><td>Token architecture, naming, mode mapping, file structure</td><td><span class="badge b-complete">Current</span></td><td>2026-07-16</td></tr>
         <tr><td><code>h2p-section-09-framework-implementation.html</code></td><td>Tailwind v4, shadcn/ui + shadcn-svelte bridge, Svelte patterns</td><td><span class="badge b-complete">Current</span></td><td>2026-07-16</td></tr>
         <tr><td>Section 10 — Contract Phase System</td><td>—</td><td><span class="badge b-planned">Planned</span></td><td>—</td></tr>
         <tr><td>Section 11 — Dashboard themes — Client / Filer / Admin</td><td>—</td><td><span class="badge b-planned">Planned</span></td><td>—</td></tr>
         <tr><td>Section 12 — Writing &amp; UX Copy</td><td>—</td><td><span class="badge b-planned">Planned</span></td><td>—</td></tr>
-        <tr><td>Section 13 — Figma Variable Reference</td><td>—</td><td><span class="badge b-planned">Planned</span></td><td>—</td></tr>
+        <tr><td><code>h2p-section-13a-figma-variables.html</code></td><td>Figma variable collections for global tokens + Code Syntax bindings</td><td><span class="badge b-complete">Current</span></td><td>2026-07-18</td></tr>
+        <tr><td>Section 13B — Figma Variable Reference — Dashboard Themes</td><td>—</td><td><span class="badge b-planned">Planned</span></td><td>—</td></tr>
       </tbody>
     </table>
   </div>
@@ -213,7 +219,7 @@
 </main>
   <footer class="page-footer">
     <div>H2 Prime Web Application Design System &amp; Guidelines &nbsp;·&nbsp; v1.0 (start version)</div>
-    <div style="text-align:right">Last updated: 2026-07-13<br>Rebuilt — see chat for why</div>
+    <div style="text-align:right">Last updated: 2026-07-18<br>Synced with Sections 6 &amp; 7 (completed 07-16) — see chat for why</div>
   </footer>
 
 </div>
