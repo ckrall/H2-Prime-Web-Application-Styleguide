@@ -64,6 +64,17 @@
      [data-theme] blocks below as settled; they predate the Brown/Neutral
      revision and are flagged inline where they're now stale.
 
+     GOVERNING PRINCIPLE FOR THE PENDING REVIEW (noted 2026-07-17): theme/
+     accent colors must not sit too close to any utility color (Danger/
+     Warning/Success/Info) — the same discipline already applied to Brown vs.
+     Warning above (§ primary-action decision), generalized to every future
+     per-theme accent choice, including any customer- or admin-selectable
+     theme color (e.g. a future white-label or "pick your dashboard color"
+     picker). Where a real hue collision can't be avoided, the fix is NOT to
+     accept the collision — give primary/active buttons, alerts, and badges
+     in that theme an alternate color that doesn't conflict, rather than
+     letting a theme accent silently double as a false status signal.
+
    CONTRACT PHASE TOKENS
      Applied via [data-phase="1"] … [data-phase="5"] on phase container elements.
      NOTE: parked pending review of a possible approach change — see
