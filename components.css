@@ -1,27 +1,75 @@
 /* =============================================================================
    components.css
    H2 Prime Web Application Design System
-   Tier 3 — component-scoped overrides
-   Last updated: 2026-07-16
+   Tier 3 — component-scoped roles
+   Last updated: 2026-10-25 — correctness pass (v2)
 
-   LOAD ORDER (see main.css header):
-     1. tokens.css      — CSS custom properties (primitives + semantic)
-     2. main.css        — Tailwind imports + @theme mappings (imports this file)
+   ─────────────────────────────────────────────────────────────────────────────
+   WHAT CHANGED IN THIS REVISION
+
+   1. THIS FILE NOW OWNS THE SEMANTIC TYPE ROLES OUTRIGHT.
+      v1 declared them twice: here as classes carrying the full role, and in
+      main.css's @theme as font-size + line-height utilities under the same
+      class names. Tailwind's utilities layer sits after @layer components, so
+      the half-role won on the two properties it set. Nothing broke, because
+      both read the same tokens — but two owners of one class name is a trap.
+      The @theme entries are gone; these classes are the single source.
+
+   2. .text-h1 THROUGH .text-h5 ADDED.
+      Those class names used to come from @theme. They are provided here so no
+      class disappeared, and they now carry family, weight and tracking as well
+      as size and leading.
+
+   3. .text-overlay-title ADDED for the new overlay role (tokens.css §2.18).
+
+   4. A GLOBAL FOCUS INDICATOR ADDED (§0).
+      tokens.css §2.20 defines the three-band recipe; nothing applied it.
+
+   ─────────────────────────────────────────────────────────────────────────────
+   LOAD ORDER (see main.css header)
+     1. tokens.css      — custom properties
+     2. main.css        — Tailwind imports + @theme (imports this file)
      3. components.css  — this file
 
    CONTENTS
-     §1  Typography base layer — applies the semantic type roles from
-         tokens.css §2.17b directly to real HTML elements, so plain,
-         correctly-used semantic markup (h1–h6, p, code) looks right with
-         zero utility classes. Utility classes (text-h1, font-display, etc.)
-         remain available in main.css for the rare case a role is needed on
-         a non-matching element.
+     §0  Focus indicator
+     §1  Typography base layer — semantic roles bound to real HTML elements, so
+         correct semantic markup looks right with zero utility classes
+     §2  Typography role classes — the same roles for non-matching elements
    ============================================================================= */
 
 
 @layer base {
 
-  /* ── Headings ── */
+  /* ═══ §0  FOCUS INDICATOR ════════════════════════════════════════════════
+     --border-focus is Brand Yellow in every theme by locked decision. On the
+     light page canvas that is 1.58:1, which fails SC 1.4.11 on its own; in
+     dark mode the same token is 12.37:1. Rather than fork the token per mode,
+     the ring is drawn as three bands — contrast / yellow / contrast. The
+     contrast band measures 19.50:1 against its page in both modes, so the
+     indicator survives either canvas without changing the brand token.
+
+     :focus-visible rather than :focus, so a mouse click on a button does not
+     paint a ring, but keyboard and assistive-tech focus always does. */
+  :where(a, button, input, select, textarea, summary, [tabindex]):focus-visible {
+    outline: var(--focus-ring-width) solid var(--border-focus);
+    outline-offset: var(--focus-ring-offset);
+    box-shadow: 0 0 0 2px var(--focus-ring-contrast),
+                0 0 0 6px var(--focus-ring-contrast);
+    border-radius: var(--h2p-radius-sm);
+  }
+
+  /* A heading that receives programmatic focus — a drawer title, a detail
+     pane heading after a drill-in — keeps the indicator. Losing your place is
+     worse than an unexpected ring on a non-interactive element. */
+  :where(h1, h2, h3, h4, h5, h6)[tabindex="-1"]:focus-visible {
+    outline: var(--focus-ring-width) solid var(--border-focus);
+    outline-offset: var(--focus-ring-offset);
+  }
+
+
+  /* ═══ §1  TYPOGRAPHY BASE LAYER ═════════════════════════════════════════ */
+
   h1 {
     font-family:    var(--type-h1-family);
     font-weight:    var(--type-h1-weight);
@@ -54,9 +102,9 @@
     letter-spacing: var(--type-h4-tracking);
   }
 
-  /* h6 has no dedicated role in the locked scale — it shares H5's role.
-     If a future gap review finds a real need for a 6th tier, add
-     --type-h6-* to tokens.css §2.17b rather than improvising a size here. */
+  /* h6 has no dedicated role in the locked scale — it shares H5's. If a gap
+     review finds a real need for a sixth tier, add --type-h6-* to tokens.css
+     §2.18 rather than improvising a size here. */
   h5, h6 {
     font-family:    var(--type-h5-family);
     font-weight:    var(--type-h5-weight);
@@ -65,7 +113,6 @@
     letter-spacing: var(--type-h5-tracking);
   }
 
-  /* ── Body text ── */
   body {
     font-family:    var(--type-body-family);
     font-weight:    var(--type-body-weight);
@@ -80,19 +127,18 @@
     letter-spacing: var(--type-caption-tracking);
   }
 
-  /* ── Monospace ── */
   code, kbd, samp, pre {
     font-family: var(--type-mono-family);
     font-weight: var(--type-mono-weight);
   }
 
-  /* ── Form elements inherit body defaults rather than the browser's UI font ── */
+  /* Form elements inherit the body face rather than the browser's UI font */
   input, select, textarea, button {
     font-family: var(--type-body-family);
   }
 
-  /* ── Label — every real <label> element gets the Label role automatically.
-     See tokens.css §2.17b for why this is separate from Overline. ── */
+  /* Every real <label> gets the Label role. Separate from Overline, which
+     labels a GROUP rather than a single control — see tokens.css §2.18. */
   label {
     font-family:    var(--type-label-family);
     font-weight:    var(--type-label-weight);
@@ -105,9 +151,55 @@
 
 @layer components {
 
-  /* ── Display — cover / marketing hero only, rarely used inside the app.
-     Not bound to an element selector: apply explicitly where a true hero
-     moment is needed (often on a <p> or <span>, not necessarily an <h1>). ── */
+  /* ═══ §2  TYPOGRAPHY ROLE CLASSES ═══════════════════════════════════════
+     The same roles as §1, for the cases where the right element is not the
+     right level — a drawer heading that has to be an h2 by document order but
+     should read as H4, a hero line that is a <p>. Each carries the full role:
+     family, weight, size, leading, tracking. */
+
+  /* ── Heading roles (new in v2 — these used to come from @theme) ── */
+  .text-h1 {
+    font-family:    var(--type-h1-family);
+    font-weight:    var(--type-h1-weight);
+    font-size:      var(--type-h1-size);
+    line-height:    var(--type-h1-leading);
+    letter-spacing: var(--type-h1-tracking);
+  }
+
+  .text-h2 {
+    font-family:    var(--type-h2-family);
+    font-weight:    var(--type-h2-weight);
+    font-size:      var(--type-h2-size);
+    line-height:    var(--type-h2-leading);
+    letter-spacing: var(--type-h2-tracking);
+  }
+
+  .text-h3 {
+    font-family:    var(--type-h3-family);
+    font-weight:    var(--type-h3-weight);
+    font-size:      var(--type-h3-size);
+    line-height:    var(--type-h3-leading);
+    letter-spacing: var(--type-h3-tracking);
+  }
+
+  .text-h4 {
+    font-family:    var(--type-h4-family);
+    font-weight:    var(--type-h4-weight);
+    font-size:      var(--type-h4-size);
+    line-height:    var(--type-h4-leading);
+    letter-spacing: var(--type-h4-tracking);
+  }
+
+  .text-h5 {
+    font-family:    var(--type-h5-family);
+    font-weight:    var(--type-h5-weight);
+    font-size:      var(--type-h5-size);
+    line-height:    var(--type-h5-leading);
+    letter-spacing: var(--type-h5-tracking);
+  }
+
+  /* ── Display — cover and marketing hero only. Not bound to an element:
+     apply where a true hero moment is needed, often on a <p>. ── */
   .text-display {
     font-family:    var(--type-display-family);
     font-weight:    var(--type-display-weight);
@@ -116,7 +208,8 @@
     letter-spacing: var(--type-display-tracking);
   }
 
-  /* ── Overline / eyebrow label — table column headers, form section labels ── */
+  /* ── Overline / eyebrow — table column headers, fieldset legends, KPI
+     labels. Labels a GROUP, not a single control. ── */
   .text-overline {
     font-family:    var(--type-overline-family);
     font-weight:    var(--type-overline-weight);
@@ -159,8 +252,7 @@
     letter-spacing: var(--type-legal-tracking);
   }
 
-  /* ── Mono variants (for inline use where font-mono + text-* utilities
-     aren't convenient to chain) ── */
+  /* ── Mono ── */
   .text-mono {
     font-family:    var(--type-mono-family);
     font-weight:    var(--type-mono-weight);
@@ -177,9 +269,8 @@
     letter-spacing: var(--type-mono-sm-tracking);
   }
 
-  /* ── Label — for non-<label> contexts that need the same role: button
-     text, the active item in a menu/tab list, a table's default column
-     header if Overline reads too shouty for a given screen. ── */
+  /* ── Label — for non-<label> contexts needing the same role: button text,
+     the active item in a menu or tab list. ── */
   .text-label {
     font-family:    var(--type-label-family);
     font-weight:    var(--type-label-weight);
@@ -188,27 +279,38 @@
     letter-spacing: var(--type-label-tracking);
   }
 
-  /* ── Metric — large standalone numeric values (KPI cards, stat tiles).
-     Always pair with the stock Tailwind `tabular-nums` utility. ── */
+  /* ── Metric — large standalone numerics. ── */
   .text-metric {
-    font-family:         var(--type-metric-family);
-    font-weight:         var(--type-metric-weight);
-    font-size:           var(--type-metric-size);
-    line-height:         var(--type-metric-leading);
-    letter-spacing:      var(--type-metric-tracking);
+    font-family:          var(--type-metric-family);
+    font-weight:          var(--type-metric-weight);
+    font-size:            var(--type-metric-size);
+    line-height:          var(--type-metric-leading);
+    letter-spacing:       var(--type-metric-tracking);
     font-variant-numeric: tabular-nums;
   }
 
-  /* ── Modal title — apply to whichever real heading element sits inside
-     the dialog (usually h2, per the WAI-ARIA APG dialog pattern, but not
-     assumed here since heading level depends on document position). Not
-     bound to a selector, same reasoning as .text-display. ── */
+  /* ── Modal title — apply to whichever real heading element sits inside the
+     dialog, usually h2 per the WAI-ARIA dialog pattern. Deliberately not H1
+     or H2's voice: a modal is a transient interruption and should not borrow
+     the page's own heading voice. ── */
   .text-modal-title {
     font-family:    var(--type-modal-title-family);
     font-weight:    var(--type-modal-title-weight);
     font-size:      var(--type-modal-title-size);
     line-height:    var(--type-modal-title-leading);
     letter-spacing: var(--type-modal-title-tracking);
+  }
+
+  /* ── Overlay title (new in v2) — drawers and sheets. Deliberately NOT the
+     modal title's display voice: a drawer is a companion to the page rather
+     than an interruption of it, and the quieter body-family heading is part of
+     how the user tells the two apart. ── */
+  .text-overlay-title {
+    font-family:    var(--type-overlay-title-family);
+    font-weight:    var(--type-overlay-title-weight);
+    font-size:      var(--type-overlay-title-size);
+    line-height:    var(--type-overlay-title-leading);
+    letter-spacing: var(--type-overlay-title-tracking);
   }
 
   /* ── Empty state ── */
@@ -245,8 +347,7 @@
     letter-spacing: var(--type-toast-body-tracking);
   }
 
-  /* ── Pagination / result-count label — remember to also add the stock
-     `tabular-nums` utility on the element itself. ── */
+  /* ── Pagination / result-count label — add `tabular-nums` on the element. ── */
   .text-pagination-label {
     font-family:    var(--type-pagination-label-family);
     font-weight:    var(--type-pagination-label-weight);
@@ -255,8 +356,8 @@
     letter-spacing: var(--type-pagination-label-tracking);
   }
 
-  /* ── Disabled input text — pair with the text-text-disabled color
-     utility; this class only carries the (unchanged) type values. ── */
+  /* ── Disabled input text — same metrics as an active input on purpose, so
+     disabling a field never reflows layout. Pair with text-text-disabled. ── */
   .text-input-disabled {
     font-family:    var(--type-input-disabled-family);
     font-weight:    var(--type-input-disabled-weight);
@@ -265,8 +366,8 @@
     letter-spacing: var(--type-input-disabled-tracking);
   }
 
-  /* ── Currency emphasis — billing summary/dashboard line totals, wage-rate
-     cells in contract-detail tables. Remember to also add `tabular-nums`. ── */
+  /* ── Currency emphasis — billing line totals, wage-rate cells. Add
+     `tabular-nums`. ── */
   .text-currency-emphasis {
     font-family:    var(--type-currency-emphasis-family);
     font-weight:    var(--type-currency-emphasis-weight);
@@ -275,8 +376,7 @@
     letter-spacing: var(--type-currency-emphasis-tracking);
   }
 
-  /* ── Tooltip text — pair with its own elevated surface token; never a
-     substitute for aria-label on icon-only controls (see §5). ── */
+  /* ── Tooltip — never a substitute for aria-label on an icon-only control. ── */
   .text-tooltip {
     font-family:    var(--type-tooltip-family);
     font-weight:    var(--type-tooltip-weight);

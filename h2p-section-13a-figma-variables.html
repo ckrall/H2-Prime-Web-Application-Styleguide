@@ -9,6 +9,7 @@
 .contrast-cell { font-family: var(--fm); font-size: 11px; color: var(--t2); }
 .gap-tag { font-family: var(--fm); font-size: 9px; font-weight: 700; letter-spacing: .05em; padding: 1px 6px; border-radius: 3px; background: #3B2600; color: #FCD34D; border: 1px solid #6B4500; margin-left: 6px; vertical-align: 2px; }
 .later-tag { font-family: var(--fm); font-size: 9px; font-weight: 700; letter-spacing: .05em; padding: 1px 6px; border-radius: 3px; background: #1E1040; color: #C4B5FD; border: 1px solid #2E2060; margin-left: 6px; vertical-align: 2px; }
+.fixed-tag { font-family: var(--fm); font-size: 9px; font-weight: 700; letter-spacing: .05em; padding: 1px 6px; border-radius: 3px; background: #064E3B; color: #6EE7B7; border: 1px solid #1A4A2E; margin-left: 6px; vertical-align: 2px; }
 
 pre.code { background: var(--code); border: 1px solid var(--b1); border-radius: 8px; padding: 14px 16px; overflow-x: auto; margin: .75rem 0; }
 pre.code code { background: none; border: none; padding: 0; font-size: 12px; color: var(--t2); line-height: 1.6; }
@@ -53,7 +54,8 @@ pre.code code { background: none; border: none; padding: 0; font-size: 12px; col
   </div>
   <div class="guide-nav-right">
     <a href="h2p-section-09-framework-implementation.html" class="guide-nav-btn">← 9 — Framework Implementation</a>
-    <a href="h2p-cover.html" class="guide-nav-btn primary">Cover →</a>
+    <a href="h2p-section-13a-amendment.html" class="guide-nav-btn">13A — Amendment</a>
+    <a href="h2p-section-14-overlay-surface-system.html" class="guide-nav-btn primary">14 — Overlay &amp; Surface System →</a>
   </div>
 </nav>
 
@@ -65,13 +67,23 @@ pre.code code { background: none; border: none; padding: 0; font-size: 12px; col
     <h1 class="doc-title">Section 13A — <strong>Figma Variable Reference — Global Tokens</strong></h1>
     <p class="doc-lead">How the mode-independent parts of <code>tokens.css</code> — primitive ramps, light/dark semantics, typography, spacing, radius, and elevation — are mirrored into Figma variable collections, and how each variable's Code Syntax field is kept pointed at the matching CSS custom property so a Figma value and its shipped code can't silently drift apart. This section is numbered 13A rather than 13 because it's a deliberate split: it covers only tokens that don't depend on the still-unresolved dashboard theme decision. The theme-dependent half is Section 13B, once Section 11 lands — see §13A-A.</p>
     <div class="doc-meta">
-      <div class="doc-meta-item"><strong>Figma file</strong>H2 Prime Design Kit</div>
-      <div class="doc-meta-item"><strong>Collections covered</strong>4 — Primitives, Semantic, Typography, Layout</div>
-      <div class="doc-meta-item"><strong>Modes</strong>Primitives/Typography/Layout: Default · Semantic: Light, Dark</div>
+      <div class="doc-meta-item"><strong>Figma file</strong>H2 Prime Variables Library</div>
+      <div class="doc-meta-item"><strong>Collections live</strong>6 — Primitives, Semantic, Typography, Spacing, Radius, Border Width</div>
+      <div class="doc-meta-item"><strong>Modes</strong>Semantic: Light, Dark · all others single-mode</div>
       <div class="doc-meta-item"><strong>Deferred</strong>Dashboard theme accents, nav, contract phase — see §13A-A</div>
       <div class="doc-meta-item"><strong>Compliance</strong>WCAG 2.2 AA minimum</div>
-      <div class="doc-meta-item"><strong>Last updated</strong>2026-07-18</div>
+      <div class="doc-meta-item"><strong>Last updated</strong>2026-10-25</div>
     </div>
+  </div>
+
+  <div class="callout brand">
+    <div class="callout-label">Amended 2026-10-25 — read this before the tables below</div>
+    <p>The <code>tokens.css</code> v2 correctness pass changed eleven semantic values and renamed every raw scale that collided with a Tailwind namespace. The Figma library has been updated to match, and the full record — what changed, what was added, what was deliberately left alone and why — is in <a href="h2p-section-13a-amendment-2026-10-25.html">the 13A amendment</a>.</p>
+    <p style="margin-top:.5rem">Two things in this section were already stale before that pass and are corrected in the amendment rather than rewritten here:</p>
+    <ul style="margin:.5rem 0 0 1.25rem;list-style:disc;font-size:13px;color:var(--t2);line-height:1.7">
+      <li><strong>There is no Layout collection.</strong> §13A-B describes one holding <code>space/*</code> and <code>radius/*</code>. It was created and then deliberately deleted in favour of separate <code>H2 Prime Spacing</code>, <code>H2 Prime Radius</code> and <code>H2 Prime Border Width</code> collections. Six collections are live, not four.</li>
+      <li><strong>Role aliases were never mirrored.</strong> §13A-F cites <code>radius/card</code> and <code>tracking/h1</code> as examples. Neither exists — the Radius collection holds the nine scale stops only, and Typography holds <code>tracking/display</code> plus the five scale steps.</li>
+    </ul>
   </div>
 
   <nav class="toc" aria-label="Section contents">
@@ -123,7 +135,7 @@ pre.code code { background: none; border: none; padding: 0; font-size: 12px; col
 
     <div class="callout warn">
       <div class="callout-label">A third thing that's also out of scope here</div>
-      Contract Phase colors (<code>tokens.css</code> §1.11 primitives, §2.13 semantic aliases) are <strong>not</strong> part of either 13A or 13B — they're tied to Section 10 (Contract Phase System), which predates the Brown/Neutral revision and hasn't been revalidated. They'll get their own pass once §10 resolves, most likely alongside 13B rather than a separate 13C, but that's not decided yet.
+      Contract Phase colors (<code>tokens.css</code> §1.11 primitives, §2.13 semantic aliases) are <strong>not</strong> part of either 13A or 13B — they're tied to Section 10 (Contract Phase System), which predates the Brown/Neutral revision and hasn't been revalidated. They'll get their own pass once §10 resolves, most likely alongside 13B rather than a separate 13C, but that's not decided yet. <span class="fixed-tag">NOTE</span> The v2 pass added dark-mode phase <em>values</em> to <code>tokens.css</code> because their absence was a straight bug — a phase chip rendered near-white on a near-black page. The phase <em>scheme</em> is still §10's to settle, and none of it is mirrored into Figma.
     </div>
   </div>
 
@@ -138,33 +150,53 @@ pre.code code { background: none; border: none; padding: 0; font-size: 12px; col
 
     <div class="coll-grid">
       <div class="coll-card">
-        <div class="coll-name">H2 Prime / Primitives</div>
-        <div class="coll-modes">1 mode — Default</div>
+        <div class="coll-name">H2 Prime Primitives</div>
+        <div class="coll-modes">1 mode · 172 variables</div>
         <div class="coll-desc">Mirrors <code>tokens.css</code> §1. Every ramp, every step, raw color values. Never bound directly to a layer fill in product screens — only referenced by the Semantic collection.</div>
       </div>
       <div class="coll-card">
-        <div class="coll-name">H2 Prime / Semantic</div>
-        <div class="coll-modes">2 modes — Light, Dark</div>
+        <div class="coll-name">H2 Prime Semantic</div>
+        <div class="coll-modes">2 modes — Light, Dark · 55 variables</div>
         <div class="coll-desc">Mirrors <code>tokens.css</code> §2–§3. Every variable aliases a Primitives variable; the alias target changes per mode, exactly like the <code>[data-mode="dark"]</code> override block.</div>
       </div>
       <div class="coll-card">
-        <div class="coll-name">H2 Prime / Typography</div>
-        <div class="coll-modes">1 mode — Default</div>
-        <div class="coll-desc">Already live (see §3's typography section). <code>tracking/*</code> and <code>leading/*</code> as number variables, referenced inside Figma Text Styles rather than driving type directly — see §13A-E.</div>
+        <div class="coll-name">H2 Prime Typography</div>
+        <div class="coll-modes">1 mode · 49 variables</div>
+        <div class="coll-desc"><code>tracking/*</code>, <code>leading/*</code>, <code>font-size/*</code>, <code>font-weight/*</code>, <code>font-family/*</code> and per-role <code>line-height/*</code> as number and string variables, referenced inside Figma Text Styles rather than driving type directly — see §13A-E.</div>
       </div>
       <div class="coll-card">
-        <div class="coll-name">H2 Prime / Layout</div>
-        <div class="coll-modes">1 mode — Default</div>
-        <div class="coll-desc">New in this pass. <code>space/*</code> and <code>radius/*</code> as number variables. Elevation ships as Figma Effect Styles, not variables — see §13A-E for why.</div>
+        <div class="coll-name">H2 Prime Spacing</div>
+        <div class="coll-modes">1 mode · 16 variables</div>
+        <div class="coll-desc">The 4px grid. Binds directly to auto-layout gap and padding.</div>
+      </div>
+      <div class="coll-card">
+        <div class="coll-name">H2 Prime Radius</div>
+        <div class="coll-modes">1 mode · 9 variables</div>
+        <div class="coll-desc">The nine scale stops. Role aliases (<code>--h2p-radius-btn</code>, <code>-card</code>, <code>-dialog</code>, <code>-sheet</code>) are CSS-only and deliberately not mirrored.</div>
+      </div>
+      <div class="coll-card">
+        <div class="coll-name">H2 Prime Border Width</div>
+        <div class="coll-modes">1 mode · 5 variables</div>
+        <div class="coll-desc">Mirrors Tailwind's border-width scale.</div>
       </div>
       <div class="coll-card excluded">
-        <div class="coll-name">H2 Prime / Theme<span class="later-tag">13B</span></div>
+        <div class="coll-name">H2 Prime Theme<span class="later-tag">13B</span></div>
         <div class="coll-modes">3 modes — Client, Filer, Admin</div>
         <div class="coll-desc">Not created yet. Will alias into Primitives once §11 resolves which ramp each dashboard's accent, nav, and interactive-secondary treatment actually uses.</div>
+      </div>
+      <div class="coll-card excluded">
+        <div class="coll-name">H2 Prime Overlay<span class="later-tag">§14</span></div>
+        <div class="coll-modes">1 mode</div>
+        <div class="coll-desc">Not created yet. Drawer and modal widths, sheet peek, grabber dimensions and durations from <code>tokens.css</code> §2.21–§2.22. The two overlay scrims live in Semantic instead, since they're colours with mode values. Easing cannot be a Figma variable at all.</div>
       </div>
     </div>
 
     <p>Every Figma variable name uses forward slashes as the Figma-native group separator, mapped one-to-one from the CSS token's hyphenated segments — <code>--ramp-neutral-700</code> becomes <code>neutral/700</code> inside the Primitives collection, <code>--text-secondary</code> becomes <code>text/secondary</code> inside Semantic. This keeps the segment order from §8C intact; only the delimiter changes.</p>
+
+    <div class="callout warn">
+      <div class="callout-label">Radius and spacing exist twice</div>
+      Both groups appear inside <code>H2 Prime Primitives</code> <em>and</em> in their own dedicated collections. The rebind plugin orders around this deliberately — Primitives is processed first so the dedicated collections win — but it is still two sources for one value, and it should be resolved rather than worked around indefinitely.
+    </div>
   </div>
 
 <!-- ════ 13A-C ════ -->
@@ -180,21 +212,22 @@ pre.code code { background: none; border: none; padding: 0; font-size: 12px; col
       <table>
         <thead><tr><th>Ramp</th><th>CSS source</th><th>Figma path</th><th>Steps</th><th>Status</th></tr></thead>
         <tbody>
-          <tr><td>Brand Yellow</td><td><code>--ramp-yellow-*</code></td><td><code>yellow/25</code> … <code>yellow/950</code></td><td class="contrast-cell">12</td><td><span class="badge b-complete">In 13A</span></td></tr>
-          <tr><td>Brand Brown</td><td><code>--ramp-brown-*</code></td><td><code>brown/25</code> … <code>brown/950</code></td><td class="contrast-cell">12</td><td><span class="badge b-complete">In 13A</span></td></tr>
-          <tr><td>Neutral (cool)</td><td><code>--ramp-neutral-*</code></td><td><code>neutral/25</code> … <code>neutral/950</code></td><td class="contrast-cell">12</td><td><span class="badge b-complete">In 13A</span></td></tr>
-          <tr><td>Danger</td><td><code>--ramp-danger-*</code></td><td><code>danger/25</code> … <code>danger/950</code></td><td class="contrast-cell">12</td><td><span class="badge b-complete">In 13A</span></td></tr>
-          <tr><td>Warning</td><td><code>--ramp-warning-*</code></td><td><code>warning/25</code> … <code>warning/950</code></td><td class="contrast-cell">12</td><td><span class="badge b-complete">In 13A</span></td></tr>
-          <tr><td>Success</td><td><code>--ramp-success-*</code></td><td><code>success/25</code> … <code>success/950</code></td><td class="contrast-cell">12</td><td><span class="badge b-complete">In 13A</span></td></tr>
-          <tr><td>Info</td><td><code>--ramp-info-*</code></td><td><code>info/25</code> … <code>info/950</code></td><td class="contrast-cell">12</td><td><span class="badge b-complete">In 13A</span></td></tr>
-          <tr><td>Help</td><td><code>--ramp-help-*</code></td><td><code>help/25</code> … <code>help/950</code></td><td class="contrast-cell">12</td><td><span class="badge b-complete">In 13A</span></td></tr>
-          <tr><td>Sky Blue <span class="later-tag">theme-linked</span></td><td><code>--ramp-sky-*</code></td><td><code>sky/25</code> … <code>sky/950</code></td><td class="contrast-cell">12</td><td><span class="badge b-complete">Ramp in 13A</span></td></tr>
-          <tr><td>Violet <span class="later-tag">theme-linked</span></td><td><code>--ramp-violet-*</code></td><td><code>violet/25</code> … <code>violet/950</code></td><td class="contrast-cell">12</td><td><span class="badge b-complete">Ramp in 13A</span></td></tr>
+          <tr><td>Brand Yellow</td><td><code>--ramp-yellow-*</code></td><td><code>color/yellow/25</code> … <code>950</code></td><td class="contrast-cell">12</td><td><span class="badge b-complete">In 13A</span></td></tr>
+          <tr><td>Brand Brown</td><td><code>--ramp-brown-*</code></td><td><code>color/brown/25</code> … <code>950</code></td><td class="contrast-cell">12</td><td><span class="badge b-complete">In 13A</span></td></tr>
+          <tr><td>Neutral (cool)</td><td><code>--ramp-neutral-*</code></td><td><code>color/neutral/25</code> … <code>950</code></td><td class="contrast-cell">12</td><td><span class="badge b-complete">In 13A</span></td></tr>
+          <tr><td>Danger</td><td><code>--ramp-danger-*</code></td><td><code>color/danger/25</code> … <code>950</code></td><td class="contrast-cell">12</td><td><span class="badge b-complete">In 13A</span></td></tr>
+          <tr><td>Warning</td><td><code>--ramp-warning-*</code></td><td><code>color/warning/25</code> … <code>950</code></td><td class="contrast-cell">12</td><td><span class="badge b-complete">In 13A</span></td></tr>
+          <tr><td>Success</td><td><code>--ramp-success-*</code></td><td><code>color/success/25</code> … <code>950</code></td><td class="contrast-cell">12</td><td><span class="badge b-complete">In 13A</span></td></tr>
+          <tr><td>Info</td><td><code>--ramp-info-*</code></td><td><code>color/info/25</code> … <code>950</code></td><td class="contrast-cell">12</td><td><span class="badge b-complete">In 13A</span></td></tr>
+          <tr><td>Help</td><td><code>--ramp-help-*</code></td><td><code>color/help/25</code> … <code>950</code></td><td class="contrast-cell">12</td><td><span class="badge b-complete">In 13A</span></td></tr>
+          <tr><td>Sky Blue <span class="later-tag">theme-linked</span></td><td><code>--ramp-sky-*</code></td><td><code>color/sky/25</code> … <code>950</code></td><td class="contrast-cell">12</td><td><span class="badge b-complete">Ramp in 13A</span></td></tr>
+          <tr><td>Violet <span class="later-tag">theme-linked</span></td><td><code>--ramp-violet-*</code></td><td><code>color/violet/25</code> … <code>950</code></td><td class="contrast-cell">12</td><td><span class="badge b-complete">Ramp in 13A</span></td></tr>
+          <tr><td>Contract Phase <span class="gap-tag">§10</span></td><td><code>--ramp-phase*</code></td><td><code>color/phase/*</code></td><td class="contrast-cell">—</td><td><span class="badge b-wip">Present, not settled</span></td></tr>
         </tbody>
       </table>
     </div>
 
-    <p><code>--ramp-gray-mid-*</code> and <code>--ramp-gray-dark-*</code> (the backward-compatible aliases onto Neutral, per §8C's naming exception) are <strong>not</strong> mirrored as separate Figma variables — they're a CSS-only compatibility shim for old component references, not a distinct design decision, so a duplicate Figma group would just be two names for one ramp with no way to tell someone which to pick.</p>
+    <p><code>--ramp-gray-mid-*</code> and <code>--ramp-gray-dark-*</code> (the backward-compatible aliases onto Neutral, per §8C's naming exception) are <strong>not</strong> mirrored as separate Figma variables — they're a CSS-only compatibility shim for old component references, not a distinct design decision, so a duplicate Figma group would just be two names for one ramp with no way to tell someone which to pick. The v2 pass marked them for removal once the Svelte components are swept.</p>
   </div>
 
 <!-- ════ 13A-D ════ -->
@@ -204,34 +237,38 @@ pre.code code { background: none; border: none; padding: 0; font-size: 12px; col
       <h2 class="section-title">Semantic collection (Light/Dark)</h2>
     </div>
     <hr class="section-hr">
-    <p>Every Tier 2 role that isn't dashboard-themed or contract-phase-scoped. Each row below is one Figma variable with two mode values (Light, Dark), aliasing the Primitives collection exactly the way <code>tokens.css</code> §2/§3 do in CSS.</p>
+    <p>Every Tier 2 role that isn't dashboard-themed or contract-phase-scoped. Each row below is one Figma variable with two mode values (Light, Dark), aliasing the Primitives collection exactly the way <code>tokens.css</code> §2/§3 do in CSS. Rows marked <span class="fixed-tag">v2</span> changed or were added in the 2026-10-25 pass — see the amendment for the measurements.</p>
 
     <div class="tbl-wrap">
       <table>
         <thead><tr><th>Category</th><th>CSS source</th><th>Figma path (example)</th><th>Light alias</th><th>Dark alias</th></tr></thead>
         <tbody>
-          <tr><td>Surfaces</td><td><code>--surface-*</code></td><td><code>surface/page</code></td><td><code>neutral/25</code></td><td><code>neutral/950</code></td></tr>
-          <tr><td>Borders</td><td><code>--border-*</code></td><td><code>border/default</code></td><td><code>neutral/200</code></td><td><code>neutral/600</code></td></tr>
-          <tr><td>Text</td><td><code>--text-*</code></td><td><code>text/primary</code></td><td><code>neutral/900</code></td><td><code>neutral/25</code></td></tr>
-          <tr><td>Interactive — primary</td><td><code>--interactive-primary-*</code></td><td><code>interactive/primary/bg</code></td><td><code>neutral/800</code></td><td><code>neutral/100</code><span class="gap-tag">INVERTED</span></td></tr>
-          <tr><td>Interactive — secondary / ghost / disabled</td><td><code>--interactive-secondary-*</code>, <code>--interactive-ghost-*</code>, <code>--interactive-disabled-*</code></td><td><code>interactive/secondary/border</code></td><td><code>neutral/300</code></td><td><code>neutral/600</code></td></tr>
-          <tr><td>Input states</td><td><code>--input-*</code></td><td><code>input/border</code></td><td><code>neutral/300</code></td><td><code>neutral/600</code></td></tr>
-          <tr><td>Feedback — Danger</td><td><code>--feedback-danger-*</code></td><td><code>feedback/danger/solid</code></td><td><code>danger/500</code></td><td><code>danger/500</code><span class="gap-tag">UNIFORM</span></td></tr>
-          <tr><td>Feedback — Warning</td><td><code>--feedback-warning-*</code></td><td><code>feedback/warning/solid</code></td><td><code>warning/500</code></td><td><code>warning/500</code><span class="gap-tag">UNIFORM</span></td></tr>
-          <tr><td>Feedback — Success / Info / Help</td><td><code>--feedback-{success,info,help}-*</code></td><td><code>feedback/success/solid</code></td><td>ramp step 500</td><td>ramp step 500</td></tr>
-          <tr><td>Data visualization</td><td><code>--viz-*</code></td><td><code>viz/series-1</code></td><td colspan="2" class="contrast-cell">Single mode — see note below</td></tr>
+          <tr><td>Surfaces</td><td><code>--surface-*</code></td><td><code>surface/page</code></td><td><code>color/neutral/25</code></td><td><code>color/neutral/950</code></td></tr>
+          <tr><td>Scrims <span class="fixed-tag">v2</span></td><td><code>--surface-overlay</code>, <code>--scrim-drawer</code></td><td><code>surface/overlay</code>, <code>surface/overlay-drawer</code></td><td colspan="2" class="contrast-cell">Alpha values, not aliases — 0.60 modal / 0.45 drawer</td></tr>
+          <tr><td>Borders</td><td><code>--border-*</code></td><td><code>border/default</code></td><td><code>color/neutral/200</code></td><td><code>color/neutral/600</code></td></tr>
+          <tr><td>Border — strong <span class="fixed-tag">v2</span></td><td><code>--border-strong</code></td><td><code>border/strong</code></td><td><code>color/neutral/500</code></td><td><code>color/neutral/500</code></td></tr>
+          <tr><td>Text</td><td><code>--text-*</code></td><td><code>text/primary</code></td><td><code>color/neutral/900</code></td><td><code>color/neutral/25</code></td></tr>
+          <tr><td>Text — placeholder <span class="fixed-tag">v2</span></td><td><code>--text-placeholder</code></td><td><code>text/placeholder</code></td><td><code>color/neutral/500</code></td><td><code>color/neutral/400</code></td></tr>
+          <tr><td>Text on solid fills <span class="fixed-tag">v2</span></td><td><code>--text-on-*</code></td><td><code>text/on-success</code></td><td>per utility</td><td><code>color/neutral/950</code> throughout</td></tr>
+          <tr><td>Interactive — primary</td><td><code>--interactive-primary-*</code></td><td><code>interactive-primary/bg</code></td><td><code>color/neutral/800</code></td><td><code>color/neutral/100</code><span class="gap-tag">INVERTED</span></td></tr>
+          <tr><td>Interactive — secondary <span class="fixed-tag">v2</span></td><td><code>--interactive-secondary-border</code></td><td><code>interactive-secondary/border</code></td><td><code>color/neutral/500</code></td><td><code>color/neutral/500</code></td></tr>
+          <tr><td>Input states <span class="fixed-tag">v2</span></td><td><code>--input-border</code>, <code>--input-border-hover</code></td><td><code>input/border</code></td><td><code>color/neutral/500</code></td><td><code>color/neutral/500</code></td></tr>
+          <tr><td>Feedback — Danger</td><td><code>--feedback-danger-*</code></td><td><code>feedback-danger/solid</code></td><td><code>color/danger/500</code></td><td><code>color/danger/400</code></td></tr>
+          <tr><td>Feedback — Warning</td><td><code>--feedback-warning-*</code></td><td><code>feedback-warning/solid</code></td><td><code>color/warning/500</code></td><td><code>color/warning/400</code></td></tr>
+          <tr><td>Feedback — Success / Info / Help</td><td><code>--feedback-{success,info,help}-*</code></td><td><code>feedback-success/solid</code></td><td>ramp step 500</td><td>ramp step 400</td></tr>
+          <tr><td>Data visualization</td><td><code>--viz-*</code></td><td>—</td><td colspan="2" class="contrast-cell">Not mirrored. CSS-only — see §13A-G</td></tr>
         </tbody>
       </table>
     </div>
 
     <div class="callout note">
-      <div class="callout-label">interactive/primary/bg is a real exception, not a mapping error</div>
-      Most Semantic variables mirror the same ramp step in both modes with the "which end is light/dark" logic flipped. <code>interactive/primary/bg</code> doesn't — it's Neutral-800 in Light and Neutral-100 in Dark, both near-opposite ends deliberately, so the fill never goes muddy or vanishes into the dark canvas. Anyone editing this variable in Figma should see both alias targets and not "correct" the dark value to Neutral-900 by pattern-matching the rest of the collection. Same logic as the callout in §8D — restated here because it's the row most likely to get silently "fixed" by someone working ramp-by-ramp in Figma without the CSS-side rationale in view.
+      <div class="callout-label">interactive-primary/bg is a real exception, not a mapping error</div>
+      Most Semantic variables mirror the same ramp step in both modes with the "which end is light/dark" logic flipped. <code>interactive-primary/bg</code> doesn't — it's Neutral-800 in Light and Neutral-100 in Dark, both near-opposite ends deliberately, so the fill never goes muddy or vanishes into the dark canvas. Anyone editing this variable in Figma should see both alias targets and not "correct" the dark value to Neutral-900 by pattern-matching the rest of the collection.
     </div>
 
-    <div class="callout warn">
-      <div class="callout-label">Data visualization uses one mode on purpose</div>
-      <code>--viz-*</code> tokens (chart series, tooltip, grid line) stay visually dark-surfaced regardless of app mode — a light-mode dashboard still renders chart tooltips on a dark chip, matching most charting-library conventions. The Figma <code>viz/*</code> group should be added to the Semantic collection but pinned to a single value per variable rather than given Light/Dark mode values, or Figma will silently invent a "light mode" tooltip variant that has no CSS equivalent to ship.
+    <div class="callout do">
+      <div class="callout-label">Why the on-solid set had to be added</div>
+      <code>text/on-danger</code> through <code>text/on-help</code> did not exist before the v2 pass, which meant a filled Success badge in Figma got its white text picked by hand. White on <code>success/400</code> measures 2.28:1. The variables now carry the measurement in their description, so the right value is the default rather than something a designer has to know.
     </div>
   </div>
 
@@ -239,24 +276,54 @@ pre.code code { background: none; border: none; padding: 0; font-size: 12px; col
   <div class="section" id="13a-e">
     <div class="section-header">
       <span class="section-id">13A-E</span>
-      <h2 class="section-title">Typography &amp; Layout collections</h2>
+      <h2 class="section-title">Typography &amp; layout collections</h2>
     </div>
     <hr class="section-hr">
-    <p>Not every token in <code>tokens.css</code> §2.14–§2.19 maps to a Figma <em>variable</em> cleanly — Figma variables cover color, number, string, and boolean, but a full type role (family + weight + size + line-height together) is better represented as a Figma Text Style that <em>references</em> number variables, not as one variable itself.</p>
+    <p>Not every token in <code>tokens.css</code> §2.14–§2.22 maps to a Figma <em>variable</em> cleanly — Figma variables cover color, number, string, and boolean, but a full type role (family + weight + size + line-height together) is better represented as a Figma Text Style that <em>references</em> number variables, not as one variable itself.</p>
 
     <div class="tbl-wrap">
       <table>
         <thead><tr><th>tokens.css source</th><th>Figma representation</th><th>Rationale</th></tr></thead>
         <tbody>
-          <tr><td>§2.17 Typography — family, weight, size</td><td>Text Styles (not variables)</td><td>Figma Text Styles are the native unit designers apply to text layers; a bare number/string variable for font size still requires a style to actually use it on a text node.</td></tr>
-          <tr><td>§2.17 Typography — <code>tracking</code>, <code>leading</code></td><td><code>tracking/*</code>, <code>leading/*</code> number variables</td><td>Already live per §3's note — these plug into the Text Styles above so a tracking change propagates from one number variable instead of a per-style edit.</td></tr>
-          <tr><td>§2.16 Spacing</td><td><code>space/*</code> number variables</td><td>Bind directly to auto-layout gap/padding in components — the most direct variable-to-property match in the whole system.</td></tr>
-          <tr><td>§2.15 Border radius</td><td><code>radius/*</code> number variables</td><td>Bind directly to corner radius on frames/shapes.</td></tr>
-          <tr><td>§2.14 Elevation / shadows</td><td>Effect Styles (not variables)</td><td>Figma shadows are multi-property effects (offset, blur, spread, color, opacity) — Effect Styles are the correct native unit, same reasoning as Text Styles above.</td></tr>
-          <tr><td>§2.18 Z-index</td><td>Not mirrored<span class="gap-tag">OUT OF SCOPE</span></td><td>No design-time visual meaning — layer order in Figma is manual and z-index is a dev-only stacking concern. Documented in code only.</td></tr>
-          <tr><td>§2.19 Motion (duration/easing)</td><td>Not mirrored<span class="gap-tag">OUT OF SCOPE</span></td><td>Figma prototyping transitions aren't driven by these variables and smart-animate easing curves don't map 1:1 onto CSS cubic-beziers. Section 7 stays the source of truth; a Figma-side reference would need its own drift-check most designers can't verify visually.</td></tr>
+          <tr><td>§2.18 Typography — family, weight, size</td><td>Text Styles (not variables)</td><td>Figma Text Styles are the native unit designers apply to text layers; a bare number/string variable for font size still requires a style to actually use it on a text node.</td></tr>
+          <tr><td>§2.18 Typography — <code>tracking</code>, <code>leading</code></td><td><code>tracking/*</code>, <code>leading/*</code> number variables</td><td>These plug into the Text Styles above so a change propagates from one number variable instead of a per-style edit. See the unit warning in §13A-G.</td></tr>
+          <tr><td>§2.16 Spacing</td><td><code>spacing/*</code> number variables</td><td>Bind directly to auto-layout gap/padding in components — the most direct variable-to-property match in the whole system.</td></tr>
+          <tr><td>§1.17 Border radius</td><td><code>radius/*</code> number variables</td><td>Bind directly to corner radius on frames/shapes. Scale stops only; role aliases stay CSS-side.</td></tr>
+          <tr><td>§2.14 Elevation / shadows</td><td>Effect Styles (not variables)</td><td>Figma shadows are multi-property effects — Effect Styles are the correct native unit, same reasoning as Text Styles above. <span class="gap-tag">NOT YET BUILT</span> No H2 Prime effect style set exists; the shadcn-studio library ships its own.</td></tr>
+          <tr><td>§2.21 Overlay geometry</td><td>Number variables <span class="later-tag">§14</span></td><td>Widths, sheet peek, grabber dimensions. Not created yet.</td></tr>
+          <tr><td>§2.22 Motion — duration</td><td>Number variables <span class="later-tag">§14</span></td><td>Durations can be FLOAT variables and are useful for prototype transitions. Not created yet.</td></tr>
+          <tr><td>§2.22 Motion — easing</td><td>Not mirrorable<span class="gap-tag">IMPOSSIBLE</span></td><td>Figma has no easing variable type, and smart-animate curves don't map 1:1 onto CSS cubic-beziers. Section 14E stays the source of truth.</td></tr>
+          <tr><td>§1.17 Z-index</td><td>Not mirrored<span class="gap-tag">OUT OF SCOPE</span></td><td>No design-time visual meaning — layer order in Figma is manual and z-index is a dev-only stacking concern.</td></tr>
         </tbody>
       </table>
+    </div>
+
+    <div class="sub-header"><span class="sub-tag">13A-E1</span><h3 class="sub-title">Text styles</h3></div>
+    <p>Thirteen H2 Prime text styles live in the component library, each binding family, weight, size and line-height to Typography variables.</p>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Style</th><th>Resolves to</th><th>CSS role</th></tr></thead>
+        <tbody>
+          <tr><td><code>Display</code></td><td>Barlow Semi Condensed Light 40 / 46</td><td><code>--type-display-*</code></td></tr>
+          <tr><td><code>Heading/H1</code></td><td>Barlow Semi Condensed Light 34 / 40.8</td><td><code>--type-h1-*</code></td></tr>
+          <tr><td><code>Heading/H2</code></td><td>Barlow Semi Condensed Light 28 / 35</td><td><code>--type-h2-*</code></td></tr>
+          <tr><td><code>Heading/H3</code></td><td>Inter Semi Bold 22 / 28.6</td><td><code>--type-h3-*</code> — and <code>--type-overlay-title-*</code>, which aliases H3</td></tr>
+          <tr><td><code>Heading/H4</code></td><td>Inter Semi Bold 20 / 27</td><td><code>--type-h4-*</code></td></tr>
+          <tr><td><code>Heading/H5</code></td><td>Inter Semi Bold 18 / 25.2</td><td><code>--type-h5-*</code></td></tr>
+          <tr><td><code>Body/base</code> <span class="fixed-tag">v2</span></td><td>Inter Regular 18 / 28.8</td><td><code>--type-body-*</code> — the product's base running text</td></tr>
+          <tr><td><code>Body/p</code></td><td>Inter Regular 16 / 26</td><td><code>--type-body-sm-*</code> — dense secondary text, despite the name</td></tr>
+          <tr><td><code>Body/lead</code></td><td>Inter Regular 20 / 28</td><td><code>--type-body-lg-*</code></td></tr>
+          <tr><td><code>Body/large</code></td><td>Inter Semi Bold 18 / 28</td><td>weight variant, not the base size</td></tr>
+          <tr><td><code>Body/small</code></td><td>Inter Medium 14 / 24</td><td>≈ <code>--type-caption-*</code> at raised weight</td></tr>
+          <tr><td><code>Body/subtle</code></td><td>Inter Regular 14 / 20</td><td><code>--type-caption-*</code></td></tr>
+          <tr><td><code>Body/list</code></td><td>Inter Regular 16 / 24</td><td>list variant of <code>Body/p</code></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout warn">
+      <div class="callout-label">Body/p is not the base body size</div>
+      The product's base is 18px — the decision the whole audience rationale rests on. Before the v2 pass the library had no 18px Regular style at all, so anyone composing in Figma reached for <code>Body/p</code> at 16px and the Figma screens were a size off from the shipped app. <code>Body/base</code> closes that. <code>Body/p</code> is kept for dense secondary text but its name is misleading and it is a candidate for renaming.
     </div>
   </div>
 
@@ -267,32 +334,39 @@ pre.code code { background: none; border: none; padding: 0; font-size: 12px; col
       <h2 class="section-title">Code Syntax binding</h2>
     </div>
     <hr class="section-hr">
-    <p>Every Figma variable in scope for 13A gets its <strong>Code Syntax</strong> field (Web platform) set to the exact CSS custom property name it mirrors. This is what keeps a Figma value and its shipped CSS from drifting silently apart the way the stale hex comments in <code>tokens.css</code> did before this cleanup pass — the binding is machine-checkable, not just a naming convention someone has to remember to keep in sync.</p>
+    <p>Every Figma variable in scope gets its <strong>Code Syntax</strong> field (Web platform) set to the exact CSS custom property it mirrors. This is what keeps a Figma value and its shipped CSS from drifting silently apart — the binding is machine-checkable, not just a naming convention someone has to remember.</p>
 
-    <pre class="code"><code>// Figma variable: neutral/700  (Primitives collection)
+    <pre class="code"><code>// Figma variable: color/neutral/700  (Primitives)
 // Code Syntax → Web: --ramp-neutral-700
 
-// Figma variable: text/secondary  (Semantic collection, Light mode)
+// Figma variable: text/secondary  (Semantic, Light mode)
 // Code Syntax → Web: --text-secondary
-// Value: alias → neutral/700</code></pre>
+// Value: alias → color/neutral/700</code></pre>
+
+    <div class="callout brand">
+      <div class="callout-label">The v2 rename, and what it means for Code Syntax</div>
+      <p><code>tokens.css</code> v2 moved every raw scale that collided with a Tailwind v4 namespace to an <code>--h2p-*</code> canonical name — radius, shadow, leading, tracking, font-weight and the font families. The old names survive as deprecated aliases, so nothing breaks, but Code Syntax should hand a developer the canonical name rather than the one scheduled for removal.</p>
+      <p style="margin-top:.5rem">Nineteen variables were repointed in the 2026-10-25 pass: five <code>tracking/*</code>, five <code>leading/*</code> and all nine <code>radius/*</code>. Colour and spacing variables were unaffected — <code>--text-secondary</code> and <code>--space-4</code> don't sit in a Tailwind namespace and keep their names.</p>
+    </div>
 
     <div class="tbl-wrap">
       <table>
         <thead><tr><th>Figma variable</th><th>Collection</th><th>Code Syntax (Web)</th></tr></thead>
         <tbody>
-          <tr><td><code>neutral/900</code></td><td>Primitives</td><td><code>--ramp-neutral-900</code></td></tr>
+          <tr><td><code>color/neutral/900</code></td><td>Primitives</td><td><code>--ramp-neutral-900</code></td></tr>
           <tr><td><code>text/primary</code></td><td>Semantic</td><td><code>--text-primary</code></td></tr>
-          <tr><td><code>interactive/primary/bg</code></td><td>Semantic</td><td><code>--interactive-primary-bg</code></td></tr>
-          <tr><td><code>space/4</code></td><td>Layout</td><td><code>--space-4</code></td></tr>
-          <tr><td><code>radius/card</code></td><td>Layout</td><td><code>--radius-card</code></td></tr>
-          <tr><td><code>tracking/h1</code></td><td>Typography</td><td><code>--type-h1-tracking</code></td></tr>
+          <tr><td><code>text/on-success</code></td><td>Semantic</td><td><code>--text-on-success</code></td></tr>
+          <tr><td><code>interactive-primary/bg</code></td><td>Semantic</td><td><code>--interactive-primary-bg</code></td></tr>
+          <tr><td><code>radius/md</code></td><td>Radius</td><td><code>--h2p-radius-md</code> <span class="fixed-tag">v2</span></td></tr>
+          <tr><td><code>leading/tight</code></td><td>Typography</td><td><code>--h2p-leading-tight</code> <span class="fixed-tag">v2</span></td></tr>
+          <tr><td><code>tracking/wide</code></td><td>Typography</td><td><code>--h2p-tracking-wide</code> <span class="fixed-tag">v2</span></td></tr>
         </tbody>
       </table>
     </div>
 
     <div class="callout do">
       <div class="callout-label">Do treat a Code Syntax mismatch as a bug report</div>
-      If a Figma variable's Code Syntax field and its actual behavior in the shipped app disagree, that's a signal one side is stale — same category of issue as the hex-comment cleanup earlier in this pass — and should get fixed at the source (usually <code>tokens.css</code>, since it's authoritative) rather than quietly edited in Figma to match what the screen currently looks like.
+      If a Figma variable's Code Syntax field and its actual behavior in the shipped app disagree, that's a signal one side is stale and should get fixed at the source — usually <code>tokens.css</code>, since it's authoritative — rather than quietly edited in Figma to match what the screen currently looks like.
     </div>
   </div>
 
@@ -304,33 +378,46 @@ pre.code code { background: none; border: none; padding: 0; font-size: 12px; col
     </div>
     <hr class="section-hr">
 
+    <div class="callout dont">
+      <div class="callout-label">The tracking variables carry a latent unit bug</div>
+      <p>Figma resolves a FLOAT bound to <code>letterSpacing</code> as <strong>raw pixels</strong>, whatever unit was intended. The five <code>tracking/*</code> scale variables store CSS em fractions — <code>tracking/tight</code> is <code>-0.025</code>, meaning <code>-0.025em</code>, which Figma would apply as <code>-0.025px</code>. At the 18px base that should be <code>-0.45px</code>, so the tracking would be roughly eighteen times too small.</p>
+      <p style="margin-top:.5rem"><strong>It is latent, not active.</strong> Only <code>tracking/display</code> is currently bound to a text style, and that one is correctly stored as <code>-0.2px</code> — the pixel equivalent at 40px, set deliberately. Fix the other five before binding them to anything, not after.</p>
+    </div>
+
     <div class="ap-grid">
       <div class="ap-box ap-dont">
-        <div class="ap-label">Not yet done</div>
-        <p>The Semantic collection's Dark mode values need a full pass to alias every row against the corrected §13A-D table — this section documents the intended mapping, it doesn't confirm every existing Figma variable already matches it. Treat §13A-D as the spec to audit against, not a confirmation that Figma is already correct.</p>
+        <div class="ap-label">Not mirrored, and should be</div>
+        <p><code>--viz-*</code> chart series. Three of the eight changed in the v2 pass for contrast, and the palette collapses under deuteranopia — see <code>tokens.css</code> §2.12. Worth resolving the palette before mirroring it, rather than mirroring a set that's about to change.</p>
+        <p>No H2 Prime effect style set for elevation. §13A-E says shadows ship as Effect Styles; none exist, so component shadows come from shadcn-studio's own scale.</p>
       </div>
       <div class="ap-box ap-do">
         <div class="ap-label">Ready to build on</div>
-        <p>Primitives, Typography (partially live already), and Layout collections have no open dependencies — a designer can start binding component variants to these today without waiting on §10 or §11.</p>
+        <p>Primitives, Semantic, Typography, Spacing, Radius and Border Width all have no open dependencies. A designer can bind component variants to these today without waiting on §10 or §11.</p>
       </div>
     </div>
 
     <div class="ap-grid">
       <div class="ap-box ap-dont">
         <div class="ap-label">Deliberately deferred</div>
-        <p>Theme collection (13B), Contract Phase primitives/semantics, and themed Navigation tokens — all covered in §13A-A. Don't create placeholder Figma variables for these ahead of time; an empty or guessed alias is worse than an absent one, since it looks decided when it isn't.</p>
+        <p>Theme collection (13B), Contract Phase, themed Navigation. Don't create placeholder Figma variables for these ahead of time; an empty or guessed alias is worse than an absent one, since it looks decided when it isn't.</p>
       </div>
       <div class="ap-box ap-do">
         <div class="ap-label">Worth deciding next</div>
-        <p>Whether Contract Phase (currently unassigned to either 13A or 13B) gets folded into 13B once both Section 10 and Section 11 resolve, or stays a separate 13C. No need to decide now — noted here so it isn't forgotten when §10/§11 land.</p>
+        <p>Whether to delete <code>font-size/5xl</code> — it duplicates <code>font-size/4xl</code> at 40px and nothing binds to it. Whether to resolve the radius/spacing duplication between Primitives and the dedicated collections. And whether Contract Phase folds into 13B or becomes 13C.</p>
       </div>
     </div>
   </div>
 
 </main>
   <footer class="page-footer">
-    <div>Section 13A — Figma Variable Reference (Global Tokens) &nbsp;·&nbsp; H2 Prime Web Application Design System &nbsp;·&nbsp; v1.0 (start version) <br><a href="h2p-section-09-framework-implementation.html">← Section 9 — Framework Implementation</a> &nbsp;·&nbsp; <a href="h2p-cover.html">Cover</a><br><span style="color:var(--t3)">Section 13B (dashboard theme variables) is blocked on Section 11. Sections 10 and 12 remain planned.</span></div>
-    <div style="text-align:right">Last updated: 2026-07-18<br>4 collections · global tokens only</div>
+    <div>Section 13A — Figma Variable Reference (Global Tokens) &nbsp;·&nbsp; H2 Prime Web Application Design System &nbsp;·&nbsp; v1.1<br>
+      <a href="h2p-section-09-framework-implementation.html">← Section 9 — Framework Implementation</a> &nbsp;·&nbsp;
+      <a href="h2p-cover.html">Index</a> &nbsp;·&nbsp;
+      <a href="h2p-section-14-overlay-surface-system.html">Section 14 — Overlay &amp; Surface System →</a><br>
+      <a href="h2p-section-13a-amendment-2026-10-25.html">Amendment — 2026-10-25 token correctness pass</a> &nbsp;·&nbsp;
+      <a href="h2p-notification-center-figma-build-2026-10-25.html">Notification Center — Figma build record</a><br>
+      <span style="color:var(--t3)">Section 13B (dashboard theme variables) is blocked on Section 11. Sections 10 and 12 remain planned.</span></div>
+    <div style="text-align:right">Last updated: 2026-10-25<br>6 collections · global tokens only</div>
   </footer>
 
 </div>

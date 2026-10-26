@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Section 14 — Overlay &amp; Surface System — H2 Prime Design System</title>
+  <link rel="stylesheet" href="h2p-shared.css">
+<style>
+.surface-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; margin: 1rem 0 1.5rem; }
+.surface-grid > div { background: var(--s); border: 1px solid var(--b1); border-radius: 10px; padding: 14px 16px; }
+.surface-card-top { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 8px; }
+.surface-card-name { font-size: 14px; font-weight: 600; color: var(--t1); }
+.surface-card-q { display: block; font-size: 12px; color: var(--a); margin-bottom: 6px; font-family: var(--fm); }
+.surface-card-body { font-size: 12.5px; color: var(--t2); line-height: 1.6; }
+
+.decision { background: var(--s); border: 1px solid var(--b2); border-left: 3px solid var(--a); border-radius: 0 10px 10px 0; padding: 16px 18px; margin: 1.25rem 0; }
+.decision-q { font-family: var(--fd); font-weight: 400; font-size: 20px; color: var(--t1); margin-bottom: 10px; }
+.decision-branch { display: flex; gap: 10px; align-items: flex-start; padding: 8px 0; border-top: 1px solid var(--b1); }
+.decision-branch:first-of-type { border-top: none; }
+.decision-tag { font-family: var(--fm); font-size: 10px; font-weight: 600; padding: 2px 7px; border-radius: 3px; flex-shrink: 0; margin-top: 2px; }
+.tag-no  { background: #1E0A0A; color: #FCA5A5; }
+.tag-yes { background: #0A1E14; color: #6EE7B7; }
+.decision-text { font-size: 13px; color: var(--t2); line-height: 1.65; }
+.decision-text strong { color: var(--t1); font-weight: 600; }
+
+.cue-list { counter-reset: cue; }
+.cue { display: flex; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--b1); }
+.cue:last-child { border-bottom: none; }
+.cue-num { counter-increment: cue; font-family: var(--fm); font-size: 11px; color: var(--a); background: var(--al); border-radius: 4px; padding: 2px 8px; height: fit-content; flex-shrink: 0; }
+.cue-num::before { content: counter(cue, decimal-leading-zero); }
+.cue-body { flex: 1; }
+.cue-title { font-size: 13.5px; font-weight: 600; color: var(--t1); margin-bottom: 4px; }
+.cue-title em { font-style: normal; font-weight: 500; font-size: 11px; color: var(--t3); margin-left: 8px; }
+.cue-desc { font-size: 12.5px; color: var(--t2); line-height: 1.65; }
+</style>
+</head>
+<body>
+
+<a class="skip-link" href="#main-content">Skip to content</a>
+
+<nav class="guide-nav" aria-label="Style guide navigation">
+  <div class="guide-nav-left">
+    <a href="h2p-cover.html" class="guide-nav-home">
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+        <path d="M1 7L7 1l6 6M2.5 5.5V13h3v-3h3v3h3V5.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      H2 Prime Design System
+    </a>
+    <div class="guide-nav-divider" aria-hidden="true"></div>
+    <span class="guide-nav-section">Section 14 — Overlay &amp; Surface System</span>
+  </div>
+  <div class="guide-nav-right">
+    <a href="h2p-section-13a-figma-variables.html" class="guide-nav-btn">← 13A — Figma Variable Reference</a>
+    <a href="h2p-cover.html" class="guide-nav-btn">Index  →</a>
+    <a href="h2p-notification-center-figma-build.html" class="guide-nav-btn primary">Notification Center Figma Build →</a>
+  </div>
+</nav>
+
+<div class="page-wrap">
+<main id="main-content">
+
+  <header class="doc-header">
+    <div class="doc-kicker">H2 Prime Web Application Design System &amp; Guidelines</div>
+    <h1 class="doc-title">Section 14 — <strong>Overlay &amp; Surface System</strong></h1>
+    <p class="doc-lead">Six surfaces that sit above the page — modal, drawer, sheet, popover, toast, inline expansion — and one rule for choosing between them. Written because the product has been through two opposite answers to the same question: the original designer put every side action in a sliding panel, and that was reversed to put every side action in a modal. Both are right some of the time. This section says when, and why, and what makes a panel legible on a phone.</p>
+    <div class="doc-meta">
+      <div class="doc-meta-item"><strong>Status</strong>Start version</div>
+      <div class="doc-meta-item"><strong>Depends on</strong>§04 elevation · §06 state · §07 motion</div>
+      <div class="doc-meta-item"><strong>Tokens</strong><code>tokens.css</code> §2.21–§2.22</div>
+      <div class="doc-meta-item"><strong>Prototype</strong>Overlay system working prototype</div>
+      <div class="doc-meta-item"><strong>Last updated</strong>2026-10-25</div>
+    </div>
+  </header>
+
+  <!-- ─────────────────────────────────────────────────────────────────── -->
+  <section class="section" id="s14a">
+    <div class="section-header"><span class="section-id">14A</span><h2 class="section-title">The problem this section exists to settle</h2></div>
+    <hr class="section-hr">
+
+    <p>Side actions in H2 Prime were originally handled with sliding panels. The implementation was poor and the pattern was unintuitive, and the response was to move every side-action workflow to a modal. That was an improvement — but it was an improvement for a reason worth naming, because the notification centre now brings panels back and the reason determines whether that is a mistake or not.</p>
+
+    <p>The specific complaint about panels was about mobile: a panel takes the whole screen, nothing distinguishes it from a page or from another route, and the user loses track of where they are. That complaint is correct, and it is not a complaint about panels. It is a complaint about <strong>a panel that stops behaving like a panel</strong>. Section 14D deals with it directly.</p>
+
+    <div class="callout note">
+      <div class="callout-label">Why sort by shape at all</div>
+      <p>Overlay systems are usually catalogued by shape — here is our modal, here is our drawer. Shape is the output. Sorting by shape is what produces a system where the choice between two components is a matter of taste, which is exactly how a product ends up with every side action in a panel one year and every side action in a modal the next.</p>
+    </div>
+  </section>
+
+  <!-- ─────────────────────────────────────────────────────────────────── -->
+  <section class="section" id="s14b">
+    <div class="section-header"><span class="section-id">14B</span><h2 class="section-title">The rule</h2></div>
+    <hr class="section-hr">
+
+    <p>What actually differs between overlay surfaces is the relationship between what is on top and what is underneath. One question settles it.</p>
+
+    <div class="decision">
+      <div class="decision-q">Is the page underneath still the user's place?</div>
+      <div class="decision-branch">
+        <span class="decision-tag tag-no">NO</span>
+        <div class="decision-text"><strong>They have left it.</strong> They cannot continue until this is dealt with, and the page behind is irrelevant while it is open. → <strong>Modal.</strong> Centred, heavy scrim, two explicit outcomes.</div>
+      </div>
+      <div class="decision-branch">
+        <span class="decision-tag tag-yes">YES</span>
+        <div class="decision-text"><strong>They are still standing there.</strong> Something arrived alongside. They may read it, act on it, or abandon it, and either way they are coming back. → <strong>Drawer</strong> on a wide screen, <strong>sheet</strong> on a narrow one. Edge-anchored, lighter scrim, one way out.</div>
+      </div>
+    </div>
+
+    <p>This is why moving the side-action workflows to modals was right. Request help, add a document, edit a note, generate a shipping label — every one is a self-contained task with a commit and a cancel. Nothing on the page behind is needed to complete it. They were relationship-one content wearing a relationship-two shape, and a panel that demands completion while looking like it does not is exactly as confusing as it sounds. No amount of polish on the panel implementation would have fixed that.</p>
+
+    <p>It is also why the notification centre is genuinely different. Nobody completes their notifications. They glance, perhaps follow one, and return to the contract they were working on. The page behind is their place, and keeping it visible is the entire point of the surface.</p>
+
+    <div class="callout brand">
+      <div class="callout-label">ADR 14-1 — The trace rule</div>
+      <p>Every overlay must leave a visible trace of the surface it came from. A modal leaves it through the scrim; a drawer leaves it beside; a sheet leaves it above. <strong>If a surface cannot leave a trace, because it covers the whole viewport, it is not an overlay — it is a page, and it belongs behind a route with a URL and a back button.</strong> This is the constraint that resolves the mobile panel problem, and it also catches a second failure from the opposite direction: a modal sized to 90% of a 1512px viewport is in the same trouble.</p>
+    </div>
+  </section>
+
+  <!-- ─────────────────────────────────────────────────────────────────── -->
+  <section class="section" id="s14c">
+    <div class="section-header"><span class="section-id">14C</span><h2 class="section-title">The six surfaces</h2></div>
+    <hr class="section-hr">
+
+    <dl class="surface-grid">
+      <div class="surface-card">
+        <dt class="surface-card-top"><span class="surface-card-name">Modal</span><span class="badge b-utility">Interrupts</span></dt>
+        <dd class="surface-card-body"><span class="surface-card-q">place = lost</span>A task with a commit and a cancel. Centred, heavy scrim, background inert, focus trapped. Two buttons, because leaving costs something.</dd>
+      </div>
+      <div class="surface-card">
+        <dt class="surface-card-top"><span class="surface-card-name">Drawer</span><span class="badge b-brand">Accompanies</span></dt>
+        <dd class="surface-card-body"><span class="surface-card-q">place = kept, beside</span>A companion list or detail on a wide screen. Trailing edge, 460px, lighter scrim. One button, because nothing is pending.</dd>
+      </div>
+      <div class="surface-card">
+        <dt class="surface-card-top"><span class="surface-card-name">Sheet</span><span class="badge b-brand">Accompanies</span></dt>
+        <dd class="surface-card-body"><span class="surface-card-q">place = kept, above</span>The drawer below 768px. Bottom edge, stops 56px short of the top. The gap is the pattern, not a detail of it.</dd>
+      </div>
+      <div class="surface-card">
+        <dt class="surface-card-top"><span class="surface-card-name">Popover</span><span class="badge b-phase">Attaches</span></dt>
+        <dd class="surface-card-body"><span class="surface-card-q">place = never left</span>Belongs to the control that opened it. No scrim, no focus trap, closes on outside click and Escape.</dd>
+      </div>
+      <div class="surface-card">
+        <dt class="surface-card-top"><span class="surface-card-name">Toast</span><span class="badge b-phase">Reports</span></dt>
+        <dd class="surface-card-body"><span class="surface-card-q">not a place at all</span>A consequence of something the user just did. Never takes focus, never blocks, never the only delivery of information needed later.</dd>
+      </div>
+      <div class="surface-card">
+        <dt class="surface-card-top"><span class="surface-card-name">Inline</span><span class="badge b-complete">Cheapest</span></dt>
+        <dd class="surface-card-body"><span class="surface-card-q">no overlay at all</span>Belongs to the row it came from and is short enough to sit under it. Reach for this first — nothing needs to float.</dd>
+      </div>
+    </dl>
+
+    <div class="sub-header"><span class="sub-tag">14C-1</span><h3 class="sub-title">Applied to the workflows that exist today</h3></div>
+    <div class="tbl-wrap">
+      <table>
+        <caption class="sr-only">H2 Prime workflows mapped to overlay surfaces</caption>
+        <thead><tr><th>Workflow</th><th>Surface</th><th>Why</th></tr></thead>
+        <tbody>
+          <tr class="gr"><td colspan="3">Keep as modals — correctly converted</td></tr>
+          <tr><td>Request help</td><td>Modal</td><td>Self-contained task. Nothing behind it is needed to write it.</td></tr>
+          <tr><td>Add document · add ad-hoc document</td><td>Modal</td><td>A form that creates a record.</td></tr>
+          <tr><td>Edit note · reply to thread</td><td>Modal</td><td>Abandoning loses work, which is what Cancel is for.</td></tr>
+          <tr><td>Generate shipping label</td><td>Modal</td><td>Same.</td></tr>
+          <tr><td>Delete anything</td><td>Modal, small</td><td>Irreversible. Must interrupt.</td></tr>
+          <tr class="gr"><td colspan="3">Panels, legitimately</td></tr>
+          <tr><td>Notification centre</td><td>Drawer → sheet under 768px</td><td>A glance the user abandons and returns from.</td></tr>
+          <tr class="gr"><td colspan="3">Neither</td></tr>
+          <tr><td>Row actions · filters · sort</td><td>Popover</td><td>Attached to its trigger.</td></tr>
+          <tr><td>Save · submit confirmation</td><td>Toast</td><td>A consequence, not a task.</td></tr>
+          <tr><td>Contract status detail</td><td>Inline expansion</td><td>Belongs to its row. Currently its own screen — worth revisiting.</td></tr>
+          <tr><td>Form PDF review before filing</td><td>Route</td><td>Too much content for any overlay; the user compares across documents.</td></tr>
+          <tr><td>All notifications — history, bulk</td><td>Route</td><td>The drawer is the glance; the page is the work.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ─────────────────────────────────────────────────────────────────── -->
+  <section class="section" id="s14d">
+    <div class="section-header"><span class="section-id">14D</span><h2 class="section-title">Making a panel legible on a phone</h2></div>
+    <hr class="section-hr">
+
+    <p>This is the part that failed before. On a 390px screen a 460px drawer cannot sit beside anything, so it becomes a sheet — and the moment a sheet covers the viewport, the signal that said “you are still here” is gone. A full-bleed panel, a modal and a new route all look identical. That is precisely the disorientation that got panels banned.</p>
+
+    <p>Four cues restore it. They are not equally important, and saying which does the work matters more than listing them.</p>
+
+    <div class="cue-list">
+      <div class="cue">
+        <span class="cue-num" aria-hidden="true"></span>
+        <div class="cue-body">
+          <div class="cue-title">The peek <em>load-bearing — 56px</em></div>
+          <div class="cue-desc">The sheet stops short of the top and the page behind stays visible. This is the one that matters; switch it off and the other three cannot save it, because there is no longer a page to point at. 56px is one row of the page behind — enough to be recognisable rather than read as a gap. Token: <code>--overlay-sheet-peek</code>.</div>
+        </div>
+      </div>
+      <div class="cue">
+        <span class="cue-num" aria-hidden="true"></span>
+        <div class="cue-body">
+          <div class="cue-title">A translucent scrim <em>load-bearing</em></div>
+          <div class="cue-desc">The peek only works if you can see through to it. An opaque backdrop is a page by another name. The drawer and sheet scrim is deliberately lighter than the modal scrim — 0.45 against 0.60 — because legibility of the thing behind is the point rather than a side effect. Token: <code>--scrim-drawer</code>.</div>
+        </div>
+      </div>
+      <div class="cue">
+        <span class="cue-num" aria-hidden="true"></span>
+        <div class="cue-body">
+          <div class="cue-title">The page recedes <em>supporting</em></div>
+          <div class="cue-desc">The content behind scales back slightly and rounds its corners, which reads as depth rather than replacement. Pleasant and worth having; not what is holding the pattern up.</div>
+        </div>
+      </div>
+      <div class="cue">
+        <span class="cue-num" aria-hidden="true"></span>
+        <div class="cue-body">
+          <div class="cue-title">A grabber <em>supporting</em></div>
+          <div class="cue-desc">A handle is a thing that sits on top of another thing. Screens do not have handles. Cheap, and it advertises drag-to-dismiss — which must never be the only way out; the close button stays. Tokens: <code>--overlay-grabber-width</code>, <code>--overlay-grabber-height</code>.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="ap-grid">
+      <div class="ap-box ap-do">
+        <div class="ap-label">Do</div>
+        <p>Let the sheet stop at the peek, always, at every height.</p>
+        <p>Keep the scrim translucent enough to read the page through.</p>
+        <p>Route to a page when the content genuinely needs the whole screen.</p>
+      </div>
+      <div class="ap-box ap-dont">
+        <div class="ap-label">Don't</div>
+        <p>Let a sheet expand to full height on drag. At that point it is a page pretending.</p>
+        <p>Use an opaque backdrop to “focus” the panel. It removes the only orientation cue.</p>
+        <p>Ship drag-to-dismiss without a close button.</p>
+      </div>
+    </div>
+
+    <div class="callout brand">
+      <div class="callout-label">ADR 14-2 — Answering the mobile question</div>
+      <p><strong>Yes, a panel can be made obvious on a phone — but only by refusing to let it fill the screen.</strong> If the content needs the full viewport, that is the system saying it was never a panel. The previous implementation was not fixable by better animation or better styling; it was a page that had been given a panel's affordances, and no cue survives that.</p>
+    </div>
+  </section>
+
+  <!-- ─────────────────────────────────────────────────────────────────── -->
+  <section class="section" id="s14e">
+    <div class="section-header"><span class="section-id">14E</span><h2 class="section-title">Motion is the grammar</h2></div>
+    <hr class="section-hr">
+
+    <p>Can modal and panel animations be mixed without it feeling arbitrary? The answer is sharper than yes: they <strong>must</strong> differ. The direction a surface arrives from is the fastest signal the user gets about what kind of surface it is, and giving everything the same transition throws that signal away.</p>
+
+    <p>What keeps mixing from feeling arbitrary is not using fewer animations. It is a single rule: <strong>the same kind of content always arrives the same way.</strong> A drawer always comes from the trailing edge. A sheet always comes from the bottom. A modal never slides at all — it rises eight pixels and fades, because a lift is not a journey and a modal has not taken you anywhere.</p>
+
+    <div class="tbl-wrap">
+      <table>
+        <caption class="sr-only">Motion grammar by surface</caption>
+        <thead><tr><th>Surface</th><th>Origin</th><th>Motion</th><th>In</th><th>Out</th><th>Scrim</th><th>What the direction says</th></tr></thead>
+        <tbody>
+          <tr><td>Modal</td><td>Centre</td><td>Fade + 8px rise, 0.98→1</td><td>200ms</td><td>100ms</td><td>0.60</td><td>You stepped away from the page</td></tr>
+          <tr><td>Drawer</td><td>Trailing edge</td><td>Slide X, 100%→0</td><td>300ms</td><td>200ms</td><td>0.45</td><td>Something arrived beside your page</td></tr>
+          <tr><td>Sheet</td><td>Bottom edge</td><td>Slide Y, stops at the peek</td><td>300ms</td><td>200ms</td><td>0.45</td><td>Something rose up over your page</td></tr>
+          <tr><td>Popover</td><td>Its trigger</td><td>Fade + 4px, anchored</td><td>100ms</td><td>100ms</td><td>none</td><td>This belongs to what you clicked</td></tr>
+          <tr><td>Toast</td><td>Bottom</td><td>Fade + 12px rise</td><td>200ms</td><td>200ms</td><td>none</td><td>Something happened; carry on</td></tr>
+          <tr><td>Inline</td><td>In place</td><td>Height only</td><td>200ms</td><td>200ms</td><td>none</td><td>More of what you were reading</td></tr>
+          <tr><td>Route</td><td>—</td><td>None</td><td>—</td><td>—</td><td>—</td><td>You went somewhere else</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout note">
+      <div class="callout-label">Exits are faster than entrances, deliberately</div>
+      <p>Entering is where a surface has to explain itself, so it gets 200–300ms. Leaving is a decision already made, so it gets 100–200ms — waiting for a panel you have already dismissed is the single thing that makes an interface feel slow. Tokens: <code>--duration-modal-in</code> / <code>-out</code>, <code>--duration-drawer-in</code> / <code>-out</code>, <code>--duration-sheet-in</code> / <code>-out</code>.</p>
+    </div>
+
+    <div class="callout warn">
+      <div class="callout-label">Reduced motion</div>
+      <p>Under <code>prefers-reduced-motion: reduce</code>, every overlay duration collapses to 0ms and the modal's rise distance to 0 — handled once in <code>tokens.css</code> §2.22, never per component. The surfaces still read as different, because position and scrim carry the meaning even with the motion gone. That is the test of whether the grammar is real: if removing the animation makes two surfaces indistinguishable, the animation was doing work the layout should have been doing.</p>
+    </div>
+  </section>
+
+  <!-- ─────────────────────────────────────────────────────────────────── -->
+  <section class="section" id="s14f">
+    <div class="section-header"><span class="section-id">14F</span><h2 class="section-title">Nesting</h2></div>
+    <hr class="section-hr">
+
+    <p>Overlay systems rot through nesting, so the rule is short.</p>
+
+    <div class="tbl-wrap">
+      <table>
+        <caption class="sr-only">Nesting rules</caption>
+        <thead><tr><th>Inside a…</th><th>Allowed</th><th>Not allowed</th></tr></thead>
+        <tbody>
+          <tr><td>Modal</td><td>Popover, toast, inline expansion</td><td>Another modal · a drawer · a sheet</td></tr>
+          <tr><td>Drawer / sheet</td><td>Popover, toast, inline expansion, and one confirmation modal</td><td>A second drawer · a second sheet</td></tr>
+          <tr><td>Popover</td><td>Nothing</td><td>Everything</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>A confirmation modal over a drawer is allowed because the two are different kinds — the drawer accompanies, the modal interrupts — so the stack still reads correctly: the modal sits above, the drawer stays put, and closing the modal returns you to the drawer rather than to the page. A modal opening a modal is always a sign the first one was doing two jobs; split it or route it.</p>
+
+    <p>One practical consequence for the notification centre: deleting a notification uses a toast with undo rather than a confirmation modal. Not because the nesting would break, but because a modal would interrupt a glance — and the deleted item is recoverable for thirty days regardless.</p>
+  </section>
+
+  <!-- ─────────────────────────────────────────────────────────────────── -->
+  <section class="section" id="s14g">
+    <div class="section-header"><span class="section-id">14G</span><h2 class="section-title">Accessibility model</h2></div>
+    <hr class="section-hr">
+
+    <p>Behaviour follows from the surface, not from the component. These are not per-component choices, and a component that departs from them is wrong rather than special.</p>
+
+    <div class="tbl-wrap">
+      <table>
+        <caption class="sr-only">Accessibility behaviour by surface</caption>
+        <thead><tr><th>Surface</th><th>Role</th><th>Focus</th><th>Escape</th><th>Background</th><th>Announce</th></tr></thead>
+        <tbody>
+          <tr><td>Modal</td><td><code>dialog</code> + <code>aria-modal</code></td><td>Trapped. To the heading on open, to the trigger on close</td><td>Closes, as Cancel</td><td><code>inert</code></td><td>Labelled by its heading</td></tr>
+          <tr><td>Drawer</td><td><code>dialog</code> + <code>aria-modal</code></td><td>Trapped. Same rules</td><td>Closes</td><td><code>inert</code></td><td>Labelled by its heading</td></tr>
+          <tr><td>Sheet</td><td><code>dialog</code> + <code>aria-modal</code></td><td>Trapped. Same rules</td><td>Closes</td><td><code>inert</code></td><td>Labelled by its heading</td></tr>
+          <tr><td>Popover</td><td><code>menu</code> or non-modal <code>dialog</code></td><td>Moves in, not trapped. Returns to trigger</td><td>Closes</td><td>Stays live</td><td>Trigger carries <code>aria-expanded</code></td></tr>
+          <tr><td>Toast</td><td><code>status</code>, <code>aria-live="polite"</code></td><td>Never takes focus</td><td>No</td><td>Stays live</td><td>Once, debounced</td></tr>
+          <tr><td>Inline</td><td>None needed</td><td>Stays where it was</td><td>No</td><td>Stays live</td><td>Trigger carries <code>aria-expanded</code></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout do">
+      <div class="callout-label">Prefer the platform</div>
+      <p><code>&lt;dialog&gt;</code> with <code>showModal()</code> provides the focus trap, Escape handling and an inert background without a line of script, and the top layer removes z-index fights entirely. Hand-rolled focus traps are a recurring source of defects; reach for one only when the surface genuinely cannot be a <code>dialog</code>.</p>
+    </div>
+
+    <div class="callout dont">
+      <div class="callout-label">The defect that is invisible until someone tabs</div>
+      <p>Focus must return to the trigger on <em>every</em> close path — Escape, the close button, a scrim click, the confirm button, and the case where the thing you were looking at no longer exists. Missing one path is the most common overlay bug in any system and it never shows up in a visual review.</p>
+    </div>
+
+    <div class="callout note">
+      <div class="callout-label">A panel that leaves the page usable is a different component</div>
+      <p>If a surface carries a scrim and makes the background inert, it is modal and must behave modally. A genuinely non-modal inspector panel — no scrim, no trap, page still editable — is a separate component and is deliberately not in this system yet. Add one when a real workflow needs it, not in anticipation.</p>
+    </div>
+  </section>
+
+  <!-- ─────────────────────────────────────────────────────────────────── -->
+  <section class="section" id="s14h">
+    <div class="section-header"><span class="section-id">14H</span><h2 class="section-title">Tokens</h2></div>
+    <hr class="section-hr">
+
+    <p>Added to <code>tokens.css</code> §2.21–§2.22 as part of this section, so a modal, a drawer and a sheet are one system rather than three improvisations.</p>
+
+    <div class="tbl-wrap">
+      <table>
+        <caption class="sr-only">Overlay tokens</caption>
+        <thead><tr><th>Token</th><th>Value</th><th>Notes</th></tr></thead>
+        <tbody>
+          <tr class="gr"><td colspan="3">Scrims</td></tr>
+          <tr><td><code>--scrim</code></td><td>rgba(28,27,30,.60)</td><td>Modal. Heavier on purpose.</td></tr>
+          <tr><td><code>--scrim-drawer</code></td><td>rgba(28,27,30,.45) · dark rgba(0,0,0,.55)</td><td>Drawer and sheet. Lighter so the page reads through.</td></tr>
+          <tr class="gr"><td colspan="3">Geometry</td></tr>
+          <tr><td><code>--overlay-modal-width-sm / -md / -lg</code></td><td>420 / 560 / 760px</td><td>Capped so a modal never approaches full width.</td></tr>
+          <tr><td><code>--overlay-drawer-width</code></td><td>460px</td><td>≈52 characters at the 18px base — inside a comfortable measure.</td></tr>
+          <tr><td><code>--overlay-sheet-peek</code></td><td>56px</td><td>The load-bearing cue. One row of the page behind.</td></tr>
+          <tr><td><code>--overlay-sheet-max-height</code></td><td>88dvh</td><td><code>dvh</code>, not <code>vh</code> — mobile browser chrome.</td></tr>
+          <tr><td><code>--overlay-grabber-width / -height</code></td><td>36 / 4px</td><td>Handle.</td></tr>
+          <tr><td><code>--h2p-radius-sheet</code></td><td>16px</td><td>Top corners only. A square top edge reads as a page.</td></tr>
+          <tr class="gr"><td colspan="3">Motion</td></tr>
+          <tr><td><code>--duration-modal-in / -out</code></td><td>200 / 100ms</td><td>Exit faster than entry.</td></tr>
+          <tr><td><code>--duration-drawer-in / -out</code></td><td>300 / 200ms</td><td>Longer travel, longer duration.</td></tr>
+          <tr><td><code>--duration-sheet-in / -out</code></td><td>300 / 200ms</td><td>Matches the drawer — same surface, different edge.</td></tr>
+          <tr><td><code>--overlay-modal-offset</code></td><td>8px</td><td>Rise distance. 0 under reduced motion.</td></tr>
+          <tr><td><code>--ease-overlay-in / -out</code></td><td><code>--ease-out</code> / <code>--ease-in</code></td><td>Decelerate in, accelerate out.</td></tr>
+          <tr class="gr"><td colspan="3">Elevation and type</td></tr>
+          <tr><td><code>--elevation-drawer</code> · <code>--elevation-sheet</code></td><td><code>--h2p-shadow-xl</code></td><td>Same tier as modal — all three are top-layer.</td></tr>
+          <tr><td><code>--type-overlay-title-*</code></td><td>Inter semibold 22px</td><td>Deliberately not the modal title's display voice — see below.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout brand">
+      <div class="callout-label">ADR 14-3 — Two title roles, not one</div>
+      <p><code>--type-modal-title-*</code> is Barlow Semi Condensed at 26px; <code>--type-overlay-title-*</code> is Inter semibold at 22px. The difference is not decoration. A modal announces itself and borrows the display voice to do it; a drawer is a companion to the page and takes the quieter body-family heading. Typeface is one more thing telling the user which kind of surface they are looking at, and it keeps working when the motion has been turned off.</p>
+    </div>
+  </section>
+
+  <!-- ─────────────────────────────────────────────────────────────────── -->
+  <section class="section" id="s14i">
+    <div class="section-header"><span class="section-id">14I</span><h2 class="section-title">Open items</h2></div>
+    <hr class="section-hr">
+
+    <p>Flagged rather than settled, in keeping with how the rest of this guide handles things that have not had a dedicated pass.</p>
+
+    <div class="tbl-wrap">
+      <table>
+        <caption class="sr-only">Open items for the overlay system</caption>
+        <thead><tr><th>Item</th><th>Recommendation</th><th>Status</th></tr></thead>
+        <tbody>
+          <tr><td>Breakpoint where a drawer becomes a sheet</td><td>768px — below it a 460px drawer leaves too little page beside it to read as a layer, and the bottom edge is closer to the thumb</td><td><span class="badge b-wip">Proposed</span></td></tr>
+          <tr><td>Drag-to-dismiss on sheets</td><td>Yes, advertised by the grabber, never the only way out</td><td><span class="badge b-wip">Proposed</span></td></tr>
+          <tr><td>Existing modal sizes</td><td>Re-audit. Several Figma modals run near-full-screen at 1512px, which puts them back in the “is this a page?” zone from the other direction</td><td><span class="badge b-planned">To do</span></td></tr>
+          <tr><td>Non-modal inspector panel</td><td>Not in the system. Add only when a workflow needs the page editable while a panel is open</td><td><span class="badge b-planned">Deferred</span></td></tr>
+          <tr><td>Contract status detail</td><td>Currently its own screen; the content suggests inline expansion</td><td><span class="badge b-planned">To review</span></td></tr>
+          <tr><td>Framework mapping</td><td>How these map onto shadcn-svelte Dialog, Sheet and Popover belongs in §09 rather than here</td><td><span class="badge b-planned">To do</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+</main>
+
+  <footer class="page-footer">
+    <div>Section 14 — Overlay &amp; Surface System &nbsp;·&nbsp; H2 Prime Web Application Design System &nbsp;·&nbsp; v1.1<br>
+      <a href="h2p-section-13a-figma-variables.html">← Section 13A — Figma Variables</a> &nbsp;·&nbsp;
+      <a href="h2p-cover.html">Index</a> &nbsp;·&nbsp;
+      <a href="h2p-notification-center-figma-build-2026-10-25.html">Notification Center — Figma build record →</a><br>
+      <a href="h2p-section-13a-amendment-2026-10-25.html">13A Amendment — 2026-10-25</a> &nbsp;·&nbsp;
+      <span style="color:var(--t3)">First applied in the Notification Center build — see the build record for what the rules cost in practice.</span></div>
+    <div style="text-align:right">Last updated: 2026-10-25<br>Drawer width corrected to 524px</div>
+  </footer>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Notification Center — Figma Build Record — H2 Prime Design System</title>
+  <link rel="stylesheet" href="h2p-shared.css">
+<style>
+  .node { font-family: var(--fm); font-size: 11px; color: var(--t3); }
+  .num  { font-family: var(--fm); font-size: 12px; white-space: nowrap; }
+  .pass { color: #6EE7B7; font-weight: 600; }
+  .fail { color: #FCA5A5; font-weight: 600; }
+  .warnv{ color: #FCD34D; font-weight: 600; }
+  .defn { display: grid; grid-template-columns: minmax(10rem, 17rem) 1fr; gap: 0; margin: .75rem 0 1.5rem;
+          border: 1px solid var(--b1); border-radius: 8px; overflow: hidden; }
+  .defn > dt { background: var(--r); border-bottom: 1px solid var(--b1); padding: 9px 12px;
+               font-size: 13px; font-weight: 500; color: var(--t1); }
+  .defn > dd { border-bottom: 1px solid var(--b1); padding: 9px 12px; font-size: 12.5px;
+               color: var(--t2); line-height: 1.6; }
+  .defn > dt:nth-last-of-type(1), .defn > dd:nth-last-of-type(1) { border-bottom: none; }
+  .finding { background: var(--s); border: 1px solid var(--b1); border-left: 3px solid var(--b3);
+             border-radius: 8px; padding: 14px 16px; margin-bottom: 1rem; }
+  .finding.defect { border-left-color: var(--danger); }
+  .finding.gap    { border-left-color: var(--warning); }
+  .finding h3 { font-size: 14px; font-weight: 600; color: var(--t1); margin-bottom: .5rem; }
+  .finding p:last-child { margin-bottom: 0; }
+  @media (max-width: 640px) { .defn { grid-template-columns: 1fr; } .defn > dt { border-bottom: none; } }
+</style>
+</head>
+<body>
+
+<a class="skip-link" href="#main-content">Skip to content</a>
+
+<nav class="guide-nav" aria-label="Style guide navigation">
+  <div class="guide-nav-left">
+    <a href="h2p-cover.html" class="guide-nav-home">
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+        <path d="M1 7L7 1l6 6M2.5 5.5V13h3v-3h3v3h3V5.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      H2 Prime Design System
+    </a>
+    <div class="guide-nav-divider" aria-hidden="true"></div>
+    <span class="guide-nav-section">Notification Center — Figma Build Record</span>
+  </div>
+  <div class="guide-nav-right">
+    <a href="h2p-section-14-overlay-surface-system.html" class="guide-nav-btn">← 14 — Overlay &amp; Surface</a>
+    <a href="h2p-cover.html" class="guide-nav-btn primary">Index  →</a>
+  </div>
+</nav>
+
+<div class="page-wrap">
+<main id="main-content">
+
+  <div class="doc-header">
+    <div class="doc-kicker">H2 Prime Web Application Design System &amp; Guidelines</div>
+    <h1 class="doc-title">Section — <strong>Notification Center — Figma Build Record</strong></h1>
+    <p class="doc-lead">What was built on the <strong>↳ Notification Center</strong> page of <em>H2 Prime 2025</em>, which library components and tokens it is made of, and the six things the build turned up that the style guide did not yet say. This is a record of a first draft, not a specification — the pattern itself is still unwritten as a numbered section. It is filed here because it is the first real application of <a href="h2p-section-14-overlay-surface-system.html">Section 14</a> and the first consumer of the variables in <a href="h2p-section-13a-figma-variables.html">Section 13A</a>, and both of those gained corrections as a result.</p>
+    <div class="doc-meta">
+      <div class="doc-meta-item"><strong>Figma file</strong>H2 Prime 2025 — page ↳ Notification Center</div>
+      <div class="doc-meta-item"><strong>Sections built</strong>5 — drawer, states, dark, full page, full page dark</div>
+      <div class="doc-meta-item"><strong>Roles</strong>Client, Filer, Admin — all three, both modes</div>
+      <div class="doc-meta-item"><strong>New local components</strong>2</div>
+      <div class="doc-meta-item"><strong>Defects found</strong>4 — one fixed in the build, all four open in the library</div>
+      <div class="doc-meta-item"><strong>Last updated</strong>2026-10-25</div>
+    </div>
+  </div>
+
+  <div class="toc">
+    <div class="toc-label">On this page</div>
+    <div class="toc-cols">
+      <ul class="toc-list">
+        <li><span class="toc-num">A</span><a href="#nc-a">What is on the page</a></li>
+        <li><span class="toc-num">B</span><a href="#nc-b">Table vs. cards</a></li>
+      </ul>
+      <ul class="toc-list">
+        <li><span class="toc-num">C</span><a href="#nc-c">What it is made of</a></li>
+        <li><span class="toc-num">D</span><a href="#nc-d">Six findings</a></li>
+      </ul>
+      <ul class="toc-list">
+        <li><span class="toc-num">E</span><a href="#nc-e">Contrast check</a></li>
+        <li><span class="toc-num">F</span><a href="#nc-f">Carried over &amp; not done</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ══ A ══════════════════════════════════════════════════════════════ -->
+  <section class="section" id="nc-a">
+    <div class="section-header"><span class="section-id">A</span><h2 class="section-title">What is on the page</h2></div>
+    <hr class="section-hr">
+    <p>Five sections, all on the <code>↳ Notification Center</code> page. Node ids are given so the record stays usable after the page is reorganised.</p>
+
+    <dl class="defn">
+      <dt>Light Mode <span class="node">62749:11413</span></dt>
+      <dd>The three existing dashboard frames — client, filer, admin — each with the notification drawer open over the live dashboard. Same drawer, three volumes of traffic: 14 unread for a grower, 127 for a filer working a book of clients, 36 for a platform admin.</dd>
+
+      <dt>Anatomy, states &amp; mobile <span class="node">62763:7126</span></dt>
+      <dd>Five cases side by side: empty, loading, could-not-load, row actions (menu, destructive confirm, undo toast), and the mobile sheet at 390&nbsp;×&nbsp;844 with its 56px peek.</dd>
+
+      <dt>Dark Mode <span class="node">62764:3009</span></dt>
+      <dd>The same three dashboards with the <em>H2 Prime Semantic</em> and shadcn <em>Mode</em> collections switched to dark at frame level — the mode the product actually defaults to, rather than only the light-mode section the work was asked for.</dd>
+
+      <dt>Full page · <code>/notifications</code> <span class="node">62768:7141</span></dt>
+      <dd>The secondary surface, built inside each role's real app shell: breadcrumb, page title with totals, a search-and-filter toolbar, a bulk-action bar with a live selection, an eight-row table and pagination. 38 notifications for the client, 1,284 for the filer, 3,902 for the admin.</dd>
+
+      <dt>Full page · Dark Mode <span class="node">62771:7164</span></dt>
+      <dd>The same three routes in dark.</dd>
+    </dl>
+  </section>
+
+  <!-- ══ B ══════════════════════════════════════════════════════════════ -->
+  <section class="section" id="nc-b">
+    <div class="section-header"><span class="section-id">B</span><h2 class="section-title">Why the page is a table and the drawer is not</h2></div>
+    <hr class="section-hr">
+    <p>The two surfaces answer different questions, so they are not the same list at two widths.</p>
+    <div class="ap-grid">
+      <div class="ap-box ap-do">
+        <div class="ap-label">Drawer — triage</div>
+        <p>You are on your way to something else and not leaving the page, so each notification is a card: icon, title, two lines of body, a context badge. It optimises for reading one item and deciding whether to act.</p>
+      </div>
+      <div class="ap-box ap-do">
+        <div class="ap-label">Page — volume</div>
+        <p>A filer with 127 unread is not reading; they are scanning for a pattern and then acting on several things at once. So it is a table with scannable columns and no body copy, plus search, full-history filters and multi-select bulk actions.</p>
+      </div>
+    </div>
+    <p>This is also what makes undo honest. The drawer can delete, but the 30-day recovery bin lives on the page — the <em>Deleted</em> option in the Status filter — so a deletion is never gone from the one surface that could get it back.</p>
+  </section>
+
+  <!-- ══ C ══════════════════════════════════════════════════════════════ -->
+  <section class="section" id="nc-c">
+    <div class="section-header"><span class="section-id">C</span><h2 class="section-title">What it is made of</h2></div>
+    <hr class="section-hr">
+
+    <div class="sub-header"><span class="sub-tag">C.1</span><h3 class="sub-title">Two new local components</h3></div>
+    <p>The shadcn library has no list-row primitive, so the row is the one thing that had to be built. It is a real component with properties, not a drawn group — which is what makes the volume differences between roles cheap to maintain.</p>
+    <dl class="defn">
+      <dt><code>H2P/Notification Row</code></dt>
+      <dd>Unread marker, type-icon tile, title, two-line clamped body, context badge, timestamp, row menu. Properties: <code>Title</code>, <code>Body</code>, <code>Time</code> (text); <code>Unread</code>, <code>Show context badge</code>, <code>Show row menu</code> (boolean); <code>Type icon</code> (instance swap). Fills the drawer width, hugs height.</dd>
+      <dt><code>H2P/Notification Group Header</code></dt>
+      <dd>The <em>NEW</em> / <em>EARLIER</em> date-group label with a count. Properties: <code>Label</code>, <code>Count</code>.</dd>
+    </dl>
+
+    <div class="sub-header"><span class="sub-tag">C.2</span><h3 class="sub-title">Library components used as-is</h3></div>
+    <p>Everything else is an instance from <em>H2 Prime shadcn-studio Library</em>: <code>Sheet</code> (Type=Right) as the drawer shell, <code>Tabs for Blocks</code> and <code>Tab item</code> for the filter tabs, <code>Separator</code>, <code>Soft Badge</code>, <code>Ghost Icon Button</code>, <code>Link Button</code>, <code>Outline Button</code>, <code>Solid Button</code>, <code>Skeleton</code>, <code>Dropdown</code>, <code>Check Box</code>, <code>Default Select</code>, <code>Default Input</code>, <code>Pagination</code>, <code>Breadcrumbs</code>, and the Lucide icon components.</p>
+    <p>Colour, radius and type come from <em>H2 Prime Variables Library</em> and the shared text styles. No hardcoded hex values were introduced. The one exception is the full page's table grid, which is hand-built: the library's <code>table-cell</code> is a fixed 192px and Figma does not allow an instance sub-layer to be resized.</p>
+  </section>
+
+  <!-- ══ D ══════════════════════════════════════════════════════════════ -->
+  <section class="section" id="nc-d">
+    <div class="section-header"><span class="section-id">D</span><h2 class="section-title">Six things the build turned up</h2></div>
+    <hr class="section-hr">
+    <p>Four are defects or gaps in the system rather than in this feature. They are ordered by reach, not by when they were found.</p>
+
+    <article class="finding defect">
+      <h3>1 · The library Soft Badge fails AA and breaks in dark mode</h3>
+      <p>A live defect reaching every badge in the product, not just this feature. <code>Soft Badge</code> paints its pill with <strong>two</strong> fills: a base bound to a surface token, and an <code>opacity/*/60</code> tint on top. The base adapts to dark mode and the tint does not — it stays a light neutral in both modes. So in dark the pill stays pale while the label flips to near-white.</p>
+      <div class="tbl-wrap">
+        <table>
+          <caption class="sr-only">Soft Badge contrast as shipped, measured from resolved fills</caption>
+          <thead><tr><th>Badge</th><th>Composited pill</th><th>Label</th><th>Ratio</th><th>AA 4.5:1</th></tr></thead>
+          <tbody>
+            <tr><td>Informational · dark</td><td class="num">#9B9C9F</td><td class="num">#FBFCFD</td><td class="num">2.64</td><td class="fail">Fails</td></tr>
+            <tr><td>Action needed · light</td><td class="num">#FCF4E7</td><td class="num">#D97706</td><td class="num">2.92</td><td class="fail">Fails</td></tr>
+            <tr><td>Attention · dark</td><td class="num">#13222C</td><td class="num">#3B82F6</td><td class="num">4.42</td><td class="warnv">Marginal</td></tr>
+            <tr><td>Informational · light</td><td class="num">#F8F8F9</td><td class="num">#15171B</td><td class="num">16.33</td><td class="pass">Passes</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>The badge carrying the most urgent meaning in the system — <em>Action needed</em> — was the least legible of the set. Note also that <strong>Soft Badge never used H2 Prime's feedback tokens at all</strong>; it uses the shadcn library's own neutrals and tints, so the feedback-token contrast verified in §E was not what the badges were rendering.</p>
+      <div class="callout warn">
+        <div class="callout-label">Fixed in the build; still open in the library</div>
+        <p>All <strong>92 badge instances</strong> across the drawer, the states section and the full page, in both modes, were rebound to <code>feedback-*/surface</code> and <code>feedback-*/text</code> — one fill, no opacity tint. Re-measured afterwards: <strong>22 distinct pairings, zero failures, worst case 6.84:1</strong>, most clearing AAA. The same change belongs in the component, or every future screen reintroduces the defect.</p>
+      </div>
+    </article>
+
+    <article class="finding defect">
+      <h3>2 · Neither border token reaches 3:1 in light mode</h3>
+      <p>The separators are what give the drawer's list its structure. Measured against <code>surface/raised</code>:</p>
+      <div class="tbl-wrap">
+        <table>
+          <caption class="sr-only">Border token contrast against surface/raised</caption>
+          <thead><tr><th>Token</th><th>Light</th><th>Dark</th><th>Verdict</th></tr></thead>
+          <tbody>
+            <tr><td><code>border/default</code> <span class="num">#D6D9DE</span></td><td class="num">1.42:1</td><td class="num">2.46:1</td><td class="fail">Effectively invisible in light</td></tr>
+            <tr><td><code>border/strong</code> <span class="num">#959AA1</span></td><td class="num">2.83:1</td><td class="num">3.70:1</td><td class="warnv">Usable; just short in light</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>All <strong>46 separators</strong> in the build were repointed to <code>border/strong</code> — double the light-mode contrast of where they started. Row separators are decorative rather than UI-component boundaries, so SC 1.4.11 does not formally bind, but a 1.42:1 line is not doing the job it was put there to do.</p>
+      <div class="callout note">
+        <div class="callout-label">One-line fix available</div>
+        <p>Darkening light-mode <code>border/strong</code> from <code>#959AA1</code> to about <code>#8E939A</code> takes it to <strong>3.28:1</strong> and clears the non-text threshold outright. The token is already nearly there, and it would let the system claim 3:1 on structural borders in both modes.</p>
+      </div>
+    </article>
+
+    <article class="finding gap">
+      <h3>3 · The library runs on Geist; H2 Prime's own styles run on Inter</h3>
+      <p>Every <code>Tailwind/*</code> text style in the shadcn library resolves to <strong>Geist</strong>. The H2 Prime <code>Heading/*</code> and <code>Body/*</code> styles resolve to <strong>Inter</strong>. Both are in use in this build — library component internals are Geist, the row text is Geist via <code>Tailwind/SM/*</code>, and anything using an H2 Prime heading style is Inter.</p>
+      <p>This is a real fork in the type system and it is recorded nowhere else. It needs a decision before the Notification Center ships: either H2 Prime adopts Geist and the Inter styles are retired, or the library's Tailwind styles are rebound to Inter. Mixing them is the one option that should not survive.</p>
+    </article>
+
+    <article class="finding gap">
+      <h3>4 · The drawer's close button is 16&nbsp;×&nbsp;16</h3>
+      <p>The <code>Sheet</code> component's close affordance is a 16px icon button. WCAG 2.2 SC 2.5.8 (Target Size, Minimum, AA) wants 24&nbsp;×&nbsp;24. It cannot be resized from an instance, so this is a library fix, not a screen fix. Everything else in the drawer clears it: the row menu buttons are 24, the bell trigger is 32, and the footer button is 32 tall and full width.</p>
+    </article>
+
+    <article class="finding">
+      <h3>5 · The drawer is 524px wide, not the 420 in Section 14</h3>
+      <p>Section 14 specified a 420px drawer. The library <code>Sheet</code> is 524px, and Figma does not permit size overrides on instance sub-layers — <code>maxWidth</code> returns <em>“This property cannot be overridden in an instance”</em>. So the choice was a 524px drawer built from the real component, or a 420px drawer that is a detached copy and stops tracking the library.</p>
+      <p><strong>Built at 524.</strong> Inheriting the library's geometry is the point of using the component, and 524 is comfortable for a two-line body at 14px. <a href="h2p-section-14-overlay-surface-system.html">Section 14</a> has been amended to 524 rather than the Figma file being bent to match the doc. If 420 is genuinely wanted, that is a change to the <code>Sheet</code> component, not an override here.</p>
+    </article>
+
+    <article class="finding gap">
+      <h3>6 · Two token families the style guide assumes are not in Figma</h3>
+      <p>Searching <em>H2 Prime Variables Library</em> returns nothing for <code>theme/*</code> or for any scrim or overlay token. The per-role accent (Client yellow, Filer sky, Admin violet) and the overlay scrims exist in <code>tokens.css</code> but have no Figma counterpart, so the drawer's scrim is currently inherited from the shadcn library's own overlay variable rather than from an H2 Prime token. This is the same gap <a href="h2p-section-13a-figma-variables.html">Section 13A</a> flagged for theme highlights, now reaching a second surface.</p>
+    </article>
+  </section>
+
+  <!-- ══ E ══════════════════════════════════════════════════════════════ -->
+  <section class="section" id="nc-e">
+    <div class="section-header"><span class="section-id">E</span><h2 class="section-title">Contrast check</h2></div>
+    <hr class="section-hr">
+    <p>Every colour pairing the drawer introduces, resolved from the variables themselves in both modes. Everything below passes; the two border rows that did not are finding 2 above.</p>
+    <div class="tbl-wrap">
+      <table>
+        <caption class="sr-only">Measured contrast ratios against AA thresholds</caption>
+        <thead><tr><th>Pairing</th><th>Light</th><th>Dark</th><th>Needs</th></tr></thead>
+        <tbody>
+          <tr><td><code>text/primary</code> on <code>surface/raised</code></td><td class="num pass">17.94</td><td class="num pass">17.47</td><td class="num">4.5</td></tr>
+          <tr><td><code>text/secondary</code> on <code>surface/raised</code></td><td class="num pass">10.59</td><td class="num pass">12.68</td><td class="num">4.5</td></tr>
+          <tr><td><code>text/tertiary</code> on <code>surface/raised</code></td><td class="num pass">7.28</td><td class="num pass">6.34</td><td class="num">4.5</td></tr>
+          <tr><td><code>text/primary</code> on <code>surface/subtle</code></td><td class="num pass">15.30</td><td class="num pass">14.02</td><td class="num">4.5</td></tr>
+          <tr><td>Unread dot <code>feedback-info/solid</code> on <code>surface/raised</code></td><td class="num pass">5.17</td><td class="num pass">4.88</td><td class="num">3</td></tr>
+          <tr><td>Action-needed badge text on its surface <em>(after rebinding)</em></td><td class="num pass">6.84</td><td class="num pass">12.32</td><td class="num">4.5</td></tr>
+          <tr><td>Phase / Attention badge text on its surface</td><td class="num pass">8.01</td><td class="num pass">9.47</td><td class="num">4.5</td></tr>
+          <tr><td>Certified badge text on its surface</td><td class="num pass">6.81</td><td class="num pass">12.63</td><td class="num">4.5</td></tr>
+          <tr><td>System / danger badge text on its surface</td><td class="num pass">9.10</td><td class="num pass">9.56</td><td class="num">4.5</td></tr>
+          <tr><td>Warning icon on its tile</td><td class="num pass">3.07</td><td class="num pass">8.27</td><td class="num">3</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>The light-mode warning icon at 3.07:1 clears by a hair. Worth knowing that it has no margin if the warning surface is ever lightened.</p>
+  </section>
+
+  <!-- ══ F ══════════════════════════════════════════════════════════════ -->
+  <section class="section" id="nc-f">
+    <div class="section-header"><span class="section-id">F</span><h2 class="section-title">Carried over from Section 14, and what is still missing</h2></div>
+    <hr class="section-hr">
+
+    <div class="sub-header"><span class="sub-tag">F.1</span><h3 class="sub-title">Rules applied, not re-argued</h3></div>
+    <p>The build is an application of the overlay rules. Four show up directly:</p>
+    <div class="tbl-wrap">
+      <table>
+        <caption class="sr-only">Section 14 rules as applied in this build</caption>
+        <thead><tr><th>Rule</th><th>How it lands here</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Drawer, not modal</strong></td><td>The dashboard underneath is still the user's place — a glance on the way to something else — so the page recedes behind a translucent scrim instead of being replaced. The drawer is non-modal: it does not make the page inert.</td></tr>
+          <tr><td><strong>ADR 14-1 — the trace rule</strong></td><td>The navbar bell carries an active surface and border alongside its unread dot in all six frames, so the open drawer is anchored to a specific control rather than floating free. The trigger is 32&nbsp;×&nbsp;32, clearing SC 2.5.8.</td></tr>
+          <tr><td><strong>The destructive confirm is a modal</strong></td><td>Deleting is the one action in the drawer not reversible by the drawer itself, so it gets a surface that takes over; the undo lives in a toast afterwards. The row menu, which is reversible, stays in place.</td></tr>
+          <tr><td><strong>ADR 14-2 — mobile keeps the peek</strong></td><td>The sheet stops 56px short of the top and the scrim stays translucent, so the page underneath reads as a place you are still in. That was the load-bearing cue in the overlay prototype's mobile test — the other three cues cannot save it once it is gone.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="sub-header"><span class="sub-tag">F.2</span><h3 class="sub-title">Not done yet</h3></div>
+    <div class="ap-grid">
+      <div class="ap-box ap-dont">
+        <div class="ap-label">Still missing from the Figma build</div>
+        <p>The three detail types — specified and wireframed in HTML, but not built in Figma.</p>
+        <p>Row hover, focus and selected states as a state set.</p>
+        <p>Table column sorting: the headers imply it, no sorted state is drawn.</p>
+        <p>The page's own empty and loading states — only the drawer's exist.</p>
+        <p>Notification preferences, the surface the empty state points at, is unscoped.</p>
+      </div>
+      <div class="ap-box ap-dont">
+        <div class="ap-label">Blocking the system, not this feature</div>
+        <p>Both libraries still need publishing before the new variables and text styles reach other files.</p>
+        <p>Soft Badge, <code>border/strong</code>, the Geist/Inter fork and the Sheet close button are all library-side fixes — see §D.</p>
+        <p><code>theme/*</code> and scrim tokens are still absent from the Variables Library.</p>
+      </div>
+    </div>
+  </section>
+
+</main>
+  <footer class="page-footer">
+    <div>Notification Center — Figma Build Record &nbsp;·&nbsp; H2 Prime Web Application Design System<br>
+      <a href="h2p-section-14-overlay-surface-system.html">← Section 14 — Overlay &amp; Surface System</a> &nbsp;·&nbsp;
+      <a href="h2p-cover.html">Index</a> &nbsp;·&nbsp;
+      <a href="h2p-section-13a-figma-variables.html">Section 13A — Figma Variables</a> &nbsp;·&nbsp;
+      <a href="h2p-section-13a-amendment-2026-10-25.html">13A Amendment</a><br>
+      <span style="color:var(--t3)">A record of a first draft. The notification pattern itself is not yet written up as a numbered section.</span></div>
+    <div style="text-align:right">Last updated: 2026-10-25<br>5 Figma sections · 3 roles · both modes</div>
+  </footer>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Section 13A Amendment — 2026-10-25 — H2 Prime Design System</title>
+  <link rel="stylesheet" href="h2p-shared.css">
+<style>
+.chg { font-family: var(--fm); font-size: 11px; }
+.was { color: #FCA5A5; }
+.now { color: #6EE7B7; }
+.ratio { font-family: var(--fm); font-size: 11px; color: var(--t2); white-space: nowrap; }
+.added-tag { font-family: var(--fm); font-size: 9px; font-weight: 700; letter-spacing: .05em; padding: 1px 6px; border-radius: 3px; background: #064E3B; color: #6EE7B7; border: 1px solid #1A4A2E; }
+.edit-tag  { font-family: var(--fm); font-size: 9px; font-weight: 700; letter-spacing: .05em; padding: 1px 6px; border-radius: 3px; background: #3B2600; color: #FCD34D; border: 1px solid #6B4500; }
+.open-tag  { font-family: var(--fm); font-size: 9px; font-weight: 700; letter-spacing: .05em; padding: 1px 6px; border-radius: 3px; background: #1C1C22; color: var(--t3); border: 1px solid var(--b2); }
+
+.summary-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; margin: 1rem 0 2rem; }
+.sum { background: var(--s); border: 1px solid var(--b1); border-radius: 10px; padding: 14px 16px; }
+.sum b { display: block; font-size: 26px; font-weight: 700; color: var(--t1); font-variant-numeric: tabular-nums; line-height: 1.1; }
+.sum span { display: block; font-size: 12px; color: var(--t2); margin-top: 4px; line-height: 1.5; }
+
+pre.code { background: var(--code); border: 1px solid var(--b1); border-radius: 8px; padding: 14px 16px; overflow-x: auto; margin: .75rem 0; }
+pre.code code { background: none; border: none; padding: 0; font-size: 12px; color: var(--t2); line-height: 1.6; }
+</style>
+</head>
+<body>
+
+<a class="skip-link" href="#main-content">Skip to content</a>
+
+<nav class="guide-nav" aria-label="Style guide navigation">
+  <div class="guide-nav-left">
+    <a href="h2p-cover.html" class="guide-nav-home">
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+        <path d="M1 7L7 1l6 6M2.5 5.5V13h3v-3h3v3h3V5.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      H2 Prime Design System
+    </a>
+    <div class="guide-nav-divider" aria-hidden="true"></div>
+    <span class="guide-nav-section">13A — Amendment</span>
+  </div>
+  <div class="guide-nav-right">
+    <a href="h2p-section-13a-figma-variables.html" class="guide-nav-btn">← 13A — Figma Variable Reference</a>
+    <a href="h2p-section-14-overlay-surface-system.html" class="guide-nav-btn primary">14 — Overlay & Surface System →</a>
+  </div>
+</nav>
+
+<div class="page-wrap">
+<main id="main-content">
+
+  <header class="doc-header">
+    <div class="doc-kicker">H2 Prime Web Application Design System &amp; Guidelines</div>
+    <h1 class="doc-title">Section 13A — <strong>Figma Library Sync — Token Correctness Pass</strong></h1>
+    <p class="doc-lead">What changed in the H2 Prime Figma libraries to match <code>tokens.css</code> v2, what was deliberately left alone, and the evidence behind each call. Written as an amendment rather than folded into Section 13A because 13A documents the <em>architecture</em>, and this documents a dated <em>migration</em> — the two age differently.</p>
+    <div class="doc-meta">
+      <div class="doc-meta-item"><strong>Date</strong>2026-10-25</div>
+      <div class="doc-meta-item"><strong>Files touched</strong>H2 Prime Variables Library · H2 Prime shadcn-studio Library</div>
+      <div class="doc-meta-item"><strong>Driver</strong><code>tokens.css</code> v2 correctness pass</div>
+      <div class="doc-meta-item"><strong>Verification</strong>38 pairings measured in Figma · 175 in CSS</div>
+      <div class="doc-meta-item"><strong>Status</strong>Applied — library needs publishing</div>
+    </div>
+  </header>
+
+  <div class="summary-grid">
+    <div class="sum"><b>11</b><span>semantic variables added</span></div>
+    <div class="sum"><b>1</b><span>existing value corrected</span></div>
+    <div class="sum"><b>19</b><span>Code Syntax strings repointed</span></div>
+    <div class="sum"><b>2</b><span>typography additions</span></div>
+    <div class="sum"><b>0</b><span>deletions</span></div>
+  </div>
+
+  <div class="callout warn">
+    <div class="callout-label">Do this first — the library has to be published</div>
+    <p>Everything below is applied to the library files but <strong>not yet published</strong>. Until the H2 Prime Variables Library is published, consuming files can't see the new variables, and until the shadcn-studio Library is published, <code>Body/base</code> won't appear in the working file. One consequence is already visible: <code>Body/base</code>'s line height is a literal <code>28.8px</code> rather than bound to <code>line-height/body-base</code>, because that variable didn't exist in the component library's import set at creation time. <strong>After publishing both libraries, rebind it.</strong></p>
+  </div>
+
+  <!-- ─────────────────────────────────────────────────────────── -->
+  <section class="section" id="a">
+    <div class="section-header"><span class="section-id">A</span><h2 class="section-title">Why these and not others</h2></div>
+    <hr class="section-hr">
+
+    <p>The v2 pass fixed nine defects in <code>tokens.css</code>, <code>main.css</code> and <code>components.css</code>. Most of them have no Figma counterpart at all, which is worth stating plainly so nobody goes looking for work that doesn't exist:</p>
+
+    <div class="tbl-wrap">
+      <table>
+        <caption class="sr-only">Which CSS defects map onto Figma work</caption>
+        <thead><tr><th>CSS defect</th><th>Figma impact</th></tr></thead>
+        <tbody>
+          <tr><td>Dark-mode block was an invalid selector list, so dark mode never applied</td><td><strong>None.</strong> CSS syntax. Figma has native modes and was never affected.</td></tr>
+          <tr><td>Forty <code>@theme</code> entries referenced themselves, killing every radius, shadow, weight, leading and tracking utility</td><td><strong>None directly.</strong> Tailwind plumbing, never mirrored. But it caused the <code>--h2p-*</code> rename, which moved Code Syntax — see §C.</td></tr>
+          <tr><td>Semantic type roles declared in two places</td><td><strong>None.</strong> CSS classes. Figma has text styles.</td></tr>
+          <tr><td>White on <code>success-500</code> at 3.30:1; every dark-mode on-solid still white</td><td><strong>Variables added</strong> — they didn't exist. See §B.</td></tr>
+          <tr><td>Placeholder, input border, secondary border, strong border below their thresholds</td><td><strong>One edit, three additions.</strong> See §B.</td></tr>
+          <tr><td>Theme layer had no dark counterpart; phase tokens had no dark values</td><td><strong>None yet</strong> — neither is mirrored. Scope note for §13B and §10.</td></tr>
+          <tr><td>Three chart series below 3:1 on white</td><td><strong>None</strong> — <code>viz/*</code> isn't mirrored, and shouldn't be until the palette is resolved. See §E.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout note">
+      <div class="callout-label">The finding that mattered more than the fixes</div>
+      <p>The Semantic collection held 44 variables and simply <em>did not contain</em> most of the ones that failed. No <code>text/on-*</code>, no <code>input/*</code>, no <code>text/placeholder</code>, no <code>interactive-secondary/*</code>. That is not a gap in documentation — it is the mechanism by which the failures happened. With nothing to bind to, a designer filling a Success badge in Figma picks white by eye, and 2.28:1 ships.</p>
+    </div>
+  </section>
+
+  <!-- ─────────────────────────────────────────────────────────── -->
+  <section class="section" id="b">
+    <div class="section-header"><span class="section-id">B</span><h2 class="section-title">Semantic collection — 44 → 55</h2></div>
+    <hr class="section-hr">
+
+    <div class="sub-header"><span class="sub-tag">B-1</span><h3 class="sub-title">Corrected</h3></div>
+    <div class="tbl-wrap">
+      <table>
+        <caption class="sr-only">Existing variables whose values changed</caption>
+        <thead><tr><th>Variable</th><th>Mode</th><th>Was</th><th>Now</th><th>Measured</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><code>border/strong</code> <span class="edit-tag">EDIT</span></td><td>Light</td>
+            <td class="chg was">color/neutral/400</td><td class="chg now">color/neutral/500</td>
+            <td class="ratio">2.83 → 4.85:1</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p>A border named "strong" that cannot clear SC 1.4.11's 3:1 threshold is misnamed. Dark mode was already <code>neutral/500</code> and is unchanged.</p>
+
+    <div class="sub-header"><span class="sub-tag">B-2</span><h3 class="sub-title">Added</h3></div>
+    <div class="tbl-wrap">
+      <table>
+        <caption class="sr-only">Semantic variables added</caption>
+        <thead><tr><th>Variable</th><th>Light</th><th>Dark</th><th>Measured against</th><th>Scopes</th></tr></thead>
+        <tbody>
+          <tr><td><code>text/on-danger</code></td><td class="chg">#FFFFFF</td><td class="chg">neutral/950</td><td class="ratio">5.27 / 5.07:1</td><td class="chg">TEXT_FILL</td></tr>
+          <tr><td><code>text/on-warning</code></td><td class="chg">#000000</td><td class="chg">neutral/950</td><td class="ratio">6.59 / 9.32:1</td><td class="chg">TEXT_FILL</td></tr>
+          <tr><td><code>text/on-success</code></td><td class="chg">neutral/950</td><td class="chg">neutral/950</td><td class="ratio">6.08 / 8.79:1</td><td class="chg">TEXT_FILL</td></tr>
+          <tr><td><code>text/on-info</code></td><td class="chg">#FFFFFF</td><td class="chg">neutral/950</td><td class="ratio">5.17 / 5.45:1</td><td class="chg">TEXT_FILL</td></tr>
+          <tr><td><code>text/on-help</code></td><td class="chg">#FFFFFF</td><td class="chg">neutral/950</td><td class="ratio">5.70 / 4.73:1</td><td class="chg">TEXT_FILL</td></tr>
+          <tr><td><code>text/placeholder</code></td><td class="chg">neutral/500</td><td class="chg">neutral/400</td><td class="ratio">4.85 / 6.34:1</td><td class="chg">TEXT_FILL</td></tr>
+          <tr><td><code>input/border</code></td><td class="chg">neutral/500</td><td class="chg">neutral/500</td><td class="ratio">4.85 / 3.70:1</td><td class="chg">STROKE_COLOR</td></tr>
+          <tr><td><code>input/border-hover</code></td><td class="chg">neutral/600</td><td class="chg">neutral/400</td><td class="ratio">—</td><td class="chg">STROKE_COLOR</td></tr>
+          <tr><td><code>interactive-secondary/border</code></td><td class="chg">neutral/500</td><td class="chg">neutral/500</td><td class="ratio">4.72 / 4.13:1</td><td class="chg">STROKE_COLOR</td></tr>
+          <tr><td><code>surface/overlay</code></td><td class="chg">rgba(28,27,30,.60)</td><td class="chg">rgba(12,12,14,.75)</td><td class="ratio">—</td><td class="chg">FRAME_FILL · SHAPE_FILL</td></tr>
+          <tr><td><code>surface/overlay-drawer</code></td><td class="chg">rgba(28,27,30,.45)</td><td class="chg">rgba(0,0,0,.55)</td><td class="ratio">—</td><td class="chg">FRAME_FILL · SHAPE_FILL</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>Every one carries a description with its measurement in it, so the reasoning travels with the variable rather than living only here. Each also carries Code Syntax pointing at its CSS property.</p>
+
+    <div class="callout do">
+      <div class="callout-label">Why the two scrims are raw values rather than aliases</div>
+      Both carry alpha, and the primitive ramps are opaque. Aliasing would mean adding translucent primitives that exist for one consumer. The drawer scrim is deliberately lighter than the modal scrim — 0.45 against 0.60 — because keeping the page behind legible is what tells a user a panel is a layer and not a new screen. That is Section 14's whole argument, encoded in a token.
+    </div>
+
+    <div class="callout note">
+      <div class="callout-label">One deliberate non-addition</div>
+      <code>text/on-primary</code> was not created. <code>interactive-primary/text</code> already exists and resolves identically, and two names for one decision is how a collection starts to rot.
+    </div>
+  </section>
+
+  <!-- ─────────────────────────────────────────────────────────── -->
+  <section class="section" id="c">
+    <div class="section-header"><span class="section-id">C</span><h2 class="section-title">Code Syntax — 19 repointed</h2></div>
+    <hr class="section-hr">
+
+    <p>v2 moved every raw scale that collided with a Tailwind v4 namespace to an <code>--h2p-*</code> canonical name. The unprefixed names survive as deprecated aliases, so nothing breaks — but Code Syntax should hand a developer the canonical name, not the one scheduled for removal.</p>
+
+    <pre class="code"><code>tracking/tight    var(--tracking-tight)   →  var(--h2p-tracking-tight)
+tracking/normal · wide · wider · widest                    (5 total)
+
+leading/tight     var(--leading-tight)    →  var(--h2p-leading-tight)
+leading/snug · normal · relaxed · loose                    (5 total)
+
+radius/none       var(--radius-none)      →  var(--h2p-radius-none)
+radius/xs · sm · md · lg · xl · 2xl · 3xl · full           (9 total)</code></pre>
+
+    <p>Colour and spacing variables were untouched. <code>--text-secondary</code> and <code>--space-4</code> don't sit inside a Tailwind namespace, so they keep their names and their Code Syntax is still correct.</p>
+
+    <div class="callout brand">
+      <div class="callout-label">The rule that keeps this from recurring</div>
+      Never map a Tailwind namespace name onto a <code>tokens.css</code> variable of the same name. The namespaces are <code>--color-*</code>, <code>--font-*</code>, <code>--font-weight-*</code>, <code>--text-*</code>, <code>--leading-*</code>, <code>--tracking-*</code>, <code>--spacing-*</code>, <code>--radius-*</code>, <code>--shadow-*</code>, <code>--z-index-*</code>. Anything landing in one of those carries the <code>--h2p-</code> prefix at its source. The rule is restated in the <code>main.css</code> header.
+    </div>
+  </section>
+
+  <!-- ─────────────────────────────────────────────────────────── -->
+  <section class="section" id="d">
+    <div class="section-header"><span class="section-id">D</span><h2 class="section-title">Typography — the 18px gap</h2></div>
+    <hr class="section-hr">
+
+    <p>This was not on the list going in. It surfaced from reading the library rather than from the token diff, and it is the most consequential thing in this amendment.</p>
+
+    <div class="callout dont">
+      <div class="callout-label">Figma had no style at the product's base body size</div>
+      <p>The product's base is <strong>18px</strong> — the decision the entire audience rationale rests on, and the reason the scale departs from Tailwind's 16px stock. The library's twelve H2 Prime text styles included no 18px Inter Regular. <code>Body/p</code>, the obvious reach for running text, is <strong>16px</strong> and maps to <code>--type-body-sm</code>, not <code>--type-body</code>.</p>
+      <p style="margin-top:.5rem">So every Figma screen composed with <code>Body/p</code> has been a size off from the shipped app, in the one dimension the audience research was most specific about.</p>
+    </div>
+
+    <div class="tbl-wrap">
+      <table>
+        <caption class="sr-only">Typography additions</caption>
+        <thead><tr><th>What</th><th>Where</th><th>Value</th></tr></thead>
+        <tbody>
+          <tr><td><code>line-height/body-base</code> <span class="added-tag">ADDED</span></td><td>Variables Library → Typography</td><td>28.8 (18px × 1.6)</td></tr>
+          <tr><td><code>Body/base</code> <span class="added-tag">ADDED</span></td><td>shadcn-studio Library → text styles</td><td>Inter Regular 18 / 28.8, bound to <code>font-size/base</code>, <code>font-family/sans</code>, <code>font-weight/regular</code></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p><code>Body/p</code> was kept rather than rebound. Changing its size from 16 to 18 would reflow every existing use across the library and the working file — a migration, not a fix, and one that deserves its own pass. Instead all three ambiguous styles now carry descriptions:</p>
+
+    <div class="tbl-wrap">
+      <table>
+        <caption class="sr-only">Descriptions added to existing text styles</caption>
+        <thead><tr><th>Style</th><th>Description now says</th></tr></thead>
+        <tbody>
+          <tr><td><code>Body/p</code></td><td>16px dense body, maps to <code>--type-body-sm</code>. Use <code>Body/base</code> for running text. Named "p" historically; it does not match the web <code>&lt;p&gt;</code>, which inherits the 18px base.</td></tr>
+          <tr><td><code>Body/large</code></td><td>18px Semi Bold — a weight variant, not the base size.</td></tr>
+          <tr><td><code>Heading/H3</code></td><td>Also serves the overlay title role for drawer and sheet headings. A modal title is deliberately different.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout do">
+      <div class="callout-label">A text style that didn't need creating</div>
+      <p><code>tokens.css</code> v2 introduced <code>--type-overlay-title-*</code> for drawer and sheet headings. Reading the library showed <code>Heading/H3</code> is already Inter Semi Bold 22 / 28.6 — identical. So there is no thirteenth heading style; the overlay title is a role alias.</p>
+      <p style="margin-top:.5rem">That fed a correction back into CSS: the first draft of <code>tokens.css</code> v2 <em>restated</em> H3's values under the overlay-title name instead of aliasing them, which would have let the two drift apart silently. It now aliases <code>--type-h3-*</code> the way every other component-scoped role in §2.19 does.</p>
+    </div>
+  </section>
+
+  <!-- ─────────────────────────────────────────────────────────── -->
+  <section class="section" id="e">
+    <div class="section-header"><span class="section-id">E</span><h2 class="section-title">Left alone, with evidence</h2></div>
+    <hr class="section-hr">
+
+    <p>Each of these was checked rather than assumed, and each is a decision rather than an oversight.</p>
+
+    <div class="tbl-wrap">
+      <table>
+        <caption class="sr-only">Items deliberately not changed</caption>
+        <thead><tr><th>Item</th><th>What was checked</th><th>Why it was left</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><code>font-size/5xl</code> <span class="open-tag">OPEN</span></td>
+            <td>Resolved every text style's bindings. <strong>Nothing binds to it.</strong> It duplicates <code>font-size/4xl</code> at 40px.</td>
+            <td>Safe to delete, but a deletion in a shared library is the owner's call, not a sync task.</td>
+          </tr>
+          <tr>
+            <td><code>tracking/*</code> unit bug <span class="open-tag">OPEN</span></td>
+            <td>Only <code>tracking/display</code> is bound to any style, and it is correctly stored as <code>-0.2px</code>. The five scale variables hold em fractions Figma would read as pixels.</td>
+            <td><strong>Latent, not active.</strong> Fix the five before binding them to anything, not after — binding first would make a silent 18× error visible everywhere at once.</td>
+          </tr>
+          <tr>
+            <td>Radius / spacing duplication <span class="open-tag">OPEN</span></td>
+            <td>Both groups exist inside <code>H2 Prime Primitives</code> and in their own dedicated collections.</td>
+            <td>The rebind plugin orders around it deliberately. Resolving it means a rebind pass of its own.</td>
+          </tr>
+          <tr>
+            <td><code>viz/*</code> not mirrored <span class="open-tag">OPEN</span></td>
+            <td>No <code>viz</code> group exists in Primitives or Semantic.</td>
+            <td>Three of eight series changed in v2, and the palette collapses under deuteranopia. Resolve the palette, then mirror — mirroring a set that's about to change is worse than not mirroring it.</td>
+          </tr>
+          <tr>
+            <td>No elevation effect styles <span class="open-tag">OPEN</span></td>
+            <td>§13A-E says shadows ship as Effect Styles. The component library has shadcn-studio's own scale; no H2 Prime set exists.</td>
+            <td>Shadow <em>values</em> didn't change in v2, so nothing is wrong today. It's a documentation/reality mismatch in 13A, now flagged there.</td>
+          </tr>
+          <tr>
+            <td>Theme and phase dark variants</td>
+            <td>Neither is mirrored at all.</td>
+            <td>§13B is blocked on §11, and the phase scheme belongs to §10. The v2 values exist in CSS; Figma follows when those sections land.</td>
+          </tr>
+          <tr>
+            <td>Overlay geometry and durations</td>
+            <td>No Overlay collection exists.</td>
+            <td>Worth creating alongside the Section 14 component build rather than speculatively. Easing can't be a Figma variable at all.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ─────────────────────────────────────────────────────────── -->
+  <section class="section" id="f">
+    <div class="section-header"><span class="section-id">F</span><h2 class="section-title">Verification</h2></div>
+    <hr class="section-hr">
+
+    <p>Measured inside Figma by resolving each variable's alias chain to a concrete colour and computing the ratio — not read off the CSS and assumed to match.</p>
+
+    <div class="tbl-wrap">
+      <table>
+        <caption class="sr-only">Verification results</caption>
+        <thead><tr><th>Check</th><th>Result</th></tr></thead>
+        <tbody>
+          <tr><td>Semantic pairings measured, both modes</td><td>38 — all pass</td></tr>
+          <tr><td>Colour variables resolving to nothing</td><td>0</td></tr>
+          <tr><td>Collection size</td><td>44 → 55</td></tr>
+          <tr><td>H2 Prime text styles</td><td>12 → 13</td></tr>
+          <tr><td>CSS-side re-verification after the overlay-title alias fix</td><td>175 pairings — all pass</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout warn">
+      <div class="callout-label">One false alarm worth recording</div>
+      The first verification pass reported 18 unresolved pairings and looked alarming. The cause was in the checking script, not the data: it followed aliases into the Primitives collection while still passing the <em>Semantic</em> collection's mode id, which doesn't exist there, so every alias returned undefined. An alias has to be resolved against its own collection's modes. Worth knowing for anyone writing a similar audit — the failure mode looks exactly like broken variables.
+    </div>
+  </section>
+
+  <!-- ─────────────────────────────────────────────────────────── -->
+  <section class="section" id="g">
+    <div class="section-header"><span class="section-id">G</span><h2 class="section-title">Next</h2></div>
+    <hr class="section-hr">
+    <ol style="font-size:13.5px;color:var(--t2);line-height:1.8;padding-left:1.4rem">
+      <li><strong>Publish both libraries.</strong> Nothing below the Variables Library can see the eleven new variables until then.</li>
+      <li><strong>Rebind <code>Body/base</code>'s line height</strong> to <code>line-height/body-base</code> once the Variables Library has published.</li>
+      <li><strong>Decide on <code>font-size/5xl</code></strong> — nothing binds to it.</li>
+      <li><strong>Fix the five <code>tracking/*</code> values</strong> before anything binds to them.</li>
+      <li><strong>Sweep the eight sections marked "Re-sync"</strong> on the cover — they document token names that changed.</li>
+      <li><strong>Resolve the chart palette</strong>, then mirror <code>viz/*</code>.</li>
+    </ol>
+  </section>
+
+</main>
+  <footer class="page-footer">
+    <div>Section 13A Amendment — 2026-10-25 &nbsp;·&nbsp; H2 Prime Web Application Design System<br>
+      <a href="h2p-section-13a-figma-variables.html">← Section 13A</a> &nbsp;·&nbsp;
+      <a href="h2p-cover.html">Index</a> &nbsp;·&nbsp;
+      <a href="h2p-section-14-overlay-surface-system.html">Section 14 →</a><br>
+      <a href="h2p-notification-center-figma-build-2026-10-25.html">Where these variables were first used — Notification Center build record</a></div>
+    <div style="text-align:right">Applied 2026-10-25<br>Libraries not yet published</div>
+  </footer>
+
+</div>
+</body>
+</html>
