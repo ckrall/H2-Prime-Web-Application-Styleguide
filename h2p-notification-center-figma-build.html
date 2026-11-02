@@ -44,7 +44,8 @@
   </div>
   <div class="guide-nav-right">
     <a href="h2p-section-14-overlay-surface-system.html" class="guide-nav-btn">← 14 — Overlay &amp; Surface</a>
-    <a href="h2p-cover.html" class="guide-nav-btn primary">Index  →</a>
+    <a href="h2p-section-13a-amendment-2026-10-25.html" class="guide-nav-btn">13A Amendment</a>
+    <a href="h2p-cover.html" class="guide-nav-btn primary">Index</a>
   </div>
 </nav>
 
@@ -53,15 +54,15 @@
 
   <div class="doc-header">
     <div class="doc-kicker">H2 Prime Web Application Design System &amp; Guidelines</div>
-    <h1 class="doc-title">Section — <strong>Notification Center — Figma Build Record</strong></h1>
+    <h1 class="doc-title">Notification Center — <strong>Figma Build Record</strong></h1>
     <p class="doc-lead">What was built on the <strong>↳ Notification Center</strong> page of <em>H2 Prime 2025</em>, which library components and tokens it is made of, and the six things the build turned up that the style guide did not yet say. This is a record of a first draft, not a specification — the pattern itself is still unwritten as a numbered section. It is filed here because it is the first real application of <a href="h2p-section-14-overlay-surface-system.html">Section 14</a> and the first consumer of the variables in <a href="h2p-section-13a-figma-variables.html">Section 13A</a>, and both of those gained corrections as a result.</p>
     <div class="doc-meta">
       <div class="doc-meta-item"><strong>Figma file</strong>H2 Prime 2025 — page ↳ Notification Center</div>
-      <div class="doc-meta-item"><strong>Sections built</strong>5 — drawer, states, dark, full page, full page dark</div>
+      <div class="doc-meta-item"><strong>Sections built</strong>6 — drawer, states, dark, full page, full page dark, detail types</div>
       <div class="doc-meta-item"><strong>Roles</strong>Client, Filer, Admin — all three, both modes</div>
-      <div class="doc-meta-item"><strong>New local components</strong>2</div>
+      <div class="doc-meta-item"><strong>New local components</strong>3 — row, group header, detail (3 variants)</div>
       <div class="doc-meta-item"><strong>Defects found</strong>4 — one fixed in the build, all four open in the library</div>
-      <div class="doc-meta-item"><strong>Last updated</strong>2026-10-25</div>
+      <div class="doc-meta-item"><strong>Last updated</strong>2026-11-02</div>
     </div>
   </div>
 
@@ -104,6 +105,9 @@
 
       <dt>Full page · Dark Mode <span class="node">62771:7164</span></dt>
       <dd>The same three routes in dark.</dd>
+
+      <dt>Details types <span class="node">62818:7670</span> <span class="node">· added 2 Nov</span></dt>
+      <dd>The item and its detail in isolation, light mode only: the four row states, the row composition rules, the three detail types, the Remind me later panel, the detail shown inside the drawer it replaces the list in, and the copy templates that generate every title and body. Built from <a href="#nc-c">the detail component set</a> described below.</dd>
     </dl>
   </section>
 
@@ -137,7 +141,10 @@
       <dd>Unread marker, type-icon tile, title, two-line clamped body, context badge, timestamp, row menu. Properties: <code>Title</code>, <code>Body</code>, <code>Time</code> (text); <code>Unread</code>, <code>Show context badge</code>, <code>Show row menu</code> (boolean); <code>Type icon</code> (instance swap). Fills the drawer width, hugs height.</dd>
       <dt><code>H2P/Notification Group Header</code></dt>
       <dd>The <em>NEW</em> / <em>EARLIER</em> date-group label with a count. Properties: <code>Label</code>, <code>Count</code>.</dd>
+      <dt><code>H2P/Notification Detail</code></dt>
+      <dd>The detail pane, as a variant set: <code>Type = Text only | Text + CTA | Action required</code>. Each carries the back bar, title, lede, a three-row meta list and the mark-unread / delete bar; the action-required variant adds a primary CTA and <em>Remind me later</em>. Text is overridden per instance rather than exposed as component properties, because the three variants differ structurally rather than only in wording.</dd>
     </dl>
+    <p>The detail replaces the list <em>inside</em> the drawer rather than opening a second surface, which is why it carries its own back affordance and no close button of its own — the drawer's close stays where it was. That is the same trace rule as ADR 14-1, applied one level down.</p>
 
     <div class="sub-header"><span class="sub-tag">C.2</span><h3 class="sub-title">Library components used as-is</h3></div>
     <p>Everything else is an instance from <em>H2 Prime shadcn-studio Library</em>: <code>Sheet</code> (Type=Right) as the drawer shell, <code>Tabs for Blocks</code> and <code>Tab item</code> for the filter tabs, <code>Separator</code>, <code>Soft Badge</code>, <code>Ghost Icon Button</code>, <code>Link Button</code>, <code>Outline Button</code>, <code>Solid Button</code>, <code>Skeleton</code>, <code>Dropdown</code>, <code>Check Box</code>, <code>Default Select</code>, <code>Default Input</code>, <code>Pagination</code>, <code>Breadcrumbs</code>, and the Lucide icon components.</p>
@@ -265,11 +272,11 @@
     <div class="ap-grid">
       <div class="ap-box ap-dont">
         <div class="ap-label">Still missing from the Figma build</div>
-        <p>The three detail types — specified and wireframed in HTML, but not built in Figma.</p>
-        <p>Row hover, focus and selected states as a state set.</p>
+        <p>Row hover, focus and selected states as a state set. The four <em>content</em> states — unread, read, action required, deduplicated — are drawn in the details-types section; the interaction states are not.</p>
         <p>Table column sorting: the headers imply it, no sorted state is drawn.</p>
         <p>The page's own empty and loading states — only the drawer's exist.</p>
         <p>Notification preferences, the surface the empty state points at, is unscoped.</p>
+        <p>A dark-mode pass over the details-types section — it was built light-only by request.</p>
       </div>
       <div class="ap-box ap-dont">
         <div class="ap-label">Blocking the system, not this feature</div>
@@ -288,7 +295,7 @@
       <a href="h2p-section-13a-figma-variables.html">Section 13A — Figma Variables</a> &nbsp;·&nbsp;
       <a href="h2p-section-13a-amendment-2026-10-25.html">13A Amendment</a><br>
       <span style="color:var(--t3)">A record of a first draft. The notification pattern itself is not yet written up as a numbered section.</span></div>
-    <div style="text-align:right">Last updated: 2026-10-25<br>5 Figma sections · 3 roles · both modes</div>
+    <div style="text-align:right">Last updated: 2026-11-02<br>6 Figma sections · 3 roles · both modes</div>
   </footer>
 
 </div>
